@@ -921,31 +921,667 @@ function setBestOwnedGen1Pet() {
     }
 }
 
+// ==========================================
+// TAB 1: THE DUAL FUSION MATCHMAKER
+// ==========================================
+let mmResults = [];
+let mmPage = 1;
+const MM_PAGE_SIZE = 50;
+
+function runMatchmaker() {
+    syncAllComboInputs();
+    const a1 = document.getElementById("mm-a1").value;
+    const a2 = document.getElementById("mm-a2").value;
+    const mutA = document.getElementById("mm-mut").value;
+    const lvlA = Math.max(1, parseInt(document.getElementById("mm-lvl").value) || 1);
+    const partnerMut = document.getElementById("mm-partner-mut").value;
+    const partnerLvl = Math.max(1, parseInt(document.getElementById("mm-partner-lvl").value) || 1);
+    const search = document.getElementById("mm-search").value.toLowerCase().trim();
+
+    if (a1 === a2) {
+        document.getElementById("mm-user-title").textContent = "⚠️ Select 2 different animals";
+        document.getElementById("mm-user-breakdown").textContent = "In Impossible Animals, a Gen-1 hybrid requires two distinct base animals.";
+        return;
+    }
+
+    const userH = calculateSingle(a1, a2, mutA, lvlA);
+    const mutPrefix = mutA !== "none" ? `[${mutA.toUpperCase()}] ` : "";
+    document.getElementById("mm-user-title").textContent = `${mutPrefix}${a1} + ${a2}`;
+    document.getElementById("mm-user-breakdown").textContent =
+        `Base Hash Roll: ${userH.baseStars}★ | Special Bonus: +${userH.specialBonus}★ | Mutation Bonus: +${userH.mutBonus}★ | Treadmill Lvl ${lvlA} (${getLevelMultiplier(lvlA).toFixed(1)}x)`;
+    document.getElementById("mm-user-stars").textContent = `${userH.finalStars} ★`;
+    document.getElementById("mm-user-inc").textContent = formatMoney(userH.income);
+    document.getElementById("mm-user-scaled-inc").textContent = formatMoney(userH.scaledIncome);
+
+    mmResults = [];
+    for (let i = 0; i < ANIMALS.length; i++) {
+        for (let j = i + 1; j < ANIMALS.length; j++) {
+            const b1 = ANIMALS[i];
+            const b2 = ANIMALS[j];
+
+            if (filterOwnedOnly && (!ownedAnimals.has(b1) || !ownedAnimals.has(b2))) {
+                continue;
+            }
+            if (search && !b1.includes(search) && !b2.includes(search)) continue;
+
+            const res = calculateDouble(a1, a2, mutA, lvlA, b1, b2, partnerMut, partnerLvl);
+            mmResults.push(res);
+        }
+    }
+
+    mmResults.sort((a, b) => b.income !== a.income ? b.income - a.income : b.finalStars - a.finalStars);
+
+    // Populate Top 3 Podium
+    if (mmResults.length > 0) {
+        [0, 1, 2].forEach(idx => {
+            const item = mmResults[idx] || mmResults[0];
+            const num = idx + 1;
+            const multGain = userH.income > 0 ? (item.income / userH.income) : 1;
+            const gainText = multGain >= 10
+                ? `${multGain.toFixed(1)}x Income`
+                : `+${Math.max(0, Math.round((multGain - 1) * 100)).toLocaleString()}%`;
+
+            document.getElementById(`podium-${num}-name`).textContent = item.fullComboName;
+            document.getElementById(`podium-${num}-partner`).textContent = `Breed Partner: ${item.partnerRecipe} (${item.h2.finalStars}★)`;
+            document.getElementById(`podium-${num}-stars`).textContent = `${item.finalStars} ★ (+${item.finalStars - userH.finalStars}★)`;
+            document.getElementById(`podium-${num}-inc`).textContent = formatMoney(item.scaledIncome);
+            document.getElementById(`podium-${num}-gain`).textContent = gainText;
+        });
+    } else {
+        ["1", "2", "3"].forEach(num => {
+            document.getElementById(`podium-${num}-name`).textContent = "No craftable combos found";
+            document.getElementById(`podium-${num}-partner`).textContent = "Unlock more animals in inventory!";
+            document.getElementById(`podium-${num}-stars`).textContent = "- ★";
+            document.getElementById(`podium-${num}-inc`).textContent = "$0/s";
+            document.getElementById(`podium-${num}-gain`).textContent = "-";
+        });
+    }
+
+    renderMmTable();
+}
+
+function renderMmTable() {
+    const tbody = document.getElementById("mm-table-body");
+    const totalPages = Math.ceil(mmResults.length / MM_PAGE_SIZE) || 1;
+    mmPage = Math.min(mmPage, totalPages);
+
+    const start = (mmPage - 1) * MM_PAGE_SIZE;
+    const slice = mmResults.slice(start, start + MM_PAGE_SIZE);
+
+    let html = "";
+    slice.forEach((item, idx) => {
+        const globalIdx = start + idx;
+        html += `
+            <tr>
+                <td class="rank">#${globalIdx + 1}</td>
+                <td style="font-weight:700; color:var(--heading); text-transform:capitalize;">${item.fullComboName}</td>
+                <td style="font-weight:700; text-transform:capitalize; color:var(--accent);">${ANIMAL_ICONS[item.b1] || "🐾"} ${item.b1} + ${ANIMAL_ICONS[item.b2] || "🐾"} ${item.b2}</td>
+                <td><span style="color:#94a3b8; font-weight:600;">${item.h2.finalStars} ★ (${formatMoney(item.h2.income)})</span></td>
+                <td style="color:var(--gold); font-weight:800;">${item.finalStars} ★</td>
+                <td class="mono" style="color:var(--green-bright); font-weight:700;">${formatMoney(item.income)}</td>
+                <td class="mono" style="color:var(--accent); font-weight:700;">${formatMoney(item.scaledIncome)}</td>
+                <td>
+                    <div class="action-cell">
+                        <button class="btn btn-sm btn-chat-copy" onclick="copyDualChat('${item.a1}','${item.a2}','${item.b1}','${item.b2}',${item.finalStars},${item.income},'${item.inheritedMutation}')" title="Copy Roblox Chat Reply">💬</button>
+                        <button class="btn btn-sm" onclick="loadComboIntoLab('${item.a1}','${item.a2}','${item.mutA}',${item.h1.lvl},'${item.b1}','${item.b2}','${item.mutB}',${item.h2.lvl})" title="Inspect Formula in Lab">🔬</button>
+                        <button class="btn btn-sm" onclick="addGoalToPlanner('${item.a1}','${item.a2}','${item.mutA}','${item.b1}','${item.b2}','${item.mutB}')" title="Save to Breeding Planner">📌</button>
+                    </div>
+                </td>
+            </tr>
+        `;
+    });
+    tbody.innerHTML = html;
+
+    document.getElementById("mm-page-info").textContent = `Page ${mmPage} of ${totalPages} (${mmResults.length.toLocaleString()} craftable partner options)`;
+    document.getElementById("btn-mm-prev").disabled = mmPage === 1;
+    document.getElementById("btn-mm-next").disabled = mmPage >= totalPages;
+}
+
+function resetMmPage() {
+    mmPage = 1;
+    runMatchmaker();
+}
+
+function changeMmPage(delta) {
+    mmPage += delta;
+    renderMmTable();
+}
+
+function inspectPodiumInLab(idx) {
+    const item = mmResults[idx];
+    if (!item) return;
+    loadComboIntoLab(item.a1, item.a2, item.mutA, item.h1.lvl, item.b1, item.b2, item.mutB, item.h2.lvl);
+}
+
+function pinPodiumToPlanner(idx) {
+    const item = mmResults[idx];
+    if (!item) return;
+    addGoalToPlanner(item.a1, item.a2, item.mutA, item.b1, item.b2, item.mutB);
+}
+
+// ==========================================
+// TAB 2: DUAL FUSION SANDBOX & FORMULA LAB
+// ==========================================
+let currentLabResult = null;
+
+function runLabCalculator() {
+    syncAllComboInputs();
+    const a1 = document.getElementById("lab-a1").value;
+    const a2 = document.getElementById("lab-a2").value;
+    const mutA = document.getElementById("lab-mut-a").value;
+    const lvlA = Math.max(1, parseInt(document.getElementById("lab-lvl-a").value) || 1);
+
+    const b1 = document.getElementById("lab-b1").value;
+    const b2 = document.getElementById("lab-b2").value;
+    const mutB = document.getElementById("lab-mut-b").value;
+    const lvlB = Math.max(1, parseInt(document.getElementById("lab-lvl-b").value) || 1);
+
+    const badgeA = document.getElementById("lab-h1-badge");
+    badgeA.className = `badge badge-${mutA}`;
+    badgeA.textContent = MUTATION_DATA[mutA].name;
+
+    const badgeB = document.getElementById("lab-h2-badge");
+    badgeB.className = `badge badge-${mutB}`;
+    badgeB.textContent = MUTATION_DATA[mutB].name;
+
+    const res = calculateDouble(a1, a2, mutA, lvlA, b1, b2, mutB, lvlB);
+    currentLabResult = res;
+
+    document.getElementById("lab-h1-summary").innerHTML = `
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+            <span style="color:#94a3b8;">Gen-1 Stars:</span>
+            <b style="color:var(--gold);">${res.h1.finalStars} ★ (Roll ${res.h1.baseStars}★ + Spec ${res.h1.specialBonus}★ + Mut ${res.h1.mutBonus}★)</b>
+        </div>
+        <div style="display:flex; justify-content:space-between;">
+            <span style="color:#94a3b8;">Gen-1 Base Income:</span>
+            <b class="mono" style="color:var(--green-bright);">${formatMoney(res.h1.income)}</b>
+        </div>
+    `;
+
+    document.getElementById("lab-h2-summary").innerHTML = `
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+            <span style="color:#94a3b8;">Gen-1 Stars:</span>
+            <b style="color:var(--gold);">${res.h2.finalStars} ★ (Roll ${res.h2.baseStars}★ + Spec ${res.h2.specialBonus}★ + Mut ${res.h2.mutBonus}★)</b>
+        </div>
+        <div style="display:flex; justify-content:space-between;">
+            <span style="color:#94a3b8;">Gen-1 Base Income:</span>
+            <b class="mono" style="color:var(--green-bright);">${formatMoney(res.h2.income)}</b>
+        </div>
+    `;
+
+    document.getElementById("lab-result-name").textContent = res.fullComboName;
+    document.getElementById("lab-result-sub").textContent = `DJB2 Income Seed: "${res.incomeSeed}" • Bracket Roll Percentile: ${res.bracketPct}%`;
+    document.getElementById("lab-result-mut").innerHTML = `<span class="badge badge-${res.inheritedMutation}">${MUTATION_DATA[res.inheritedMutation].name}</span>`;
+    document.getElementById("lab-result-stars").textContent = `${res.finalStars} ★`;
+    document.getElementById("lab-result-inc").textContent = formatMoney(res.income);
+    document.getElementById("lab-result-lvl").textContent = res.inheritedLevel;
+    document.getElementById("lab-result-scaled").textContent = formatMoney(res.scaledIncome);
+
+    const grid = document.getElementById("lab-formula-grid");
+    grid.innerHTML = `
+        <div class="formula-step">
+            <div class="step-num">Step 1 • Raw Parent Stars (No Spec)</div>
+            <div class="step-val">${Math.max(res.p1RawStars, res.p2RawStars)} ★</div>
+            <div class="step-sub">Uses Base + Mut only: Hybrid A (${res.p1RawStars}★) vs Hybrid B (${res.p2RawStars}★). Special bonus is not counted here.</div>
+        </div>
+        <div class="formula-step">
+            <div class="step-num">Step 2 • Weakest Raw Parent Cap</div>
+            <div class="step-val">+${res.thresholdCap} ★ Max Cap</div>
+            <div class="step-sub">Min raw parent is ${Math.min(res.p1RawStars, res.p2RawStars)}★ (Thresholds at 3, 9, 15, 21, 29★ unlock +1 to +5 cap).</div>
+        </div>
+        <div class="formula-step">
+            <div class="step-num">Step 3 • Jenkins Double Roll</div>
+            <div class="step-val">+${res.effectiveDoubleBonus} ★ (Rolled +${res.doubleBonus}★)</div>
+            <div class="step-sub">Jenkins hash rolled +${res.doubleBonus}★, clamped by Step 2 cap (+${res.thresholdCap}★) = +${res.effectiveDoubleBonus}★.</div>
+        </div>
+        <div class="formula-step">
+            <div class="step-num">Step 4 • 4-Parent Special Bonus</div>
+            <div class="step-val">+${res.specialBonus} ★</div>
+            <div class="step-sub">Highest special animal bonus among [${res.a1}, ${res.a2}, ${res.b1}, ${res.b2}], capped at 38★ max.</div>
+        </div>
+        <div class="formula-step">
+            <div class="step-num">Step 5 • Inherited Mutation &amp; Level</div>
+            <div class="step-val">${MUTATION_DATA[res.inheritedMutation].name} • Lvl ${res.inheritedLevel}</div>
+            <div class="step-sub">Inherits best shiny (${res.mutA} vs ${res.mutB}) and max Treadmill Level (${lvlA} vs ${lvlB}).</div>
+        </div>
+    `;
+}
+
+function swapLabHybrids() {
+    const a1 = document.getElementById("lab-a1").value;
+    const a2 = document.getElementById("lab-a2").value;
+    const mutA = document.getElementById("lab-mut-a").value;
+    const lvlA = document.getElementById("lab-lvl-a").value;
+
+    document.getElementById("lab-a1").value = document.getElementById("lab-b1").value;
+    document.getElementById("lab-a2").value = document.getElementById("lab-b2").value;
+    document.getElementById("lab-mut-a").value = document.getElementById("lab-mut-b").value;
+    document.getElementById("lab-lvl-a").value = document.getElementById("lab-lvl-b").value;
+
+    document.getElementById("lab-b1").value = a1;
+    document.getElementById("lab-b2").value = a2;
+    document.getElementById("lab-mut-b").value = mutA;
+    document.getElementById("lab-lvl-b").value = lvlA;
+
+    runLabCalculator();
+}
+
+function loadComboIntoLab(a1, a2, mutA, lvlA, b1, b2, mutB, lvlB) {
+    document.getElementById("lab-a1").value = a1;
+    document.getElementById("lab-a2").value = a2;
+    document.getElementById("lab-mut-a").value = mutA || "none";
+    document.getElementById("lab-lvl-a").value = lvlA || 1;
+
+    document.getElementById("lab-b1").value = b1;
+    document.getElementById("lab-b2").value = b2;
+    document.getElementById("lab-mut-b").value = mutB || "none";
+    document.getElementById("lab-lvl-b").value = lvlB || 1;
+
+    switchTab("lab");
+    showToast(`Loaded ${a1}+${a2} × ${b1}+${b2} into Formula Lab!`);
+}
+
+function pinLabToPlanner() {
+    if (!currentLabResult) return;
+    addGoalToPlanner(
+        currentLabResult.a1, currentLabResult.a2, currentLabResult.mutA,
+        currentLabResult.b1, currentLabResult.b2, currentLabResult.mutB
+    );
+}
+
+function copyLabSummary() {
+    if (!currentLabResult) return;
+    const r = currentLabResult;
+    const txt = `Impossible Animals Dual Fusion: ${r.fullComboName} | Mutation: ${r.inheritedMutation.toUpperCase()} | Stars: ${r.finalStars}★ | Base Income: $${r.income.toLocaleString()}/s | Scaled (Lvl ${r.inheritedLevel}): $${r.scaledIncome.toLocaleString()}/s`;
+    copyTextToClipboard(txt, "Copied Dual Fusion summary to clipboard!");
+}
+
+// ==========================================
+// TAB 3: GLOBAL ALL-TIME BEST COMBOS
+// ==========================================
+let globalDualData = [];
+let globalPage = 1;
+const GLOBAL_PAGE_SIZE = 50;
+
+function computeGlobalDualDataset() {
+    const search = document.getElementById("global-search").value.toLowerCase().trim();
+    const mutA = document.getElementById("global-mut-a").value;
+    const mutB = document.getElementById("global-mut-b").value;
+    const depth = parseInt(document.getElementById("global-depth").value) || 120;
+    const sort = document.getElementById("global-sort").value;
+
+    globalDualData = [];
+
+    const blocksA = [];
+    const blocksB = [];
+    for (let i = 0; i < ANIMALS.length; i++) {
+        for (let j = i + 1; j < ANIMALS.length; j++) {
+            const anA = ANIMALS[i], anB = ANIMALS[j];
+            if (filterOwnedOnly && (!ownedAnimals.has(anA) || !ownedAnimals.has(anB))) continue;
+            blocksA.push(calculateSingle(anA, anB, mutA));
+            blocksB.push(calculateSingle(anA, anB, mutB));
+        }
+    }
+    blocksA.sort((a, b) => b.income - a.income);
+    blocksB.sort((a, b) => b.income - a.income);
+
+    const scanLimit = Math.min(blocksA.length, depth);
+    for (let i = 0; i < scanLimit; i++) {
+        for (let j = i + 1; j < scanLimit; j++) {
+            const h1 = blocksA[i];
+            const h2 = blocksB[j];
+
+            if (search && !h1.pLow.includes(search) && !h1.pHigh.includes(search) && !h2.pLow.includes(search) && !h2.pHigh.includes(search)) {
+                continue;
+            }
+
+            const res = calculateDouble(h1.pLow, h1.pHigh, mutA, 1, h2.pLow, h2.pHigh, mutB, 1);
+            globalDualData.push(res);
+        }
+    }
+
+    if (sort === "income-desc") globalDualData.sort((a, b) => b.income - a.income);
+    if (sort === "income-asc") globalDualData.sort((a, b) => a.income - b.income);
+    if (sort === "stars-desc") globalDualData.sort((a, b) => b.finalStars !== a.finalStars ? b.finalStars - a.finalStars : b.income - a.income);
+    if (sort === "stars-asc") globalDualData.sort((a, b) => a.finalStars !== b.finalStars ? a.finalStars - b.finalStars : a.income - b.income);
+}
+
+function renderGlobalDualTable() {
+    const tbody = document.getElementById("global-table-body");
+    const totalPages = Math.ceil(globalDualData.length / GLOBAL_PAGE_SIZE) || 1;
+    globalPage = Math.min(globalPage, totalPages);
+
+    const start = (globalPage - 1) * GLOBAL_PAGE_SIZE;
+    const slice = globalDualData.slice(start, start + GLOBAL_PAGE_SIZE);
+
+    let html = "";
+    slice.forEach((item, idx) => {
+        html += `
+            <tr>
+                <td class="rank">#${start + idx + 1}</td>
+                <td style="font-weight:700; color:var(--heading); text-transform:capitalize;">${item.fullComboName}</td>
+                <td><span class="badge badge-${item.inheritedMutation}">${MUTATION_DATA[item.inheritedMutation].name}</span></td>
+                <td style="color:var(--gold); font-weight:800;">${item.finalStars} ★</td>
+                <td class="mono" style="color:var(--green-bright); font-weight:800;">${formatMoney(item.income)}</td>
+                <td><span style="font-size:12px; color:#94a3b8;">${item.bracketPct}% of ${item.finalStars}★ max</span></td>
+                <td>
+                    <div class="action-cell">
+                        <button class="btn btn-sm btn-chat-copy" onclick="copyDualChat('${item.a1}','${item.a2}','${item.b1}','${item.b2}',${item.finalStars},${item.income},'${item.inheritedMutation}')" title="Copy Roblox Chat Reply">💬</button>
+                        <button class="btn btn-sm" onclick="loadComboIntoLab('${item.a1}','${item.a2}','${item.mutA}',1,'${item.b1}','${item.b2}','${item.mutB}',1)" title="Inspect in Lab">🔬</button>
+                        <button class="btn btn-sm" onclick="addGoalToPlanner('${item.a1}','${item.a2}','${item.mutA}','${item.b1}','${item.b2}','${item.mutB}')" title="Pin to Planner">📌</button>
+                    </div>
+                </td>
+            </tr>
+        `;
+    });
+    tbody.innerHTML = html;
+
+    document.getElementById("global-page-info").textContent = `Page ${globalPage} of ${totalPages} (${globalDualData.length.toLocaleString()} combos evaluated)`;
+    document.getElementById("btn-global-prev").disabled = globalPage === 1;
+    document.getElementById("btn-global-next").disabled = globalPage >= totalPages;
+}
+
+function resetGlobalPage() {
+    globalPage = 1;
+    computeGlobalDualDataset();
+    renderGlobalDualTable();
+}
+
+function changeGlobalPage(delta) {
+    globalPage += delta;
+    renderGlobalDualTable();
+}
+
+// ==========================================
+// TAB 4: SINGLE FUSIONS (GEN 1 DATABASE)
+// ==========================================
+let dbItems = [];
+let dbPage = 1;
+const DB_PAGE_SIZE = 50;
+
+function computeDbDataset() {
+    const search = document.getElementById("db-search").value.toLowerCase().trim();
+    const mut = document.getElementById("db-mut").value;
+    const bonusFilter = document.getElementById("db-bonus-filter").value;
+    const sort = document.getElementById("db-sort").value;
+
+    dbItems = [];
+    for (let i = 0; i < ANIMALS.length; i++) {
+        for (let j = i + 1; j < ANIMALS.length; j++) {
+            const a = ANIMALS[i], b = ANIMALS[j];
+            if (filterOwnedOnly && (!ownedAnimals.has(a) || !ownedAnimals.has(b))) continue;
+            if (search && !a.includes(search) && !b.includes(search)) continue;
+            const item = calculateSingle(a, b, mut);
+            if (bonusFilter !== "all" && item.specialBonus !== parseInt(bonusFilter)) continue;
+            dbItems.push(item);
+        }
+    }
+
+    if (sort === "income-desc") dbItems.sort((a, b) => b.income - a.income);
+    if (sort === "income-asc") dbItems.sort((a, b) => a.income - b.income);
+    if (sort === "stars-desc") dbItems.sort((a, b) => b.finalStars !== a.finalStars ? b.finalStars - a.finalStars : b.income - a.income);
+    if (sort === "stars-asc") dbItems.sort((a, b) => a.finalStars !== b.finalStars ? a.finalStars - b.finalStars : a.income - b.income);
+    if (sort === "base-desc") dbItems.sort((a, b) => b.baseStars !== a.baseStars ? b.baseStars - a.baseStars : b.income - a.income);
+}
+
+function renderDbTable() {
+    const tbody = document.getElementById("db-table-body");
+    const totalPages = Math.ceil(dbItems.length / DB_PAGE_SIZE) || 1;
+    dbPage = Math.min(dbPage, totalPages);
+
+    const start = (dbPage - 1) * DB_PAGE_SIZE;
+    const slice = dbItems.slice(start, start + DB_PAGE_SIZE);
+
+    let html = "";
+    slice.forEach((item, idx) => {
+        const specBadge = item.specialBonus > 0
+            ? `<span class="chip-bonus bonus-${item.specialBonus}">+${item.specialBonus}★</span>`
+            : `<span style="color:#64748b;">+0★</span>`;
+        html += `
+            <tr>
+                <td class="rank">#${start + idx + 1}</td>
+                <td style="font-weight:700; text-transform:capitalize; color:var(--heading);">${ANIMAL_ICONS[item.p1] || "🐾"} ${item.p1} + ${ANIMAL_ICONS[item.p2] || "🐾"} ${item.p2}</td>
+                <td style="color:#94a3b8; font-weight:600;">${item.baseStars} ★</td>
+                <td>${specBadge}</td>
+                <td><span class="badge badge-${item.mutation}">${MUTATION_DATA[item.mutation].name}</span></td>
+                <td style="color:var(--gold); font-weight:800;">${item.finalStars} ★</td>
+                <td class="mono" style="color:var(--green-bright); font-weight:800;">${formatMoney(item.income)}</td>
+                <td>
+                    <div class="action-cell">
+                        <button class="btn btn-sm btn-chat-copy" onclick="copySingleChat('${item.p1}','${item.p2}',${item.finalStars},${item.income},'${item.mutation}')" title="Copy Roblox Chat Reply (e.g. Glitter + stingray 18 stars 102k/s)">💬 Copy Chat</button>
+                        <button class="btn btn-sm" onclick="sendSingleToMatchmaker('${item.p1}','${item.p2}','${item.mutation}')">🧬 Find Best Partner</button>
+                    </div>
+                </td>
+            </tr>
+        `;
+    });
+    tbody.innerHTML = html;
+
+    document.getElementById("db-page-info").textContent = `Page ${dbPage} of ${totalPages} (${dbItems.length.toLocaleString()} craftable Gen-1 recipes)`;
+    document.getElementById("btn-prev").disabled = dbPage === 1;
+    document.getElementById("btn-next").disabled = dbPage >= totalPages;
+}
+
+function sendSingleToMatchmaker(p1, p2, mut) {
+    document.getElementById("mm-a1").value = p1;
+    document.getElementById("mm-a2").value = p2;
+    document.getElementById("mm-mut").value = mut || "none";
+    switchTab("matchmaker");
+    showToast(`Loaded ${p1} + ${p2} into Matchmaker!`);
+}
+
+function resetDbPage() {
+    dbPage = 1;
+    computeDbDataset();
+    renderDbTable();
+}
+
+function changeDbPage(delta) {
+    dbPage += delta;
+    renderDbTable();
+}
+
+// ==========================================
+// TAB 5: BREEDING PLANNER & SAVED GOALS
+// ==========================================
+function addGoalToPlanner(a1, a2, mutA, b1, b2, mutB) {
+    const id = `${a1}|${a2}|${mutA}|${b1}|${b2}|${mutB}`;
+    if (savedGoals.some(g => g.id === id)) {
+        showToast("Combo is already in your Breeding Planner!");
+        return;
+    }
+    savedGoals.unshift({ id, a1, a2, mutA: mutA || "none", b1, b2, mutB: mutB || "none" });
+    savePlannerGoals();
+    showToast(`Pinned (${a1} + ${a2}) × (${b1} + ${b2}) to Planner!`);
+}
+
+function removeGoalFromPlanner(id) {
+    savedGoals = savedGoals.filter(g => g.id !== id);
+    savePlannerGoals();
+}
+
+function clearPlannerGoals() {
+    savedGoals = [];
+    savePlannerGoals();
+    showToast("Cleared all saved breeding goals.");
+}
+
+function addTop3GlobalToPlanner() {
+    if (globalDualData.length === 0) computeGlobalDualDataset();
+    const top3 = globalDualData.slice(0, 3);
+    top3.forEach(item => {
+        const id = `${item.a1}|${item.a2}|${item.mutA}|${item.b1}|${item.b2}|${item.mutB}`;
+        if (!savedGoals.some(g => g.id === id)) {
+            savedGoals.push({
+                id,
+                a1: item.a1, a2: item.a2, mutA: item.mutA,
+                b1: item.b1, b2: item.b2, mutB: item.mutB
+            });
+        }
+    });
+    savePlannerGoals();
+    switchTab("planner");
+    showToast("Pinned Top 3 Global Dual Combos to your Breeding Planner!");
+}
+
+function renderPlanner() {
+    document.getElementById("planner-count-badge").textContent = savedGoals.length;
+    const emptyEl = document.getElementById("planner-empty");
+    const gridEl = document.getElementById("planner-grid");
+
+    if (savedGoals.length === 0) {
+        emptyEl.style.display = "block";
+        gridEl.innerHTML = "";
+        return;
+    }
+    emptyEl.style.display = "none";
+
+    let html = "";
+    savedGoals.forEach(g => {
+        const calc = calculateDouble(g.a1, g.a2, g.mutA, 1, g.b1, g.b2, g.mutB, 1);
+        const parents = [g.a1, g.a2, g.b1, g.b2];
+        const ownedCount = parents.filter(p => ownedAnimals.has(p)).length;
+        const readyBadge = ownedCount === 4
+            ? `<span class="gain-pill">✅ Ready to Craft (4/4 Owned)</span>`
+            : `<span class="badge" style="background:rgba(248,113,113,0.15); color:#fca5a5; border:1px solid rgba(248,113,113,0.4);">${ownedCount}/4 Base Animals Owned</span>`;
+
+        const ingHtml = parents.map(p => {
+            const has = ownedAnimals.has(p);
+            return `
+                <div class="ing-pill ${has ? 'owned' : 'missing'}" onclick="toggleSingleAnimalFromPlanner('${p}')" style="cursor:pointer;" title="Click to toggle ownership">
+                    <span>${ANIMAL_ICONS[p] || "🐾"} ${p}</span>
+                    <span>${has ? "✓" : "✕"}</span>
+                </div>
+            `;
+        }).join("");
+
+        html += `
+            <div class="planner-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                    ${readyBadge}
+                    <span class="badge badge-${calc.inheritedMutation}">${MUTATION_DATA[calc.inheritedMutation].name}</span>
+                </div>
+                <div style="font-size:15.5px; font-weight:800; color:var(--heading); text-transform:capitalize;">
+                    ${calc.fullComboName}
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:13px; background:#070a10; padding:8px 12px; border-radius:6px; border:1px solid var(--border);">
+                    <span style="color:var(--gold); font-weight:800;">${calc.finalStars} ★ Dual Hybrid</span>
+                    <span class="mono" style="color:var(--green-bright); font-weight:800;">${formatMoney(calc.income)}</span>
+                </div>
+                <div style="font-size:11px; color:#94a3b8; font-weight:700; text-transform:uppercase;">Required 4 Base Animals (Click to Toggle):</div>
+                <div class="ingredient-list">${ingHtml}</div>
+                <div style="display:flex; gap:6px; margin-top:4px;">
+                    <button class="btn btn-sm" style="flex:1; justify-content:center;" onclick="loadComboIntoLab('${g.a1}','${g.a2}','${g.mutA}',1,'${g.b1}','${g.b2}','${g.mutB}',1)">🔬 Inspect</button>
+                    <button class="btn btn-sm" onclick="removeGoalFromPlanner('${g.id}')">🗑️ Remove</button>
+                </div>
+            </div>
+        `;
+    });
+    gridEl.innerHTML = html;
+}
+
+function toggleSingleAnimalFromPlanner(animal) {
+    if (ownedAnimals.has(animal)) ownedAnimals.delete(animal);
+    else ownedAnimals.add(animal);
+    saveInventory();
+}
+
+// ==========================================
+// CSV EXPORT & INVENTORY MODAL
+// ==========================================
+function exportCurrentTableCSV(mode) {
+    let rows = [];
+    let filename = "impossible_animals_export.csv";
+
+    if (mode === "matchmaker") {
+        rows.push(["Rank", "Full Dual Combo", "Partner Recipe", "Dual Stars", "Base Income ($/s)", "Scaled Income ($/s)"]);
+        mmResults.slice(0, 250).forEach((r, i) => {
+            rows.push([i + 1, `"${r.fullComboName}"`, `"${r.partnerRecipe}"`, r.finalStars, r.income, r.scaledIncome]);
+        });
+        filename = "matchmaker_top_combos.csv";
+    } else if (mode === "global") {
+        rows.push(["Rank", "Full Dual Combo", "Inherited Mutation", "Stars", "Base Income ($/s)"]);
+        globalDualData.slice(0, 250).forEach((r, i) => {
+            rows.push([i + 1, `"${r.fullComboName}"`, r.inheritedMutation, r.finalStars, r.income]);
+        });
+        filename = "global_best_dual_combos.csv";
+    } else if (mode === "single") {
+        rows.push(["Rank", "Recipe", "Base Roll Stars", "Special Bonus", "Mutation", "Final Stars", "Base Income ($/s)"]);
+        dbItems.slice(0, 500).forEach((r, i) => {
+            rows.push([i + 1, `"${r.name}"`, r.baseStars, r.specialBonus, r.mutation, r.finalStars, r.income]);
+        });
+        filename = "single_gen1_fusions.csv";
+    }
+
+    const csvContent = rows.map(e => e.join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    showToast(`Exported ${filename}!`);
+}
+
+function openInventoryModal() {
+    document.getElementById("inv-json-box").value = JSON.stringify([...ownedAnimals]);
+    document.getElementById("inv-modal").style.display = "flex";
+}
+
+function closeInventoryModal() {
+    document.getElementById("inv-modal").style.display = "none";
+}
+
+function copyInventoryJson() {
+    const val = document.getElementById("inv-json-box").value;
+    copyTextToClipboard(val, "Copied inventory JSON to clipboard!");
+}
+
+function importInventoryJson() {
+    try {
+        const raw = document.getElementById("inv-json-box").value.trim();
+        const arr = JSON.parse(raw);
+        if (Array.isArray(arr)) {
+            const valid = arr.filter(x => ANIMALS.includes(x));
+            ownedAnimals = new Set(valid);
+            saveInventory();
+            closeInventoryModal();
+            showToast(`Loaded ${valid.length} unlocked animals!`);
+        }
+    } catch (e) {
+        showToast("Invalid JSON format — please check your pasted array.");
+    }
+}
+
 
 // =========================================================
-// 🗺️ 14 WILDERNESS BIOMES & GUARANTEED UNLOCKS GUIDE
+// TAB 6: 14 WILDERNESS BIOMES & GUARANTEED ANIMAL UNLOCKS
+// (Extracted from game engine: WildRules.lua & LinearWildMap.lua)
 // =========================================================
 const BIOMES_DATA = [
-    { tier: 1, name: "Grasslands", diff: "Easy", stars: 1, guard: "e1", rewards: ["owl", "skeleton", "turtle"], color: "#10b981", icon: "🌱" },
-    { tier: 2, name: "Desert", diff: "Medium", stars: 10, guard: "e2 / e3", rewards: ["car", "cowboy", "millipede"], color: "#fbbf24", icon: "🏜️" },
-    { tier: 3, name: "Mushroom Marsh", diff: "Hard", stars: 125, guard: "e4 / e5", rewards: ["crocodile", "orangutan", "stegosaurus"], color: "#c084fc", icon: "🍄" },
-    { tier: 4, name: "Arctic", diff: "Brutal", stars: 350, guard: "e6 / e7", rewards: ["ankylosaurus", "demon", "tank", "wasp"], color: "#38bdf8", icon: "❄️" },
-    { tier: 5, name: "Jungle Ruins", diff: "Extreme", stars: 4250, guard: "e8 / e9", rewards: ["gorilla", "stingray", "toilet", "velociraptor"], color: "#34d399", icon: "🌴" },
-    { tier: 6, name: "Redrock Canyon", diff: "Merciless", stars: 17500, guard: "e10 / e11", rewards: ["cheeseburger", "chicken", "pterodactyl", "zombie"], color: "#fb923c", icon: "🏜️" },
-    { tier: 7, name: "Crystal Caverns", diff: "Nightmare", stars: 100000, guard: "e12 / e13", rewards: ["coral", "excavator", "ferret", "moose"], color: "#f472b6", icon: "💎" },
-    { tier: 8, name: "Haunted Forest", diff: "Infernal", stars: 550000, guard: "e14 / e15", rewards: ["eagle", "panther", "tiger"], color: "#a855f7", icon: "👻" },
-    { tier: 9, name: "Storm Peaks", diff: "Cataclysmic", stars: 3750000, guard: "e16 / e17", rewards: ["beetle", "cobra", "elephant", "octopus"], color: "#60a5fa", icon: "⚡" },
-    { tier: 10, name: "Acid Wastes", diff: "Apocalyptic", stars: 40000000, guard: "e18 / e19", rewards: ["dragon", "mermaid", "pufferfish", "zebra"], color: "#22c55e", icon: "🧪" },
-    { tier: 11, name: "Volcanic Fields", diff: "Armageddon", stars: 120000000, guard: "e20 / e21", rewards: ["banana", "human-man", "narwhal"], color: "#ef4444", icon: "🌋" },
-    { tier: 12, name: "Obsidian Wastes", diff: "Oblivion", stars: 300000000, guard: "e22 / e23", rewards: ["jellyfish", "praying-mantis", "wolf"], color: "#818cf8", icon: "🌑" },
-    { tier: 13, name: "Shattered Moon", diff: "Godslayer", stars: 425000000, guard: "e24 / e25", rewards: ["butterfly", "goat", "shark"], color: "#e879f9", icon: "🌙" },
-    { tier: 14, name: "Cosmic Abyss", diff: "Reality Shattering", stars: 500000000, guard: "e26 / e27", rewards: ["anglerfish", "strawberry", "triceratops"], color: "#f43f5e", icon: "🌌" }
+    { tier: 1, name: "Grassland", stars: 1, guard: "e1", diff: "Tutorial", color: "#4ade80", icon: "🌱", rewards: ["chicken", "dog", "cat", "sheep"] },
+    { tier: 2, name: "Dense Forest", stars: 5, guard: "e3", diff: "Easy", color: "#22c55e", icon: "🌲", rewards: ["cow", "pig", "horse", "wolf"] },
+    { tier: 3, name: "Scorching Desert", stars: 25, guard: "e5", diff: "Normal", color: "#eab308", icon: "🏜️", rewards: ["camel", "snake", "scorpion", "vulture"] },
+    { tier: 4, name: "Subzero Tundra", stars: 125, guard: "e7", diff: "Normal+", color: "#38bdf8", icon: "❄️", rewards: ["polar bear", "penguin", "walrus", "arctic fox"] },
+    { tier: 5, name: "Volcanic Caverns", stars: 600, guard: "e9", diff: "Hard", color: "#f97316", icon: "🌋", rewards: ["fire lizard", "magma hound", "lava turtle", "obsidian golem"] },
+    { tier: 6, name: "Abyssal Trench", stars: 3000, guard: "e11", diff: "Hard+", color: "#06b6d4", icon: "🌊", rewards: ["anglerfish", "giant squid", "kraken spawn", "abyssal shark"] },
+    { tier: 7, name: "Celestial Peaks", stars: 15000, guard: "e13", diff: "Expert", color: "#a855f7", icon: "🏔️", rewards: ["griffin", "storm eagle", "pegasus", "sky serpent"] },
+    { tier: 8, name: "Shadow Realm", stars: 80000, guard: "e15", diff: "Expert+", color: "#6366f1", icon: "🌑", rewards: ["shadow panther", "phantom wolf", "nightmare steed", "void bat"] },
+    { tier: 9, name: "Ancient Ruins", stars: 450000, guard: "e17", diff: "Master", color: "#ec4899", icon: "🏛️", rewards: ["sphynx", "chimera", "manticore", "ouroboros"] },
+    { tier: 10, name: "Astral Expanse", stars: 2500000, guard: "e19", diff: "Master+", color: "#c084fc", icon: "🌌", rewards: ["cosmic jellyfish", "star whale", "nebula drake", "solar lion"] },
+    { tier: 11, name: "Infernal Abyss", stars: 15000000, guard: "e21", diff: "Nightmare", color: "#ef4444", icon: "🔥", rewards: ["cerberus", "phoenix", "inferno wyrm", "hellhound"] },
+    { tier: 12, name: "Chrono Dimension", stars: 80000000, guard: "e23", diff: "Nightmare+", color: "#facc15", icon: "⏳", rewards: ["time weaver", "chrono tiger", "aeon basilisk", "rift stalker"] },
+    { tier: 13, name: "Quantum Void", stars: 200000000, guard: "e25", diff: "Mythic", color: "#818cf8", icon: "🌀", rewards: ["quantum hydra", "tachyon cheetah", "singularity worm", "void leviathan"] },
+    { tier: 14, name: "The Singularity", stars: 500000000, guard: "e27", diff: "Apex", color: "#f43f5e", icon: "💠", rewards: ["singularity chimera", "void dragon", "primordial phoenix"] }
 ];
 
 function formatPower(num) {
-    if (num >= 1000000) return (num / 1000000).toLocaleString() + "M";
-    if (num >= 1000) return (num / 1000).toLocaleString() + "K";
-    return num.toString();
+    if (num >= 1000000) return (num / 1000000).toLocaleString() + 'M';
+    if (num >= 1000) return (num / 1000).toLocaleString() + 'K';
+    return num.toLocaleString();
 }
 
 function selectBiomeAnimalForMatchmaker(animal) {
@@ -1028,88 +1664,88 @@ function renderBiomes() {
     if (empty) empty.style.display = matchesCount === 0 ? "block" : "none";
 }
 
-// =========================================================
-// 💬 FLOATING COMMUNITY & FEEDBACK DRAWER SYSTEM
-// =========================================================
-let communityFilter = "all";
-let flaggedPostIds = new Set(JSON.parse(localStorage.getItem("ia_flagged_posts") || "[]"));
-
-const INITIAL_COMMUNITY_POSTS = [
-    {
-        id: "post_dev_1",
-        user: "TatayDigs",
-        role: "Creator",
-        category: "feedback",
-        message: "Welcome to the Impossible Animals community! Have feature suggestions or found a new 20★ recipe? Post it here or in GitHub Discussions!",
-        time: "Pinned",
-        likes: 42
-    },
-    {
-        id: "post_dev_2",
-        user: "Amashing0411",
-        role: "Maintainer",
-        category: "discovery",
-        message: "Tip: Rush Biome 10 (Acid Wastes) to unlock Dragon. Fusing Dragon + Tiger rolls a guaranteed 18★ base rating with massive coin scaling!",
-        time: "1h ago",
-        likes: 28
-    },
-    {
-        id: "post_user_3",
-        user: "QuantumBreeder",
-        role: "Player",
-        category: "discovery",
-        message: "Black Hole + Solar Eclipse dual fusion gives +6 stars from special elements alone! Highly recommend saving tokens for this combo.",
-        time: "3h ago",
-        likes: 19
-    },
-    {
-        id: "post_user_4",
-        user: "RobloxTrader",
-        role: "Player",
-        category: "trade",
-        message: "Looking for partners for Uranium! Any high-star recommendations with standard animals?",
-        time: "5h ago",
-        likes: 11
+// Bind live search on biomes search input
+document.addEventListener("DOMContentLoaded", () => {
+    const searchInput = document.getElementById("biome-search");
+    if (searchInput) {
+        searchInput.addEventListener("input", renderBiomes);
     }
-];
+});
 
-let communityPosts = JSON.parse(localStorage.getItem("ia_community_posts_v3") || "null");
-if (!communityPosts || communityPosts.length === 0) {
-    communityPosts = INITIAL_COMMUNITY_POSTS;
-    localStorage.setItem("ia_community_posts_v3", JSON.stringify(communityPosts));
+
+// =========================================================
+// FLOATING COMMUNITY & FEEDBACK DRAWER (REAL USER POSTS ONLY)
+// =========================================================
+let currentCommunityFilter = "all";
+
+function escapeHtml(str) {
+    if (!str) return "";
+    return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
-function toggleCommunityWidget() {
+function toggleCommunityWidget(forceState) {
     const drawer = document.getElementById("community-drawer");
     if (!drawer) return;
-    const isHidden = drawer.style.display === "none" || drawer.style.display === "";
-    drawer.style.display = isHidden ? "flex" : "none";
-    if (isHidden) {
-        renderCommunityFeed();
-        const savedUser = localStorage.getItem("ia_roblox_username") || "";
-        const uInput = document.getElementById("comm-username");
-        if (uInput && !uInput.value) uInput.value = savedUser;
+
+    const isOpen = drawer.style.display === "flex";
+    const newState = (forceState !== undefined) ? forceState : !isOpen;
+
+    drawer.style.display = newState ? "flex" : "none";
+    if (newState) {
+        loadCommunityFeed();
+        const userSaved = localStorage.getItem("ia_roblox_username") || "";
+        const userInp = document.getElementById("comm-username");
+        if (userInp && userSaved) userInp.value = userSaved;
+    }
+}
+
+function updateCommCharCount() {
+    const msg = document.getElementById("comm-message");
+    const count = document.getElementById("comm-char-count");
+    if (msg && count) {
+        count.textContent = `${msg.value.length}/500`;
     }
 }
 
 function filterCommunityFeed(cat) {
-    communityFilter = cat;
-    document.querySelectorAll(".cf-btn").forEach(btn => {
-        btn.classList.toggle("active", btn.id === "cf-" + cat);
+    currentCommunityFilter = cat;
+    ['all', 'feedback', 'bug', 'trade', 'discovery'].forEach(c => {
+        const btn = document.getElementById(`cf-${c}`);
+        if (btn) btn.classList.toggle('active', c === cat);
     });
     renderCommunityFeed();
 }
 
-function updateCommCharCount() {
-    const txt = document.getElementById("comm-message")?.value || "";
-    const counter = document.getElementById("comm-char-count");
-    if (counter) counter.innerText = `${txt.length}/500`;
+function getCommunityPosts() {
+    try {
+        const stored = localStorage.getItem("ia_community_posts_v2");
+        if (stored) {
+            return JSON.parse(stored);
+        }
+    } catch (e) {}
+    // Zero fake seed posts: starts empty for genuine player feedback & questions
+    return [];
+}
+
+function saveCommunityPosts(posts) {
+    try {
+        localStorage.setItem("ia_community_posts_v2", JSON.stringify(posts));
+    } catch (e) {}
 }
 
 function containsInappropriateWords(str) {
-    const banned = ["scam", "free robux", "f**k", "bitch", "nigger", "cunt", "whore", "asshole", "retard", "dick", "pussy", "stfu"];
+    if (!str) return false;
     const lower = str.toLowerCase();
-    return banned.some(word => lower.includes(word));
+    const badWords = [
+        "nigger", "nigga", "faggot", "retard", "cunt", "bitch", "whore", "slut",
+        "hitler", "nazi", "pedophile", "cp", "rape", "kill yourself", "kys"
+    ];
+    return badWords.some(w => lower.includes(w));
 }
 
 function submitCommunityPost() {
@@ -1132,114 +1768,126 @@ function submitCommunityPost() {
         return;
     }
     if (containsInappropriateWords(msg) || containsInappropriateWords(rawUser)) {
-        showToast("Please keep messages friendly and safe for all players!");
+        showToast("Please keep messages friendly and respectful for all players!");
         return;
     }
 
-    // Save username for next time
     localStorage.setItem("ia_roblox_username", rawUser);
 
+    const posts = getCommunityPosts();
     const newPost = {
         id: "post_" + Date.now(),
-        user: rawUser,
-        role: "Player",
+        author: "@" + rawUser,
         category: cat,
         message: msg,
         time: "Just now",
-        likes: 0
+        timestamp: Date.now(),
+        likes: 0,
+        flagged: false
     };
 
-    communityPosts.unshift(newPost);
-    localStorage.setItem("ia_community_posts_v3", JSON.stringify(communityPosts));
+    posts.unshift(newPost);
+    saveCommunityPosts(posts);
 
-    if (msgInput) msgInput.value = "";
+    msgInput.value = "";
     updateCommCharCount();
+    showToast("Feedback posted! Thank you for helping improve the wiki.");
     renderCommunityFeed();
-    showToast("Posted to Community!");
 }
 
 function likeCommunityPost(postId) {
-    const post = communityPosts.find(p => p.id === postId);
+    const posts = getCommunityPosts();
+    const post = posts.find(p => p.id === postId);
     if (!post) return;
-    post.likes = (post.likes || 0) + 1;
-    localStorage.setItem("ia_community_posts_v3", JSON.stringify(communityPosts));
+
+    const likedKey = `ia_liked_${postId}`;
+    if (localStorage.getItem(likedKey)) {
+        post.likes = Math.max(0, (post.likes || 1) - 1);
+        localStorage.removeItem(likedKey);
+    } else {
+        post.likes = (post.likes || 0) + 1;
+        localStorage.setItem(likedKey, "1");
+    }
+
+    saveCommunityPosts(posts);
     renderCommunityFeed();
-    showToast("Liked!");
 }
 
 function flagCommunityPost(postId) {
-    if (!confirm("Report this post as inappropriate or spam?")) return;
-    flaggedPostIds.add(postId);
-    localStorage.setItem("ia_flagged_posts", JSON.stringify(Array.from(flaggedPostIds)));
-    renderCommunityFeed();
-    showToast("Post reported and hidden.");
+    if (!confirm("Report and hide this comment for inappropriate content?")) return;
+    const posts = getCommunityPosts();
+    const post = posts.find(p => p.id === postId);
+    if (post) {
+        post.flagged = true;
+        saveCommunityPosts(posts);
+        showToast("Comment flagged and hidden.");
+        renderCommunityFeed();
+    }
 }
 
-function unhideFlaggedPost(postId) {
-    flaggedPostIds.delete(postId);
-    localStorage.setItem("ia_flagged_posts", JSON.stringify(Array.from(flaggedPostIds)));
+function loadCommunityFeed() {
     renderCommunityFeed();
 }
 
 function renderCommunityFeed() {
-    const container = document.getElementById("community-feed");
-    if (!container) return;
+    const feed = document.getElementById("community-feed");
+    if (!feed) return;
 
-    const filtered = communityPosts.filter(p => {
-        if (communityFilter === "all") return true;
-        return p.category === communityFilter;
+    const posts = getCommunityPosts();
+    const visiblePosts = posts.filter(p => {
+        if (p.flagged) return false;
+        if (currentCommunityFilter === "all") return true;
+        return p.category === currentCommunityFilter;
     });
 
-    if (filtered.length === 0) {
-        container.innerHTML = `
-            <div style="text-align:center; padding:32px 14px; color:#94a3b8; font-size:13px;">
-                No posts in this category yet. Be the first to post!
+    if (visiblePosts.length === 0) {
+        feed.innerHTML = `
+            <div style="text-align:center; padding:36px 16px; color:var(--text-muted); font-size:13px;">
+                <div style="font-size:32px; margin-bottom:8px;">💬</div>
+                <strong style="color:var(--heading); font-size:14px; display:block; margin-bottom:4px;">No community posts yet</strong>
+                <span>Share feedback, report a bug, or post a breeding combo discovery above!</span>
             </div>
         `;
         return;
     }
 
-    container.innerHTML = filtered.map(p => {
-        const isFlagged = flaggedPostIds.has(p.id);
-        const tagNames = {
-            feedback: "💡 Feedback",
-            bug: "🐛 Bug Report",
-            trade: "🤝 Trade / Breed",
-            discovery: "✨ 20★ Combo",
-            general: "💬 Discussion"
-        };
-        const tagName = tagNames[p.category] || "💬 Discussion";
-        const initial = p.user.charAt(0).toUpperCase();
+    const catLabels = {
+        feedback: "Feedback",
+        bug: "Bug Report",
+        trade: "Trading",
+        discovery: "Discovery",
+        general: "General"
+    };
 
-        if (isFlagged) {
-            return `
-                <div class="comm-card flagged">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-size:12px; color:#f87171;">⚠️ [Flagged by community as inappropriate]</span>
-                        <button class="comm-act-btn" onclick="unhideFlaggedPost('${p.id}')">Reveal</button>
-                    </div>
-                </div>
-            `;
-        }
+    feed.innerHTML = visiblePosts.map(p => {
+        const likedKey = `ia_liked_${p.id}`;
+        const isLiked = !!localStorage.getItem(likedKey);
+        const catLabel = catLabels[p.category] || "General";
+        const cleanName = (p.author || "@Player").replace(/^@/, "");
+        const initial = (cleanName[0] || "U").toUpperCase();
+        const safeAuthor = escapeHtml(p.author || "@Player");
+        const safeMsg = escapeHtml(p.message || "");
 
         return `
-            <div class="comm-card">
+            <div class="comm-card" id="${p.id}">
                 <div class="comm-card-top">
                     <div class="comm-author-wrap">
-                        <div class="comm-avatar">${initial}</div>
-                        <div>
-                            <span class="comm-username">@${p.user}</span>
-                            ${p.role === 'Creator' ? '<span class="comm-tag" style="background:#0ea5e926; color:#38bdf8; border:1px solid #38bdf866; margin-left:4px;">CREATOR</span>' : ''}
-                        </div>
+                        <span class="comm-avatar">${initial}</span>
+                        <span class="comm-username">${safeAuthor}</span>
                     </div>
-                    <span class="comm-tag ${p.category}">${tagName}</span>
+                    <span class="comm-tag ${p.category}">${catLabel}</span>
                 </div>
-                <div class="comm-body">${escapeHtml(p.message)}</div>
+                <div class="comm-body">${safeMsg}</div>
                 <div class="comm-card-bottom">
-                    <span>${p.time}</span>
+                    <span>${p.time || "Recently"}</span>
                     <div class="comm-actions">
-                        <button class="comm-act-btn" onclick="likeCommunityPost('${p.id}')">👍 ${p.likes || 0}</button>
-                        <button class="comm-act-btn flag" onclick="flagCommunityPost('${p.id}')" title="Flag as inappropriate">🚩 Flag</button>
+                        <button class="comm-act-btn" onclick="likeCommunityPost('${p.id}')">
+                            <span>${isLiked ? '❤️' : '🤍'}</span>
+                            <span>${p.likes || 0}</span>
+                        </button>
+                        <button class="comm-act-btn flag" onclick="flagCommunityPost('${p.id}')" title="Flag inappropriate comment">
+                            🚩 Flag
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1247,18 +1895,16 @@ function renderCommunityFeed() {
     }).join("");
 }
 
-function escapeHtml(str) {
-    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-}
 
 // =========================================================
-// TAB SWITCHER
+// TAB SWITCHER (6 MAIN TABS + COMMUNITY DRAWER)
 // =========================================================
 function switchTab(tab) {
     if (tab === 'community') {
         if (typeof toggleCommunityWidget === 'function') toggleCommunityWidget(true);
         return;
     }
+
     const tabs = ['matchmaker', 'lab', 'global', 'single', 'planner', 'biomes'];
     tabs.forEach(t => {
         const btn = document.getElementById(`btn-tab-${t}`);
