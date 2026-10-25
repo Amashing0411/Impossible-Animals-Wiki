@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/styles.css?v=4">
 </head>
 <body>
 
@@ -139,7 +139,7 @@
             <span>🧬 Best Combos for Your Pet</span>
         </button>
         <button class="tab-btn" id="btn-tab-lab" onclick="switchTab('lab')">
-            <span>🔬 Dual Fusion Sandbox &amp; Formula Lab</span>
+            <span>🔬 Dual Fusion Sandbox</span>
         </button>
         <button class="tab-btn" id="btn-tab-global" onclick="switchTab('global')">
             <span>🏆 Global All-Time Best Duals</span>
@@ -153,9 +153,6 @@
         </button>
         <button class="tab-btn" id="btn-tab-biomes" onclick="switchTab('biomes')">
             <span>🗺️ Wilderness Biomes</span>
-        </button>
-        <button class="tab-btn" id="btn-tab-community" onclick="switchTab('community')">
-            <span>💬 Community Hub</span>
         </button>
     </div>
 
@@ -679,95 +676,721 @@
                 <strong>46 Base Animals</strong>
             </div>
             <div class="biomes-stat-pill">
-                <span>Click Any Animal</span>
-                <strong>Load in Matchmaker</strong>
+                <span>Interactive</span>
+                <strong>Click Animal to Matchmake</strong>
             </div>
         </div>
 
-        <div id="biomes-grid" class="biomes-grid"></div>
+        <div id="biomes-grid" class="biomes-grid">
+
+        <div class="biome-card" style="border-color:#10b98155;">
+            <div class="biome-card-top">
+                <div class="biome-header-left">
+                    <span class="biome-icon">🌱</span>
+                    <div>
+                        <div class="biome-tier-label" style="color:#10b981;">Biome 1</div>
+                        <h3 class="biome-title">Grasslands</h3>
+                    </div>
+                </div>
+                <div class="biome-badges">
+                    <span class="biome-diff-badge" style="background:#10b98122; color:#10b981; border-color:#10b98166">Easy</span>
+                </div>
+            </div>
+            <div class="biome-stats-row">
+                <div class="biome-stat">
+                    <span>Power Target</span>
+                    <strong>1★</strong>
+                </div>
+                <div class="biome-stat">
+                    <span>Boss Guard</span>
+                    <strong>e1</strong>
+                </div>
+                <div class="biome-stat">
+                    <span>Unlock Pool</span>
+                    <strong>3 Animals</strong>
+                </div>
+            </div>
+            <div class="biome-rewards-section">
+                <div class="biome-rewards-heading">Guaranteed Animal Unlock Rewards:</div>
+                <div class="biome-rewards-grid">
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('owl')" title="Click to use Owl in Matchmaker">
+                    <span>🦉</span>
+                    <span>Owl</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('skeleton')" title="Click to use Skeleton in Matchmaker">
+                    <span>💀</span>
+                    <span>Skeleton</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('turtle')" title="Click to use Turtle in Matchmaker">
+                    <span>🐢</span>
+                    <span>Turtle</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div></div>
+            </div>
+        </div>
+
+        <div class="biome-card" style="border-color:#fbbf2455;">
+            <div class="biome-card-top">
+                <div class="biome-header-left">
+                    <span class="biome-icon">🏜️</span>
+                    <div>
+                        <div class="biome-tier-label" style="color:#fbbf24;">Biome 2</div>
+                        <h3 class="biome-title">Desert</h3>
+                    </div>
+                </div>
+                <div class="biome-badges">
+                    <span class="biome-diff-badge" style="background:#fbbf2422; color:#fbbf24; border-color:#fbbf2466">Medium</span>
+                </div>
+            </div>
+            <div class="biome-stats-row">
+                <div class="biome-stat">
+                    <span>Power Target</span>
+                    <strong>10★</strong>
+                </div>
+                <div class="biome-stat">
+                    <span>Boss Guard</span>
+                    <strong>e2 / e3</strong>
+                </div>
+                <div class="biome-stat">
+                    <span>Unlock Pool</span>
+                    <strong>3 Animals</strong>
+                </div>
+            </div>
+            <div class="biome-rewards-section">
+                <div class="biome-rewards-heading">Guaranteed Animal Unlock Rewards:</div>
+                <div class="biome-rewards-grid">
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('car')" title="Click to use Car in Matchmaker">
+                    <span>🚗</span>
+                    <span>Car</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('cowboy')" title="Click to use Cowboy in Matchmaker">
+                    <span>🤠</span>
+                    <span>Cowboy</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('millipede')" title="Click to use Millipede in Matchmaker">
+                    <span>🐛</span>
+                    <span>Millipede</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div></div>
+            </div>
+        </div>
+
+        <div class="biome-card" style="border-color:#c084fc55;">
+            <div class="biome-card-top">
+                <div class="biome-header-left">
+                    <span class="biome-icon">🍄</span>
+                    <div>
+                        <div class="biome-tier-label" style="color:#c084fc;">Biome 3</div>
+                        <h3 class="biome-title">Mushroom Marsh</h3>
+                    </div>
+                </div>
+                <div class="biome-badges">
+                    <span class="biome-diff-badge" style="background:#c084fc22; color:#c084fc; border-color:#c084fc66">Hard</span>
+                </div>
+            </div>
+            <div class="biome-stats-row">
+                <div class="biome-stat">
+                    <span>Power Target</span>
+                    <strong>125★</strong>
+                </div>
+                <div class="biome-stat">
+                    <span>Boss Guard</span>
+                    <strong>e4 / e5</strong>
+                </div>
+                <div class="biome-stat">
+                    <span>Unlock Pool</span>
+                    <strong>3 Animals</strong>
+                </div>
+            </div>
+            <div class="biome-rewards-section">
+                <div class="biome-rewards-heading">Guaranteed Animal Unlock Rewards:</div>
+                <div class="biome-rewards-grid">
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('crocodile')" title="Click to use Crocodile in Matchmaker">
+                    <span>🐊</span>
+                    <span>Crocodile</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('orangutan')" title="Click to use Orangutan in Matchmaker">
+                    <span>🦧</span>
+                    <span>Orangutan</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('stegosaurus')" title="Click to use Stegosaurus in Matchmaker">
+                    <span>🦕</span>
+                    <span>Stegosaurus</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div></div>
+            </div>
+        </div>
+
+        <div class="biome-card" style="border-color:#38bdf855;">
+            <div class="biome-card-top">
+                <div class="biome-header-left">
+                    <span class="biome-icon">❄️</span>
+                    <div>
+                        <div class="biome-tier-label" style="color:#38bdf8;">Biome 4</div>
+                        <h3 class="biome-title">Arctic</h3>
+                    </div>
+                </div>
+                <div class="biome-badges">
+                    <span class="biome-diff-badge" style="background:#38bdf822; color:#38bdf8; border-color:#38bdf866">Brutal</span>
+                </div>
+            </div>
+            <div class="biome-stats-row">
+                <div class="biome-stat">
+                    <span>Power Target</span>
+                    <strong>350★</strong>
+                </div>
+                <div class="biome-stat">
+                    <span>Boss Guard</span>
+                    <strong>e6 / e7</strong>
+                </div>
+                <div class="biome-stat">
+                    <span>Unlock Pool</span>
+                    <strong>4 Animals</strong>
+                </div>
+            </div>
+            <div class="biome-rewards-section">
+                <div class="biome-rewards-heading">Guaranteed Animal Unlock Rewards:</div>
+                <div class="biome-rewards-grid">
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('ankylosaurus')" title="Click to use Ankylosaurus in Matchmaker">
+                    <span>🦕</span>
+                    <span>Ankylosaurus</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('demon')" title="Click to use Demon in Matchmaker">
+                    <span>😈</span>
+                    <span>Demon</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('tank')" title="Click to use Tank in Matchmaker">
+                    <span>🛡️</span>
+                    <span>Tank</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('wasp')" title="Click to use Wasp in Matchmaker">
+                    <span>🐝</span>
+                    <span>Wasp</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div></div>
+            </div>
+        </div>
+
+        <div class="biome-card" style="border-color:#34d39955;">
+            <div class="biome-card-top">
+                <div class="biome-header-left">
+                    <span class="biome-icon">🌴</span>
+                    <div>
+                        <div class="biome-tier-label" style="color:#34d399;">Biome 5</div>
+                        <h3 class="biome-title">Jungle Ruins</h3>
+                    </div>
+                </div>
+                <div class="biome-badges">
+                    <span class="biome-diff-badge" style="background:#34d39922; color:#34d399; border-color:#34d39966">Extreme</span>
+                </div>
+            </div>
+            <div class="biome-stats-row">
+                <div class="biome-stat">
+                    <span>Power Target</span>
+                    <strong>4,250★</strong>
+                </div>
+                <div class="biome-stat">
+                    <span>Boss Guard</span>
+                    <strong>e8 / e9</strong>
+                </div>
+                <div class="biome-stat">
+                    <span>Unlock Pool</span>
+                    <strong>4 Animals</strong>
+                </div>
+            </div>
+            <div class="biome-rewards-section">
+                <div class="biome-rewards-heading">Guaranteed Animal Unlock Rewards:</div>
+                <div class="biome-rewards-grid">
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('gorilla')" title="Click to use Gorilla in Matchmaker">
+                    <span>🦍</span>
+                    <span>Gorilla</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('stingray')" title="Click to use Stingray in Matchmaker">
+                    <span>🐡</span>
+                    <span>Stingray</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('toilet')" title="Click to use Toilet in Matchmaker">
+                    <span>🚽</span>
+                    <span>Toilet</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('velociraptor')" title="Click to use Velociraptor in Matchmaker">
+                    <span>🦖</span>
+                    <span>Velociraptor</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div></div>
+            </div>
+        </div>
+
+        <div class="biome-card" style="border-color:#fb923c55;">
+            <div class="biome-card-top">
+                <div class="biome-header-left">
+                    <span class="biome-icon">🏜️</span>
+                    <div>
+                        <div class="biome-tier-label" style="color:#fb923c;">Biome 6</div>
+                        <h3 class="biome-title">Redrock Canyon</h3>
+                    </div>
+                </div>
+                <div class="biome-badges">
+                    <span class="biome-diff-badge" style="background:#fb923c22; color:#fb923c; border-color:#fb923c66">Merciless</span>
+                </div>
+            </div>
+            <div class="biome-stats-row">
+                <div class="biome-stat">
+                    <span>Power Target</span>
+                    <strong>17.5K★</strong>
+                </div>
+                <div class="biome-stat">
+                    <span>Boss Guard</span>
+                    <strong>e10 / e11</strong>
+                </div>
+                <div class="biome-stat">
+                    <span>Unlock Pool</span>
+                    <strong>4 Animals</strong>
+                </div>
+            </div>
+            <div class="biome-rewards-section">
+                <div class="biome-rewards-heading">Guaranteed Animal Unlock Rewards:</div>
+                <div class="biome-rewards-grid">
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('cheeseburger')" title="Click to use Cheeseburger in Matchmaker">
+                    <span>🍔</span>
+                    <span>Cheeseburger</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('chicken')" title="Click to use Chicken in Matchmaker">
+                    <span>🐔</span>
+                    <span>Chicken</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('pterodactyl')" title="Click to use Pterodactyl in Matchmaker">
+                    <span>🦅</span>
+                    <span>Pterodactyl</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('zombie')" title="Click to use Zombie in Matchmaker">
+                    <span>🧟</span>
+                    <span>Zombie</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div></div>
+            </div>
+        </div>
+
+        <div class="biome-card" style="border-color:#f472b655;">
+            <div class="biome-card-top">
+                <div class="biome-header-left">
+                    <span class="biome-icon">💎</span>
+                    <div>
+                        <div class="biome-tier-label" style="color:#f472b6;">Biome 7</div>
+                        <h3 class="biome-title">Crystal Caverns</h3>
+                    </div>
+                </div>
+                <div class="biome-badges">
+                    <span class="biome-diff-badge" style="background:#f472b622; color:#f472b6; border-color:#f472b666">Nightmare</span>
+                </div>
+            </div>
+            <div class="biome-stats-row">
+                <div class="biome-stat">
+                    <span>Power Target</span>
+                    <strong>100K★</strong>
+                </div>
+                <div class="biome-stat">
+                    <span>Boss Guard</span>
+                    <strong>e12 / e13</strong>
+                </div>
+                <div class="biome-stat">
+                    <span>Unlock Pool</span>
+                    <strong>4 Animals</strong>
+                </div>
+            </div>
+            <div class="biome-rewards-section">
+                <div class="biome-rewards-heading">Guaranteed Animal Unlock Rewards:</div>
+                <div class="biome-rewards-grid">
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('coral')" title="Click to use Coral in Matchmaker">
+                    <span>🪸</span>
+                    <span>Coral</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('excavator')" title="Click to use Excavator in Matchmaker">
+                    <span>🚜</span>
+                    <span>Excavator</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('ferret')" title="Click to use Ferret in Matchmaker">
+                    <span>🦡</span>
+                    <span>Ferret</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('moose')" title="Click to use Moose in Matchmaker">
+                    <span>🫎</span>
+                    <span>Moose</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div></div>
+            </div>
+        </div>
+
+        <div class="biome-card" style="border-color:#a855f755;">
+            <div class="biome-card-top">
+                <div class="biome-header-left">
+                    <span class="biome-icon">👻</span>
+                    <div>
+                        <div class="biome-tier-label" style="color:#a855f7;">Biome 8</div>
+                        <h3 class="biome-title">Haunted Forest</h3>
+                    </div>
+                </div>
+                <div class="biome-badges">
+                    <span class="biome-diff-badge" style="background:#a855f722; color:#a855f7; border-color:#a855f766">Infernal</span>
+                </div>
+            </div>
+            <div class="biome-stats-row">
+                <div class="biome-stat">
+                    <span>Power Target</span>
+                    <strong>550K★</strong>
+                </div>
+                <div class="biome-stat">
+                    <span>Boss Guard</span>
+                    <strong>e14 / e15</strong>
+                </div>
+                <div class="biome-stat">
+                    <span>Unlock Pool</span>
+                    <strong>3 Animals</strong>
+                </div>
+            </div>
+            <div class="biome-rewards-section">
+                <div class="biome-rewards-heading">Guaranteed Animal Unlock Rewards:</div>
+                <div class="biome-rewards-grid">
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('eagle')" title="Click to use Eagle in Matchmaker">
+                    <span>🦅</span>
+                    <span>Eagle</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('panther')" title="Click to use Panther in Matchmaker">
+                    <span>🐆</span>
+                    <span>Panther</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('tiger')" title="Click to use Tiger in Matchmaker">
+                    <span>🐅</span>
+                    <span>Tiger</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div></div>
+            </div>
+        </div>
+
+        <div class="biome-card" style="border-color:#60a5fa55;">
+            <div class="biome-card-top">
+                <div class="biome-header-left">
+                    <span class="biome-icon">⚡</span>
+                    <div>
+                        <div class="biome-tier-label" style="color:#60a5fa;">Biome 9</div>
+                        <h3 class="biome-title">Storm Peaks</h3>
+                    </div>
+                </div>
+                <div class="biome-badges">
+                    <span class="biome-diff-badge" style="background:#60a5fa22; color:#60a5fa; border-color:#60a5fa66">Cataclysmic</span>
+                </div>
+            </div>
+            <div class="biome-stats-row">
+                <div class="biome-stat">
+                    <span>Power Target</span>
+                    <strong>3.75M★</strong>
+                </div>
+                <div class="biome-stat">
+                    <span>Boss Guard</span>
+                    <strong>e16 / e17</strong>
+                </div>
+                <div class="biome-stat">
+                    <span>Unlock Pool</span>
+                    <strong>4 Animals</strong>
+                </div>
+            </div>
+            <div class="biome-rewards-section">
+                <div class="biome-rewards-heading">Guaranteed Animal Unlock Rewards:</div>
+                <div class="biome-rewards-grid">
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('beetle')" title="Click to use Beetle in Matchmaker">
+                    <span>🪲</span>
+                    <span>Beetle</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('cobra')" title="Click to use Cobra in Matchmaker">
+                    <span>🐍</span>
+                    <span>Cobra</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('elephant')" title="Click to use Elephant in Matchmaker">
+                    <span>🐘</span>
+                    <span>Elephant</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('octopus')" title="Click to use Octopus in Matchmaker">
+                    <span>🐙</span>
+                    <span>Octopus</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div></div>
+            </div>
+        </div>
+
+        <div class="biome-card" style="border-color:#22c55e55;">
+            <div class="biome-card-top">
+                <div class="biome-header-left">
+                    <span class="biome-icon">🧪</span>
+                    <div>
+                        <div class="biome-tier-label" style="color:#22c55e;">Biome 10</div>
+                        <h3 class="biome-title">Acid Wastes</h3>
+                    </div>
+                </div>
+                <div class="biome-badges">
+                    <span class="biome-diff-badge" style="background:#22c55e22; color:#22c55e; border-color:#22c55e66">Apocalyptic</span>
+                </div>
+            </div>
+            <div class="biome-stats-row">
+                <div class="biome-stat">
+                    <span>Power Target</span>
+                    <strong>40M★</strong>
+                </div>
+                <div class="biome-stat">
+                    <span>Boss Guard</span>
+                    <strong>e18 / e19</strong>
+                </div>
+                <div class="biome-stat">
+                    <span>Unlock Pool</span>
+                    <strong>4 Animals</strong>
+                </div>
+            </div>
+            <div class="biome-rewards-section">
+                <div class="biome-rewards-heading">Guaranteed Animal Unlock Rewards:</div>
+                <div class="biome-rewards-grid">
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('dragon')" title="Click to use Dragon in Matchmaker">
+                    <span>🐉</span>
+                    <span>Dragon</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('mermaid')" title="Click to use Mermaid in Matchmaker">
+                    <span>🧜‍♀️</span>
+                    <span>Mermaid</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('pufferfish')" title="Click to use Pufferfish in Matchmaker">
+                    <span>🐡</span>
+                    <span>Pufferfish</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('zebra')" title="Click to use Zebra in Matchmaker">
+                    <span>🦓</span>
+                    <span>Zebra</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div></div>
+            </div>
+        </div>
+
+        <div class="biome-card" style="border-color:#ef444455;">
+            <div class="biome-card-top">
+                <div class="biome-header-left">
+                    <span class="biome-icon">🌋</span>
+                    <div>
+                        <div class="biome-tier-label" style="color:#ef4444;">Biome 11</div>
+                        <h3 class="biome-title">Volcanic Fields</h3>
+                    </div>
+                </div>
+                <div class="biome-badges">
+                    <span class="biome-diff-badge" style="background:#ef444422; color:#ef4444; border-color:#ef444466">Armageddon</span>
+                </div>
+            </div>
+            <div class="biome-stats-row">
+                <div class="biome-stat">
+                    <span>Power Target</span>
+                    <strong>120M★</strong>
+                </div>
+                <div class="biome-stat">
+                    <span>Boss Guard</span>
+                    <strong>e20 / e21</strong>
+                </div>
+                <div class="biome-stat">
+                    <span>Unlock Pool</span>
+                    <strong>3 Animals</strong>
+                </div>
+            </div>
+            <div class="biome-rewards-section">
+                <div class="biome-rewards-heading">Guaranteed Animal Unlock Rewards:</div>
+                <div class="biome-rewards-grid">
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('banana')" title="Click to use Banana in Matchmaker">
+                    <span>🍌</span>
+                    <span>Banana</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('human-man')" title="Click to use Human-man in Matchmaker">
+                    <span>🧔</span>
+                    <span>Human-man</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('narwhal')" title="Click to use Narwhal in Matchmaker">
+                    <span>🦄</span>
+                    <span>Narwhal</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div></div>
+            </div>
+        </div>
+
+        <div class="biome-card" style="border-color:#818cf855;">
+            <div class="biome-card-top">
+                <div class="biome-header-left">
+                    <span class="biome-icon">🌑</span>
+                    <div>
+                        <div class="biome-tier-label" style="color:#818cf8;">Biome 12</div>
+                        <h3 class="biome-title">Obsidian Wastes</h3>
+                    </div>
+                </div>
+                <div class="biome-badges">
+                    <span class="biome-diff-badge" style="background:#818cf822; color:#818cf8; border-color:#818cf866">Oblivion</span>
+                </div>
+            </div>
+            <div class="biome-stats-row">
+                <div class="biome-stat">
+                    <span>Power Target</span>
+                    <strong>300M★</strong>
+                </div>
+                <div class="biome-stat">
+                    <span>Boss Guard</span>
+                    <strong>e22 / e23</strong>
+                </div>
+                <div class="biome-stat">
+                    <span>Unlock Pool</span>
+                    <strong>3 Animals</strong>
+                </div>
+            </div>
+            <div class="biome-rewards-section">
+                <div class="biome-rewards-heading">Guaranteed Animal Unlock Rewards:</div>
+                <div class="biome-rewards-grid">
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('jellyfish')" title="Click to use Jellyfish in Matchmaker">
+                    <span>🪼</span>
+                    <span>Jellyfish</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('praying-mantis')" title="Click to use Praying-mantis in Matchmaker">
+                    <span>🦗</span>
+                    <span>Praying-mantis</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('wolf')" title="Click to use Wolf in Matchmaker">
+                    <span>🐺</span>
+                    <span>Wolf</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div></div>
+            </div>
+        </div>
+
+        <div class="biome-card" style="border-color:#e879f955;">
+            <div class="biome-card-top">
+                <div class="biome-header-left">
+                    <span class="biome-icon">🌙</span>
+                    <div>
+                        <div class="biome-tier-label" style="color:#e879f9;">Biome 13</div>
+                        <h3 class="biome-title">Shattered Moon</h3>
+                    </div>
+                </div>
+                <div class="biome-badges">
+                    <span class="biome-diff-badge" style="background:#e879f922; color:#e879f9; border-color:#e879f966">Godslayer</span>
+                </div>
+            </div>
+            <div class="biome-stats-row">
+                <div class="biome-stat">
+                    <span>Power Target</span>
+                    <strong>425M★</strong>
+                </div>
+                <div class="biome-stat">
+                    <span>Boss Guard</span>
+                    <strong>e24 / e25</strong>
+                </div>
+                <div class="biome-stat">
+                    <span>Unlock Pool</span>
+                    <strong>3 Animals</strong>
+                </div>
+            </div>
+            <div class="biome-rewards-section">
+                <div class="biome-rewards-heading">Guaranteed Animal Unlock Rewards:</div>
+                <div class="biome-rewards-grid">
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('butterfly')" title="Click to use Butterfly in Matchmaker">
+                    <span>🦋</span>
+                    <span>Butterfly</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('goat')" title="Click to use Goat in Matchmaker">
+                    <span>🐐</span>
+                    <span>Goat</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('shark')" title="Click to use Shark in Matchmaker">
+                    <span>🦈</span>
+                    <span>Shark</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div></div>
+            </div>
+        </div>
+
+        <div class="biome-card" style="border-color:#f43f5e55;">
+            <div class="biome-card-top">
+                <div class="biome-header-left">
+                    <span class="biome-icon">🌌</span>
+                    <div>
+                        <div class="biome-tier-label" style="color:#f43f5e;">Biome 14</div>
+                        <h3 class="biome-title">Cosmic Abyss</h3>
+                    </div>
+                </div>
+                <div class="biome-badges">
+                    <span class="biome-diff-badge" style="background:#f43f5e22; color:#f43f5e; border-color:#f43f5e66">Reality Shattering</span>
+                </div>
+            </div>
+            <div class="biome-stats-row">
+                <div class="biome-stat">
+                    <span>Power Target</span>
+                    <strong>500M★</strong>
+                </div>
+                <div class="biome-stat">
+                    <span>Boss Guard</span>
+                    <strong>e26 / e27</strong>
+                </div>
+                <div class="biome-stat">
+                    <span>Unlock Pool</span>
+                    <strong>3 Animals</strong>
+                </div>
+            </div>
+            <div class="biome-rewards-section">
+                <div class="biome-rewards-heading">Guaranteed Animal Unlock Rewards:</div>
+                <div class="biome-rewards-grid">
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('anglerfish')" title="Click to use Anglerfish in Matchmaker">
+                    <span>🐟</span>
+                    <span>Anglerfish</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('strawberry')" title="Click to use Strawberry in Matchmaker">
+                    <span>🍓</span>
+                    <span>Strawberry</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div>
+                <div class="biome-reward-chip" onclick="selectBiomeAnimalForMatchmaker('triceratops')" title="Click to use Triceratops in Matchmaker">
+                    <span>🦏</span>
+                    <span>Triceratops</span>
+                    <span class="biome-owned-badge owned">✓ Reward</span>
+                </div></div>
+            </div>
+        </div>
+        </div>
         <div id="biomes-empty" style="display:none; text-align:center; padding:36px; color:#94a3b8; border:1px dashed var(--border); border-radius:var(--radius-md);">
             No biomes or animals found matching your search.
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- TAB 7: COMMUNITY HUB & DISCUSSIONS         -->
-    <!-- ========================================== -->
-    <div id="panel-community" class="panel" style="display:none;">
-        <div class="panel-header">
-            <div>
-                <h2 class="panel-title">💬 Impossible Animals Community Hub</h2>
-                <p class="desc">Ask questions, share your highest-star discoveries, post trade recipes, and discuss strategies with the community.</p>
-            </div>
-            <div>
-                <a href="https://github.com/Amashing0411/Impossible-Animals-Wiki/discussions" target="_blank" rel="noopener" class="btn btn-sm btn-primary">
-                    <span>View on GitHub Discussions</span> ↗
-                </a>
-            </div>
-        </div>
-
-        <div class="community-grid">
-            <!-- LEFT: FAQ & Local Scratchpad -->
-            <div class="community-sidebar">
-                <div class="community-card">
-                    <h3 class="community-card-title">📝 My Fusion Notes &amp; Ideas</h3>
-                    <p style="font-size:12px; color:#94a3b8; margin:0 0 8px 0;">Private browser scratchpad saved automatically in your browser:</p>
-                    <textarea id="community-scratchpad" placeholder="Jot down notes here... e.g.
-- Need to breed Dragon + Tiger for 18★
-- Biome 10 Acid Wastes unlocks Dragon
-- Goal: craft Uranium + Black Hole dual fusion" style="min-height:160px; font-size:12.5px;"></textarea>
-                    <div style="display:flex; justify-content:flex-end; gap:8px;">
-                        <button class="btn btn-sm btn-primary" onclick="saveCommunityNotes()">💾 Save Notes</button>
-                    </div>
-                </div>
-
-                <div class="community-card" style="margin-top:14px;">
-                    <h3 class="community-card-title">💡 Pro Breeding Tips</h3>
-                    <ul class="community-tips-list">
-                        <li><b>Elemental God Tiers:</b> 🕳️ Black Hole and 🌘 Solar Eclipse grant a guaranteed <b>+3 Stars</b> on every fusion.</li>
-                        <li><b>Dual Bonus:</b> When combining two hybrids in Dual Fusion, you always roll an extra <b>+1★ to +5★ bonus</b>!</li>
-                        <li><b>Biome Unlocks:</b> Rush Biome 10 (Acid Wastes) to unlock 🐉 Dragon, one of the best high-tier fusion parents.</li>
-                        <li><b>Offline Earnings:</b> High-star dual fusions generate exponentially more $/sec in pens.</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- RIGHT: Live Giscus / GitHub Discussions Feed -->
-            <div class="community-feed-wrap">
-                <div class="community-card">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; padding-bottom:10px; border-bottom:1px solid var(--border);">
-                        <div>
-                            <h3 class="community-card-title" style="margin:0;">💬 Live Community Comments</h3>
-                            <p style="font-size:12px; color:#94a3b8; margin:3px 0 0 0;">Powered by GitHub Discussions. Sign in with GitHub to post replies, ask questions, and share combos.</p>
-                        </div>
-                    </div>
-
-                    <!-- Giscus Container -->
-                    <div class="giscus-container" id="giscus-slot">
-                        <script src="https://giscus.app/client.js"
-                                data-repo="Amashing0411/Impossible-Animals-Wiki"
-                                data-repo-id="R_kgDOVW9oUQ"
-                                data-category="General"
-                                data-category-id="DIC_kwDOVW9oUc4C..."
-                                data-mapping="pathname"
-                                data-strict="0"
-                                data-reactions-enabled="1"
-                                data-emit-metadata="0"
-                                data-input-position="top"
-                                data-theme="dark_dimmed"
-                                data-lang="en"
-                                data-loading="lazy"
-                                crossorigin="anonymous"
-                                async>
-                        </script>
-                        <noscript>
-                            <p style="color:#94a3b8; text-align:center; padding:20px;">Please enable JavaScript to view community comments.</p>
-                        </noscript>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 </div>
 
 <!-- MODAL FOR INVENTORY IMPORT/EXPORT -->
@@ -807,7 +1430,67 @@
     <div style="text-align:right;margin-top:16px"><button class="btn" onclick="closeHelp()">Close</button></div>
   </div>
 </div>
-<script src="assets/app.js"></script>
-<script src="assets/extras.js"></script>
+<!-- ================================================= -->
+<!-- FLOATING COMMUNITY & FEEDBACK LAUNCHER & DRAWER   -->
+<!-- ================================================= -->
+<button class="community-fab" id="community-fab" onclick="toggleCommunityWidget()" aria-label="Open Community & Feedback Chat">
+    <span class="community-fab-pulse"></span>
+    <span>💬 Community &amp; Feedback</span>
+</button>
+
+<div class="community-drawer" id="community-drawer" style="display:none;">
+    <div class="community-drawer-header">
+        <div class="community-drawer-title-wrap">
+            <span class="community-drawer-dot"></span>
+            <div>
+                <h3 class="community-drawer-title">Community &amp; Feedback</h3>
+                <span class="community-drawer-subtitle">Chat, ask questions, share fusions &amp; report bugs</span>
+            </div>
+        </div>
+        <button class="community-drawer-close" onclick="toggleCommunityWidget()" title="Close">&times;</button>
+    </div>
+
+    <!-- Filter Pills -->
+    <div class="community-filter-tabs">
+        <button class="cf-btn active" id="cf-all" onclick="filterCommunityFeed('all')">🔥 All</button>
+        <button class="cf-btn" id="cf-feedback" onclick="filterCommunityFeed('feedback')">💡 Feedback</button>
+        <button class="cf-btn" id="cf-bug" onclick="filterCommunityFeed('bug')">🐛 Bug Reports</button>
+        <button class="cf-btn" id="cf-trade" onclick="filterCommunityFeed('trade')">🤝 Trading</button>
+        <button class="cf-btn" id="cf-discovery" onclick="filterCommunityFeed('discovery')">✨ 20★ Combos</button>
+    </div>
+
+    <!-- Post Creator Form -->
+    <div class="community-create-box">
+        <div class="community-input-row">
+            <div class="roblox-user-wrap">
+                <span class="roblox-user-prefix">Roblox @</span>
+                <input type="text" id="comm-username" placeholder="YourUsername" maxlength="24" class="comm-input">
+            </div>
+            <select id="comm-category" class="comm-select">
+                <option value="feedback">💡 Feedback / Idea</option>
+                <option value="bug">🐛 Bug Report</option>
+                <option value="trade">🤝 Trade &amp; Breeding</option>
+                <option value="discovery">✨ High-Star Combo</option>
+                <option value="general">💬 General Question</option>
+            </select>
+        </div>
+        <textarea id="comm-message" placeholder="Share a fusion discovery, ask for advice, or give wiki feedback..." maxlength="500" class="comm-textarea" oninput="updateCommCharCount()"></textarea>
+        <div class="community-submit-bar">
+            <span class="comm-char-count" id="comm-char-count">0/500</span>
+            <button class="btn btn-sm btn-primary" onclick="submitCommunityPost()">🚀 Post</button>
+        </div>
+    </div>
+
+    <!-- Community Messages Feed -->
+    <div class="community-feed" id="community-feed"></div>
+
+    <div class="community-drawer-footer">
+        <span>Keep comments respectful for all Roblox players.</span>
+        <a href="https://github.com/Amashing0411/Impossible-Animals-Wiki/discussions" target="_blank" rel="noopener">GitHub Discussions ↗</a>
+    </div>
+</div>
+
+<script src="assets/app.js?v=4"></script>
+<script src="assets/extras.js?v=4"></script>
 </body>
 </html>
