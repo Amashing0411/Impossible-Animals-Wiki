@@ -1,0 +1,3195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impossible Animals — Dual Fusion Studio, Matchmaker & Breeding Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #070a10;
+            --bg-accent: #0c121d;
+            --card: rgba(18, 25, 38, 0.88);
+            --card-solid: #121926;
+            --card-sub: #0b1019;
+            --card-hover: #192336;
+            --border: #26334d;
+            --border-bright: #3b507a;
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.22);
+            --green: #10b981;
+            --green-bright: #34d399;
+            --gold: #fbbf24;
+            --purple: #c084fc;
+            --pink: #f472b6;
+            --red: #f87171;
+            --orange: #fb923c;
+            --text: #cbd5e1;
+            --text-muted: #64748b;
+            --heading: #f8fafc;
+            --radius-lg: 14px;
+            --radius-md: 10px;
+            --radius-sm: 7px;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: radial-gradient(circle at 15% 0%, #111c35 0%, var(--bg) 48%),
+                        radial-gradient(circle at 85% 10%, #1c1132 0%, var(--bg) 50%);
+            background-color: var(--bg);
+            background-attachment: fixed;
+            color: var(--text);
+            margin: 0;
+            padding: 16px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .container {
+            max-width: 1240px;
+            width: 100%;
+        }
+
+        /* HEADER & HERO BAR */
+        .app-header {
+            background: linear-gradient(135deg, rgba(22, 32, 52, 0.9) 0%, rgba(13, 18, 29, 0.92) 100%);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 20px 24px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+            position: relative;
+            overflow: hidden;
+        }
+        .app-header::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #38bdf8, #a855f7, #fbbf24, #10b981);
+        }
+        .brand-wrap {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .brand-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 50%, #ec4899 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+            flex-shrink: 0;
+        }
+        h1 {
+            color: var(--heading);
+            margin: 0 0 4px 0;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .v-pill {
+            font-size: 11px;
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--accent);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .desc {
+            color: #94a3b8;
+            font-size: 13px;
+            margin: 0;
+        }
+        .header-metrics {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .stat-pill {
+            background: var(--card-sub);
+            border: 1px solid var(--border);
+            padding: 8px 13px;
+            border-radius: var(--radius-md);
+            display: flex;
+            flex-direction: column;
+            min-width: 110px;
+        }
+        .stat-pill span {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #94a3b8;
+            font-weight: 700;
+        }
+        .stat-pill strong {
+            font-size: 14px;
+            color: var(--heading);
+            font-weight: 800;
+            margin-top: 2px;
+        }
+
+        /* INVENTORY & GLOBAL QOL BAR */
+        .inv-bar {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 12px 16px;
+            margin-bottom: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            backdrop-filter: blur(10px);
+        }
+        .inv-bar-left, .inv-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            background: #1a2436;
+            border: 1px solid var(--border);
+            color: var(--heading);
+            padding: 8px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            transition: all 0.15s ease;
+            user-select: none;
+        }
+        .btn:hover:not(:disabled) {
+            border-color: var(--accent);
+            background: #212f47;
+            transform: translateY(-1px);
+        }
+        .btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #0284c7, #2563eb);
+            border-color: #38bdf8;
+            color: #fff;
+        }
+        .btn-primary:hover:not(:disabled) {
+            background: linear-gradient(135deg, #0369a1, #1d4ed8);
+        }
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 11.5px;
+            border-radius: 6px;
+        }
+        .inv-chip-count {
+            background: var(--green);
+            color: #04130a;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        /* TOGGLE SWITCH */
+        .toggle-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--heading);
+            user-select: none;
+            padding: 5px 10px;
+            border-radius: var(--radius-sm);
+            background: var(--card-sub);
+            border: 1px solid var(--border);
+            transition: border-color 0.15s;
+        }
+        .toggle-wrap:hover {
+            border-color: var(--border-bright);
+        }
+        .toggle-switch {
+            position: relative;
+            width: 36px;
+            height: 20px;
+            background: #28354c;
+            border-radius: 11px;
+            transition: background 0.2s ease;
+            flex-shrink: 0;
+        }
+        .toggle-switch::after {
+            content: "";
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border-radius: 50%;
+            transition: transform 0.2s ease;
+        }
+        .toggle-wrap.active {
+            border-color: rgba(16, 185, 129, 0.5);
+            background: rgba(16, 185, 129, 0.08);
+        }
+        .toggle-wrap.active .toggle-switch {
+            background: var(--green);
+        }
+        .toggle-wrap.active .toggle-switch::after {
+            transform: translateX(16px);
+        }
+
+        /* INVENTORY EXPANDABLE DRAWER */
+        .inv-panel {
+            background: var(--card-solid);
+            border: 1px solid var(--border-bright);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 16px;
+            display: none;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+        }
+        .inv-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        .chip-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+            gap: 7px;
+            max-height: 280px;
+            overflow-y: auto;
+            padding: 4px 2px;
+        }
+        .chip {
+            padding: 7px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            user-select: none;
+            border: 1px solid var(--border);
+            background: #0d131f;
+            color: #64748b;
+            text-transform: capitalize;
+            transition: all 0.14s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+        }
+        .chip:hover {
+            border-color: var(--border-bright);
+            color: var(--text);
+        }
+        .chip.active {
+            background: rgba(16, 185, 129, 0.14);
+            color: #e2e8f0;
+            border-color: rgba(16, 185, 129, 0.55);
+            font-weight: 700;
+        }
+        .chip-bonus {
+            font-size: 10px;
+            padding: 1px 5px;
+            border-radius: 4px;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+        .bonus-3 { background: rgba(244, 114, 182, 0.2); color: #f472b6; border: 1px solid rgba(244, 114, 182, 0.4); }
+        .bonus-2 { background: rgba(192, 132, 252, 0.2); color: #c084fc; border: 1px solid rgba(192, 132, 252, 0.4); }
+        .bonus-1 { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); }
+
+        /* NAVIGATION TABS */
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 11px 16px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 700;
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .tab-btn:hover {
+            border-color: var(--accent);
+            color: var(--heading);
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, #38bdf8 0%, #3b82f6 100%);
+            color: #040914;
+            border-color: #7dd3fc;
+            box-shadow: 0 4px 16px rgba(56, 189, 248, 0.28);
+        }
+        .tab-count {
+            background: rgba(0, 0, 0, 0.25);
+            color: inherit;
+            padding: 1px 7px;
+            border-radius: 99px;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        /* PANELS & FORMS */
+        .panel {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 22px;
+            margin-bottom: 24px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(12px);
+        }
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+        .panel-title {
+            margin: 0 0 4px 0;
+            color: var(--heading);
+            font-size: 18px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        label {
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-weight: 700;
+            color: #94a3b8;
+            margin-bottom: 6px;
+        }
+        select, input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--card-sub);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--heading);
+            font-size: 13.5px;
+            font-family: inherit;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+
+        /* MUTATION BADGES (FIXED & ENHANCED) */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 9px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            white-space: nowrap;
+        }
+        .badge-none {
+            background: rgba(148, 163, 184, 0.14);
+            color: #94a3b8;
+            border: 1px solid rgba(148, 163, 184, 0.3);
+        }
+        .badge-golden {
+            background: rgba(251, 191, 36, 0.16);
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.45);
+        }
+        .badge-diamond {
+            background: rgba(56, 189, 248, 0.16);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.45);
+        }
+        .badge-iridescent {
+            background: linear-gradient(90deg, rgba(192, 132, 252, 0.22), rgba(244, 114, 182, 0.22));
+            color: #e879f9;
+            border: 1px solid rgba(232, 121, 249, 0.5);
+        }
+        .badge-chaos {
+            background: linear-gradient(90deg, rgba(244, 63, 94, 0.25), rgba(249, 115, 22, 0.25));
+            color: #fb7185;
+            border: 1px solid rgba(244, 63, 94, 0.6);
+            box-shadow: 0 0 10px rgba(244, 63, 94, 0.25);
+        }
+
+        /* USER HYBRID STATUS BANNER */
+        .user-hybrid-card {
+            background: linear-gradient(135deg, rgba(14, 26, 48, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%);
+            border: 1px solid #1d4ed8;
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        }
+        .user-stat-group {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .user-stat-box {
+            background: rgba(7, 10, 16, 0.65);
+            border: 1px solid var(--border);
+            padding: 8px 14px;
+            border-radius: 8px;
+        }
+        .user-stat-box .lbl {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: #94a3b8;
+            font-weight: 700;
+            display: block;
+        }
+        .user-stat-box .val {
+            font-size: 16px;
+            font-weight: 800;
+            margin-top: 2px;
+            display: block;
+        }
+
+        /* PODIUM (TOP 3 BEST COMBOS) */
+        .podium-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+        .podium-card {
+            background: var(--card-sub);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            border: 1px solid var(--border);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.16s ease, box-shadow 0.16s ease;
+        }
+        .podium-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+        }
+        .podium-card.first {
+            border: 1.5px solid var(--gold);
+            background: linear-gradient(145deg, rgba(46, 38, 13, 0.75) 0%, var(--card-sub) 75%);
+        }
+        .podium-card.second {
+            border: 1.5px solid #94a3b8;
+            background: linear-gradient(145deg, rgba(35, 43, 56, 0.75) 0%, var(--card-sub) 75%);
+        }
+        .podium-card.third {
+            border: 1.5px solid #d97706;
+            background: linear-gradient(145deg, rgba(46, 28, 16, 0.75) 0%, var(--card-sub) 75%);
+        }
+        .podium-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            gap: 6px;
+        }
+        .podium-badge {
+            font-size: 11px;
+            font-weight: 800;
+            padding: 3px 9px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+        .podium-combo-name {
+            font-size: 15.5px;
+            font-weight: 800;
+            color: var(--heading);
+            margin-bottom: 6px;
+            text-transform: capitalize;
+            line-height: 1.35;
+        }
+        .podium-partner {
+            font-size: 12.5px;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-transform: capitalize;
+        }
+        .podium-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            border-top: 1px solid rgba(48, 54, 61, 0.6);
+            padding-top: 10px;
+            margin-top: auto;
+            gap: 8px;
+        }
+        .gain-pill {
+            font-size: 11px;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 5px;
+            background: rgba(16, 185, 129, 0.16);
+            color: var(--green-bright);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+        }
+
+        /* TABLES */
+        .table-wrap {
+            background: var(--card-sub);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow-x: auto;
+            max-height: 540px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        thead th {
+            position: sticky;
+            top: 0;
+            background: #141d2e;
+            color: var(--heading);
+            padding: 11px 13px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-bright);
+            font-weight: 700;
+            font-size: 11.5px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            z-index: 2;
+            white-space: nowrap;
+        }
+        tbody td {
+            padding: 10px 13px;
+            border-bottom: 1px solid rgba(38, 51, 77, 0.55);
+            vertical-align: middle;
+        }
+        tbody tr {
+            transition: background 0.12s;
+        }
+        tbody tr:hover {
+            background: rgba(56, 189, 248, 0.06);
+        }
+        .rank {
+            font-weight: 800;
+            color: #64748b;
+            width: 58px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .action-cell {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        /* PAGINATION */
+        .pagination-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 14px 0 0 0;
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        /* DUAL LAB / FORMULA INSPECTOR */
+        .lab-vs-grid {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 14px;
+            align-items: stretch;
+            margin-bottom: 20px;
+        }
+        @media (max-width: 860px) {
+            .lab-vs-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .lab-parent-box {
+            background: var(--card-sub);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 16px;
+        }
+        .lab-vs-divider {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 900;
+            color: var(--accent);
+            font-size: 18px;
+        }
+        .formula-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .formula-step {
+            background: var(--card-sub);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 12px 14px;
+        }
+        .formula-step .step-num {
+            font-size: 10.5px;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--accent);
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+        .formula-step .step-val {
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--heading);
+            margin-bottom: 4px;
+        }
+        .formula-step .step-sub {
+            font-size: 11.5px;
+            color: #94a3b8;
+            line-height: 1.4;
+        }
+
+        /* BREEDING PLANNER CARDS */
+        .planner-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 14px;
+        }
+        .planner-card {
+            background: var(--card-sub);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .ingredient-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+        .ing-pill {
+            padding: 6px 9px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: capitalize;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid var(--border);
+            background: #111826;
+        }
+        .ing-pill.owned {
+            border-color: rgba(16, 185, 129, 0.45);
+            color: #a7f3d0;
+            background: rgba(16, 185, 129, 0.08);
+        }
+        .ing-pill.missing {
+            border-color: rgba(248, 113, 113, 0.45);
+            color: #fca5a5;
+            background: rgba(248, 113, 113, 0.08);
+        }
+
+        /* TOAST NOTIFICATION */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: none;
+        }
+        .toast {
+            background: #162238;
+            border: 1px solid var(--accent);
+            color: var(--heading);
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+            animation: slideIn 0.2s ease-out;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(12px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        
+        /* TYPE-TO-SEARCH ANIMAL COMBOBOX */
+        .Combo-wrap {
+            position: relative;
+            width: 100%;
+        }
+        .Combo-wrap select {
+            display: none !important;
+        }
+        .combo-input-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+        .combo-input {
+            width: 100%;
+            padding: 10px 32px 10px 12px !important;
+            background: var(--card-sub);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--heading);
+            font-size: 13.5px;
+            font-weight: 600;
+            cursor: text;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        .combo-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-glow);
+        }
+        .combo-clear-btn {
+            position: absolute;
+            right: 8px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-size: 13px;
+            cursor: pointer;
+            padding: 4px;
+            line-height: 1;
+            border-radius: 4px;
+        }
+        .combo-clear-btn:hover {
+            color: var(--heading);
+            background: rgba(255,255,255,0.08);
+        }
+        .combo-dropdown {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            right: 0;
+            background: #111827;
+            border: 1px solid var(--border-bright);
+            border-radius: var(--radius-sm);
+            max-height: 230px;
+            overflow-y: auto;
+            z-index: 999;
+            box-shadow: 0 14px 34px rgba(0, 0, 0, 0.75);
+            display: none;
+        }
+        .combo-dropdown.open {
+            display: block;
+        }
+        .combo-option {
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-transform: capitalize;
+            border-bottom: 1px solid rgba(38, 51, 77, 0.35);
+        }
+        .combo-option:last-child {
+            border-bottom: none;
+        }
+        .combo-option:hover, .combo-option.highlighted {
+            background: rgba(56, 189, 248, 0.16);
+            color: var(--heading);
+        }
+        .combo-option.selected {
+            background: rgba(16, 185, 129, 0.14);
+            color: var(--green-bright);
+        }
+        .quick-pair-bar {
+            background: rgba(11, 16, 25, 0.75);
+            border: 1px dashed var(--border-bright);
+            border-radius: var(--radius-sm);
+            padding: 10px 14px;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        
+        /* ROBLOX CHAT QUICK RESPONDER (TATAYDIGS MODE) */
+        .chat-responder-bar {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(14, 165, 233, 0.12) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.45);
+            border-radius: var(--radius-md);
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+        }
+        .chat-responder-top {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .chat-results-strip {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(56, 189, 248, 0.2);
+        }
+        .chat-reply-pill {
+            background: #0d1522;
+            border: 1px solid var(--border-bright);
+            border-radius: 8px;
+            padding: 7px 11px;
+            font-size: 12.5px;
+            color: var(--heading);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.14s ease;
+        }
+        .chat-reply-pill:hover {
+            border-color: var(--green-bright);
+            background: rgba(16, 185, 129, 0.16);
+            transform: translateY(-1px);
+        }
+        .btn-chat-copy {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.5);
+            color: #6ee7b7;
+        }
+        .btn-chat-copy:hover:not(:disabled) {
+            background: rgba(16, 185, 129, 0.28);
+            border-color: #34d399;
+            color: #fff;
+        }
+
+        /* MODAL FOR IMPORT/EXPORT */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(3, 6, 12, 0.78);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 16px;
+        }
+        .modal-card {
+            background: var(--card-solid);
+            border: 1px solid var(--border-bright);
+            border-radius: var(--radius-lg);
+            max-width: 520px;
+            width: 100%;
+            padding: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+        }
+        textarea {
+            width: 100%;
+            min-height: 110px;
+            background: var(--card-sub);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--heading);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            padding: 10px;
+            margin: 10px 0;
+            resize: vertical;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- HEADER -->
+    <header class="app-header">
+        <div class="brand-wrap">
+            <div class="brand-logo" aria-hidden="true">🧬</div>
+            <div>
+                <h1>
+                    Impossible Animals Fusion Studio
+                    <span class="v-pill">v2.5 Pro Suite</span>
+                </h1>
+                <p class="desc">Exact Jenkins &amp; DJB2 Hash Calculator • Dual Matchmaker • 4-Parent Lab • Inventory &amp; Breeding Planner</p>
+            </div>
+        </div>
+        <div class="header-metrics">
+            <div class="stat-pill">
+                <span>Unlocked Roster</span>
+                <strong id="hdr-owned-stat" style="color:var(--green-bright);">77 / 77 (100%)</strong>
+            </div>
+            <div class="stat-pill">
+                <span>Craftable Gen-1</span>
+                <strong id="hdr-gen1-stat" style="color:var(--accent);">2,926 Pairs</strong>
+            </div>
+            <div class="stat-pill">
+                <span>Max Possible Stars</span>
+                <strong style="color:var(--gold);">38 ★ Cap</strong>
+            </div>
+        </div>
+    </header>
+
+    <!-- INVENTORY DRAWER & GLOBAL CONTROLS BAR -->
+    <div class="inv-bar">
+        <div class="inv-bar-left">
+            <button class="btn" id="btn-toggle-inv" onclick="toggleInvPanel()">
+                <span>🎒 My Unlocked Animals</span>
+                <span class="inv-chip-count" id="inv-count-badge">77/77</span>
+                <span id="inv-caret" style="font-size:10px; color:#94a3b8;">▼</span>
+            </button>
+
+            <div class="toggle-wrap" id="toggle-owned-wrap" onclick="toggleOwnedOnly()">
+                <div class="toggle-switch"></div>
+                <span>Only Show Combos I Can Make (Owned Only)</span>
+            </div>
+        </div>
+
+        <div class="inv-bar-right">
+            <div class="toggle-wrap active" id="toggle-compact-wrap" onclick="toggleCompactNumbers()">
+                <div class="toggle-switch"></div>
+                <span>Compact $/s (K/M/B)</span>
+            </div>
+
+            <button class="btn btn-sm" onclick="openInventoryModal()">
+                <span>💾 Import / Export</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- INVENTORY EXPANDABLE CHECKLIST -->
+    <div class="inv-panel" id="inv-panel">
+        <div class="inv-controls">
+            <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; flex:1;">
+                <input type="text" id="inv-search" placeholder="Search 77 animals (e.g. black-hole, dragon)..." style="max-width:250px; padding:7px 11px; font-size:12.5px;" oninput="renderChips()">
+                <select id="inv-tier-filter" style="max-width:190px; padding:7px 10px; font-size:12.5px;" onchange="renderChips()">
+                    <option value="all">All Tiers (77 Animals)</option>
+                    <option value="special">★ Special Bonus Only (13)</option>
+                    <option value="3">+3★ Cosmic Tier (2)</option>
+                    <option value="2">+2★ Elemental Tier (6)</option>
+                    <option value="1">+1★ Rare Tier (5)</option>
+                    <option value="0">Standard Animals (64)</option>
+                </select>
+            </div>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                <button class="btn btn-sm" onclick="setAllAnimals(true)">✅ Select All</button>
+                <button class="btn btn-sm" onclick="selectSpecialOnly()">✨ Only Specials (13)</button>
+                <button class="btn btn-sm" onclick="invertAnimals()">🔄 Invert</button>
+                <button class="btn btn-sm" onclick="setAllAnimals(false)">🗑️ Clear All</button>
+            </div>
+        </div>
+        <div style="font-size:11.5px; color:#94a3b8; margin-bottom:8px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px;">
+            <span>Tap any animal to toggle ownership. Badges show hidden <b>Special Bonus Stars (+1★ to +3★)</b> applied during fusion.</span>
+            <span id="inv-filter-summary">Showing 77 animals</span>
+        </div>
+        <div class="chip-grid" id="chip-grid"></div>
+    </div>
+
+        <!-- ROBLOX CHAT QUICK RESPONDER (FOR "sting+?" / "ancalasaurus+?" QUESTIONS) -->
+    <div class="chat-responder-bar">
+        <div class="chat-responder-top">
+            <span style="font-size:12.5px; font-weight:800; color:var(--green-bright); display:flex; align-items:center; gap:6px; white-space:nowrap;">
+                💬 Roblox Chat Fast Reply (<span class="mono">animal+?</span>):
+            </span>
+            <input type="text" id="chat-quick-query" placeholder="Type what someone asked in chat (e.g. 'sting', 'ancalasaurus', 'glitter sting') — auto-fixes typos!" style="flex:1; min-width:240px; padding:8px 12px; font-size:13px; margin:0;" oninput="runChatResponder()" onkeydown="if(event.key==='Enter')copyFirstChatReply()">
+            <select id="chat-quick-mut" style="width:145px; padding:8px 10px; font-size:12.5px; margin:0;" onchange="runChatResponder()">
+                <option value="none">Normal (+0★)</option>
+                <option value="golden">Golden (+2★)</option>
+                <option value="diamond">Diamond (+4★)</option>
+                <option value="iridescent">Iridescent (+6★)</option>
+                <option value="chaos">Chaos (+10★)</option>
+            </select>
+            <button class="btn btn-sm btn-chat-copy" onclick="copyFirstChatReply()" title="Copy #1 reply (or press Enter)">📋 Copy #1 Reply</button>
+            <button class="btn btn-sm" onclick="copyTop3ChatReply()" title="Copy Top 3 options in one line for Roblox chat">📋 Copy Top 3</button>
+        </div>
+        <div id="chat-results-strip" class="chat-results-strip"></div>
+    </div>
+
+    <!-- NAVIGATION TABS -->
+    <div class="nav-tabs" role="tablist">
+        <button class="tab-btn active" id="btn-tab-matchmaker" onclick="switchTab('matchmaker')">
+            <span>🧬 Best Combos for Your Pet</span>
+        </button>
+        <button class="tab-btn" id="btn-tab-lab" onclick="switchTab('lab')">
+            <span>🔬 Dual Fusion Sandbox &amp; Formula Lab</span>
+        </button>
+        <button class="tab-btn" id="btn-tab-global" onclick="switchTab('global')">
+            <span>🏆 Global All-Time Best Duals</span>
+        </button>
+        <button class="tab-btn" id="btn-tab-single" onclick="switchTab('single')">
+            <span>🐾 Single Fusions (Gen 1)</span>
+        </button>
+        <button class="tab-btn" id="btn-tab-planner" onclick="switchTab('planner')">
+            <span>📌 Breeding Planner</span>
+            <span class="tab-count" id="planner-count-badge">0</span>
+        </button>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 1: BEST COMBOS FOR YOUR HYBRID         -->
+    <!-- ========================================== -->
+    <div id="panel-matchmaker" class="panel">
+        <div class="panel-header">
+            <div>
+                <h2 class="panel-title">🧬 1. Configure Your Current Gen-1 Pet</h2>
+                <p class="desc">Select your pet's two base animals, mutation, and treadmill level to scan all 2,926 potential partners.</p>
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <button class="btn btn-sm" onclick="swapMatchmakerAnimals()" title="Swap Animal 1 & Animal 2">⇄ Swap</button>
+                <button class="btn btn-sm" onclick="setBestOwnedGen1Pet()" title="Auto-fill highest income Gen-1 pet from your unlocked animals">👑 Load Best Gen-1 Pet</button>
+                <button class="btn btn-sm" onclick="randomizeMatchmakerPet()">🎲 Random Pet</button>
+            </div>
+        </div>
+        
+        <div class="quick-pair-bar">
+            <span style="font-size:12px; font-weight:700; color:var(--accent); white-space:nowrap;">⚡ Quick Type Pet:</span>
+            <input type="text" id="mm-quick-pair" placeholder="Type 2 animals (e.g. 'axolotl panther' or 'tiger + black-hole') & press Enter..." style="flex:1; min-width:220px; padding:7px 11px; font-size:12.5px;" onkeydown="handleQuickPairInput(event, 'mm')">
+            <span style="font-size:11.5px; color:#94a3b8;">Or type directly in the Animal 1 / Animal 2 boxes below!</span>
+        </div>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap:12px; margin-bottom:16px;">
+            <div>
+                <label for="mm-a1">Your Pet — Animal 1</label>
+                <select id="mm-a1" onchange="runMatchmaker()"></select>
+            </div>
+            <div>
+                <label for="mm-a2">Your Pet — Animal 2</label>
+                <select id="mm-a2" onchange="runMatchmaker()"></select>
+            </div>
+            <div>
+                <label for="mm-mut">Your Pet's Mutation</label>
+                <select id="mm-mut" onchange="runMatchmaker()">
+                    <option value="none">Normal (+0★)</option>
+                    <option value="golden">Golden (+2★)</option>
+                    <option value="diamond">Diamond (+4★)</option>
+                    <option value="iridescent">Iridescent (+6★)</option>
+                    <option value="chaos">Chaos (+10★)</option>
+                </select>
+            </div>
+            <div>
+                <label for="mm-lvl">Your Treadmill Level</label>
+                <input type="number" id="mm-lvl" value="1" min="1" max="500000000" oninput="runMatchmaker()">
+            </div>
+            <div>
+                <label for="mm-partner-mut">Assume Partner Mutation</label>
+                <select id="mm-partner-mut" onchange="runMatchmaker()">
+                    <option value="none">Normal (+0★)</option>
+                    <option value="golden">Golden (+2★)</option>
+                    <option value="diamond">Diamond (+4★)</option>
+                    <option value="iridescent">Iridescent (+6★)</option>
+                    <option value="chaos">Chaos (+10★)</option>
+                </select>
+            </div>
+            <div>
+                <label for="mm-partner-lvl">Partner Treadmill Level</label>
+                <input type="number" id="mm-partner-lvl" value="1" min="1" max="500000000" oninput="runMatchmaker()">
+            </div>
+        </div>
+
+        <!-- YOUR CURRENT PET STATUS -->
+        <div class="user-hybrid-card">
+            <div>
+                <span style="font-size:11px; text-transform:uppercase; color:#93c5fd; font-weight:800; letter-spacing:0.05em;">Your Current Gen-1 Hybrid</span>
+                <div id="mm-user-title" style="font-size:19px; font-weight:800; color:var(--heading); text-transform:capitalize; margin-top:3px;">-</div>
+                <div id="mm-user-breakdown" style="font-size:12px; color:#94a3b8; margin-top:4px;">-</div>
+            </div>
+            <div class="user-stat-group">
+                <div class="user-stat-box">
+                    <span class="lbl">Gen-1 Stars</span>
+                    <span id="mm-user-stars" class="val" style="color:var(--gold);">0 ★</span>
+                </div>
+                <div class="user-stat-box">
+                    <span class="lbl">Base Income (Lvl 1)</span>
+                    <span id="mm-user-inc" class="val mono" style="color:var(--green-bright);">$0/s</span>
+                </div>
+                <div class="user-stat-box">
+                    <span class="lbl">Lvl-Scaled Income</span>
+                    <span id="mm-user-scaled-inc" class="val mono" style="color:var(--accent);">$0/s</span>
+                </div>
+            </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
+            <h3 style="margin:0; color:var(--heading); font-size:16px;">🏅 2. Top 3 Best Dual Combos for Your Pet</h3>
+            <span style="font-size:12px; color:#94a3b8;">Inherited Treadmill Level = <b>max(Your Level, Partner Level)</b></span>
+        </div>
+
+        <!-- TOP 3 PODIUM CARDS -->
+        <div class="podium-grid">
+            <div class="podium-card first">
+                <div>
+                    <div class="podium-top-row">
+                        <span class="podium-badge" style="background:rgba(251, 191, 36, 0.2); color:var(--gold);">🥇 #1 BEST MATCH</span>
+                        <span id="podium-1-gain" class="gain-pill">+0%</span>
+                    </div>
+                    <div id="podium-1-name" class="podium-combo-name">-</div>
+                    <div id="podium-1-partner" class="podium-partner">-</div>
+                </div>
+                <div>
+                    <div class="podium-stats">
+                        <span id="podium-1-stars" style="color:var(--gold); font-weight:800;">0 ★</span>
+                        <span id="podium-1-inc" class="mono" style="color:var(--green-bright); font-weight:800;">$0/s</span>
+                    </div>
+                    <div style="display:flex; gap:6px; margin-top:10px; flex-wrap:wrap;">
+                        <button class="btn btn-sm btn-chat-copy" style="flex:1; justify-content:center;" onclick="copyPodiumChat(0)">💬 Copy Chat</button>
+                        <button class="btn btn-sm" style="flex:1; justify-content:center;" onclick="inspectPodiumInLab(0)">🔬 Inspect Math</button>
+                        <button class="btn btn-sm" style="flex:1; justify-content:center;" onclick="pinPodiumToPlanner(0)">📌 Save Goal</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="podium-card second">
+                <div>
+                    <div class="podium-top-row">
+                        <span class="podium-badge" style="background:rgba(148, 163, 184, 0.2); color:#e2e8f0;">🥈 #2 RUNNER-UP</span>
+                        <span id="podium-2-gain" class="gain-pill">+0%</span>
+                    </div>
+                    <div id="podium-2-name" class="podium-combo-name">-</div>
+                    <div id="podium-2-partner" class="podium-partner">-</div>
+                </div>
+                <div>
+                    <div class="podium-stats">
+                        <span id="podium-2-stars" style="color:var(--gold); font-weight:800;">0 ★</span>
+                        <span id="podium-2-inc" class="mono" style="color:var(--green-bright); font-weight:800;">$0/s</span>
+                    </div>
+                    <div style="display:flex; gap:6px; margin-top:10px; flex-wrap:wrap;">
+                        <button class="btn btn-sm btn-chat-copy" style="flex:1; justify-content:center;" onclick="copyPodiumChat(1)">💬 Copy Chat</button>
+                        <button class="btn btn-sm" style="flex:1; justify-content:center;" onclick="inspectPodiumInLab(1)">🔬 Inspect Math</button>
+                        <button class="btn btn-sm" style="flex:1; justify-content:center;" onclick="pinPodiumToPlanner(1)">📌 Save Goal</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="podium-card third">
+                <div>
+                    <div class="podium-top-row">
+                        <span class="podium-badge" style="background:rgba(217, 119, 6, 0.2); color:#fbbf24;">🥉 #3 CONTENDER</span>
+                        <span id="podium-3-gain" class="gain-pill">+0%</span>
+                    </div>
+                    <div id="podium-3-name" class="podium-combo-name">-</div>
+                    <div id="podium-3-partner" class="podium-partner">-</div>
+                </div>
+                <div>
+                    <div class="podium-stats">
+                        <span id="podium-3-stars" style="color:var(--gold); font-weight:800;">0 ★</span>
+                        <span id="podium-3-inc" class="mono" style="color:var(--green-bright); font-weight:800;">$0/s</span>
+                    </div>
+                    <div style="display:flex; gap:6px; margin-top:10px; flex-wrap:wrap;">
+                        <button class="btn btn-sm btn-chat-copy" style="flex:1; justify-content:center;" onclick="copyPodiumChat(2)">💬 Copy Chat</button>
+                        <button class="btn btn-sm" style="flex:1; justify-content:center;" onclick="inspectPodiumInLab(2)">🔬 Inspect Math</button>
+                        <button class="btn btn-sm" style="flex:1; justify-content:center;" onclick="pinPodiumToPlanner(2)">📌 Save Goal</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- COMPLETE RANKED LIST OF COMBOS FOR THIS PET -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
+            <h4 style="margin:0; color:var(--heading); font-size:15px;">All Ranked Partner Combinations</h4>
+            <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                <input type="text" id="mm-search" placeholder="Filter partner (e.g. dragon, lava)..." style="width:240px; margin:0;" oninput="resetMmPage()">
+                <button class="btn btn-sm" onclick="exportCurrentTableCSV('matchmaker')">📥 Export CSV</button>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="rank">Rank</th>
+                        <th>Full Dual Fusion Combo</th>
+                        <th>Partner You Need to Breed</th>
+                        <th>Partner Gen-1</th>
+                        <th>Dual Stars</th>
+                        <th>Base Income ($/s)</th>
+                        <th>Lvl-Scaled ($/s)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="mm-table-body"></tbody>
+            </table>
+        </div>
+
+        <div class="pagination-bar">
+            <button class="btn" id="btn-mm-prev" onclick="changeMmPage(-1)">◀ Previous</button>
+            <span id="mm-page-info">Page 1 of 1</span>
+            <button class="btn" id="btn-mm-next" onclick="changeMmPage(1)">Next ▶</button>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: DUAL FUSION SANDBOX & FORMULA LAB   -->
+    <!-- ========================================== -->
+    <div id="panel-lab" class="panel" style="display:none;">
+        <div class="panel-header">
+            <div>
+                <h2 class="panel-title">🔬 Dual Fusion Sandbox &amp; Exact Hash Formula Inspector</h2>
+                <p class="desc">Test any 4-parent combination directly and inspect every step of the Jenkins 32-bit &amp; DJB2 seed math.</p>
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <button class="btn btn-sm" onclick="pinLabToPlanner()">📌 Pin Combo to Planner</button>
+                <button class="btn btn-sm" onclick="copyLabSummary()">📋 Copy Recipe &amp; Stats</button>
+            </div>
+        </div>
+
+        <div class="lab-vs-grid">
+            <!-- PARENT HYBRID A -->
+            <div class="lab-parent-box">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <span style="font-weight:800; color:var(--accent); font-size:13px; text-transform:uppercase;">Parent Hybrid A (Left Slot)</span>
+                    <span id="lab-h1-badge" class="badge badge-none">Normal</span>
+                </div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
+                    <div>
+                        <label for="lab-a1">Animal A1</label>
+                        <select id="lab-a1" onchange="runLabCalculator()"></select>
+                    </div>
+                    <div>
+                        <label for="lab-a2">Animal A2</label>
+                        <select id="lab-a2" onchange="runLabCalculator()"></select>
+                    </div>
+                    <div>
+                        <label for="lab-mut-a">Mutation A</label>
+                        <select id="lab-mut-a" onchange="runLabCalculator()">
+                            <option value="none">Normal (+0★)</option>
+                            <option value="golden">Golden (+2★)</option>
+                            <option value="diamond">Diamond (+4★)</option>
+                            <option value="iridescent">Iridescent (+6★)</option>
+                            <option value="chaos">Chaos (+10★)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="lab-lvl-a">Treadmill Level A</label>
+                        <input type="number" id="lab-lvl-a" value="1" min="1" max="500000000" oninput="runLabCalculator()">
+                    </div>
+                </div>
+                <div id="lab-h1-summary" style="background:#070a10; border:1px solid var(--border); padding:10px 12px; border-radius:8px; font-size:12.5px;"></div>
+            </div>
+
+            <!-- VS DIVIDER -->
+            <div class="lab-vs-divider">
+                <span>⚡</span>
+                <span>FUSE</span>
+                <button class="btn btn-sm" onclick="swapLabHybrids()" title="Swap Hybrid A and Hybrid B">⇄</button>
+            </div>
+
+            <!-- PARENT HYBRID B -->
+            <div class="lab-parent-box">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <span style="font-weight:800; color:var(--purple); font-size:13px; text-transform:uppercase;">Parent Hybrid B (Right Slot)</span>
+                    <span id="lab-h2-badge" class="badge badge-none">Normal</span>
+                </div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
+                    <div>
+                        <label for="lab-b1">Animal B1</label>
+                        <select id="lab-b1" onchange="runLabCalculator()"></select>
+                    </div>
+                    <div>
+                        <label for="lab-b2">Animal B2</label>
+                        <select id="lab-b2" onchange="runLabCalculator()"></select>
+                    </div>
+                    <div>
+                        <label for="lab-mut-b">Mutation B</label>
+                        <select id="lab-mut-b" onchange="runLabCalculator()">
+                            <option value="none">Normal (+0★)</option>
+                            <option value="golden">Golden (+2★)</option>
+                            <option value="diamond">Diamond (+4★)</option>
+                            <option value="iridescent">Iridescent (+6★)</option>
+                            <option value="chaos">Chaos (+10★)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="lab-lvl-b">Treadmill Level B</label>
+                        <input type="number" id="lab-lvl-b" value="1" min="1" max="500000000" oninput="runLabCalculator()">
+                    </div>
+                </div>
+                <div id="lab-h2-summary" style="background:#070a10; border:1px solid var(--border); padding:10px 12px; border-radius:8px; font-size:12.5px;"></div>
+            </div>
+        </div>
+
+        <!-- LAB RESULT BANNER -->
+        <div class="user-hybrid-card" style="border-color: var(--gold);">
+            <div>
+                <span style="font-size:11px; text-transform:uppercase; color:var(--gold); font-weight:800;">Resulting Gen-2 Dual Hybrid</span>
+                <div id="lab-result-name" style="font-size:20px; font-weight:900; color:var(--heading); text-transform:capitalize; margin-top:3px;">-</div>
+                <div id="lab-result-sub" style="font-size:12.5px; color:#94a3b8; margin-top:4px;">-</div>
+            </div>
+            <div class="user-stat-group">
+                <div class="user-stat-box">
+                    <span class="lbl">Inherited Mutation</span>
+                    <span id="lab-result-mut" class="val">-</span>
+                </div>
+                <div class="user-stat-box">
+                    <span class="lbl">Final Dual Stars</span>
+                    <span id="lab-result-stars" class="val" style="color:var(--gold);">0 ★</span>
+                </div>
+                <div class="user-stat-box">
+                    <span class="lbl">Base Income (Lvl 1)</span>
+                    <span id="lab-result-inc" class="val mono" style="color:var(--green-bright);">$0/s</span>
+                </div>
+                <div class="user-stat-box">
+                    <span class="lbl">Scaled Income (Lvl <span id="lab-result-lvl">1</span>)</span>
+                    <span id="lab-result-scaled" class="val mono" style="color:var(--accent);">$0/s</span>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="margin:0 0 8px 0; color:var(--heading); font-size:15px;">📐 Step-by-Step Game Engine Math Breakdown</h3>
+        <div class="formula-grid" id="lab-formula-grid"></div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: GLOBAL ALL-TIME BEST COMBOS         -->
+    <!-- ========================================== -->
+    <div id="panel-global" class="panel" style="display:none;">
+        <div class="panel-header">
+            <div>
+                <h2 class="panel-title">🏆 All-Time Global Best Dual Combos</h2>
+                <p class="desc">Discover the highest-earning 4-parent combinations in the game. Note: Only ONE parent needs a high mutation for the Dual Hybrid to inherit it!</p>
+            </div>
+            <button class="btn btn-sm" onclick="exportCurrentTableCSV('global')">📥 Export CSV</button>
+        </div>
+        
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap:12px; margin-bottom:16px;">
+            <div>
+                <label for="global-search">Filter Animal in Combo</label>
+                <input type="text" id="global-search" placeholder="e.g. black-hole, solar-eclipse..." oninput="resetGlobalPage()">
+            </div>
+            <div>
+                <label for="global-mut-a">Parent A Mutation</label>
+                <select id="global-mut-a" onchange="resetGlobalPage()">
+                    <option value="none">Normal (+0★)</option>
+                    <option value="golden">Golden (+2★)</option>
+                    <option value="diamond">Diamond (+4★)</option>
+                    <option value="iridescent">Iridescent (+6★)</option>
+                    <option value="chaos">Chaos (+10★)</option>
+                </select>
+            </div>
+            <div>
+                <label for="global-mut-b">Parent B Mutation</label>
+                <select id="global-mut-b" onchange="resetGlobalPage()">
+                    <option value="none">Normal (+0★)</option>
+                    <option value="golden">Golden (+2★)</option>
+                    <option value="diamond">Diamond (+4★)</option>
+                    <option value="iridescent">Iridescent (+6★)</option>
+                    <option value="chaos">Chaos (+10★)</option>
+                </select>
+            </div>
+            <div>
+                <label for="global-depth">Search Depth (Top Gen-1 Pool)</label>
+                <select id="global-depth" onchange="resetGlobalPage()">
+                    <option value="65">Fast (Top 65 → 2,080 Duals)</option>
+                    <option value="120" selected>Balanced (Top 120 → 7,140 Duals)</option>
+                    <option value="200">Deep (Top 200 → 19,900 Duals)</option>
+                    <option value="300">Ultra (Top 300 → 44,850 Duals)</option>
+                </select>
+            </div>
+            <div>
+                <label for="global-sort">Sort Metric</label>
+                <select id="global-sort" onchange="resetGlobalPage()">
+                    <option value="income-desc">Income: Highest First</option>
+                    <option value="income-asc">Income: Lowest First</option>
+                    <option value="stars-desc">Stars: Highest First</option>
+                    <option value="stars-asc">Stars: Lowest First</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="rank">Rank</th>
+                        <th>Full Dual Combo (4 Parents)</th>
+                        <th>Inherited Mutation</th>
+                        <th>Stars</th>
+                        <th>Base Income ($/s)</th>
+                        <th>Bracket Efficiency</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="global-table-body"></tbody>
+            </table>
+        </div>
+
+        <div class="pagination-bar">
+            <button class="btn" id="btn-global-prev" onclick="changeGlobalPage(-1)">◀ Previous</button>
+            <span id="global-page-info">Page 1 of 1</span>
+            <button class="btn" id="btn-global-next" onclick="changeGlobalPage(1)">Next ▶</button>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 4: SINGLE FUSIONS (GEN 1 DATABASE)      -->
+    <!-- ========================================== -->
+    <div id="panel-single" class="panel" style="display:none;">
+        <div class="panel-header">
+            <div>
+                <h2 class="panel-title">🐾 Complete 2,926 Single Fusions (Gen 1 Database)</h2>
+                <p class="desc">Every possible 2-animal fusion ranked by exact Jenkins hash income and star roll.</p>
+            </div>
+            <button class="btn btn-sm" onclick="exportCurrentTableCSV('single')">📥 Export CSV</button>
+        </div>
+        
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin-bottom:16px;">
+            <div>
+                <label for="db-search">Search Animal</label>
+                <input type="text" id="db-search" placeholder="e.g. black-hole, tiger..." oninput="resetDbPage()">
+            </div>
+            <div>
+                <label for="db-mut">Mutation View</label>
+                <select id="db-mut" onchange="resetDbPage()">
+                    <option value="none">Normal (+0★)</option>
+                    <option value="golden">Golden (+2★)</option>
+                    <option value="diamond">Diamond (+4★)</option>
+                    <option value="iridescent">Iridescent (+6★)</option>
+                    <option value="chaos">Chaos (+10★)</option>
+                </select>
+            </div>
+            <div>
+                <label for="db-bonus-filter">Special Bonus Tier</label>
+                <select id="db-bonus-filter" onchange="resetDbPage()">
+                    <option value="all">All Recipes</option>
+                    <option value="3">Has +3★ Cosmic Parent</option>
+                    <option value="2">Has +2★ Elemental Parent</option>
+                    <option value="1">Has +1★ Rare Parent</option>
+                    <option value="0">Zero Special Bonus (Pure Base Roll)</option>
+                </select>
+            </div>
+            <div>
+                <label for="db-sort">Sort By</label>
+                <select id="db-sort" onchange="resetDbPage()">
+                    <option value="income-desc">Income: Highest First</option>
+                    <option value="income-asc">Income: Lowest First</option>
+                    <option value="stars-desc">Stars: Highest First</option>
+                    <option value="stars-asc">Stars: Lowest First</option>
+                    <option value="base-desc">Raw Hash Roll: Highest Base ★</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="rank">#</th>
+                        <th>Gen-1 Recipe</th>
+                        <th>Base Roll</th>
+                        <th>Special Bonus</th>
+                        <th>Mutation</th>
+                        <th>Final Stars</th>
+                        <th>Income ($/s)</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="db-table-body"></tbody>
+            </table>
+        </div>
+
+        <div class="pagination-bar">
+            <button class="btn" id="btn-prev" onclick="changeDbPage(-1)">◀ Previous</button>
+            <span id="db-page-info">Page 1 of 1</span>
+            <button class="btn" id="btn-next" onclick="changeDbPage(1)">Next ▶</button>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 5: BREEDING PLANNER & SAVED GOALS      -->
+    <!-- ========================================== -->
+    <div id="panel-planner" class="panel" style="display:none;">
+        <div class="panel-header">
+            <div>
+                <h2 class="panel-title">📌 Saved Breeding Goals &amp; Ingredient Checklist</h2>
+                <p class="desc">Bookmark your favorite Dual Fusions from any tab to track which of the 4 base animals you own or still need to unlock.</p>
+            </div>
+            <div style="display:flex; gap:8px;">
+                <button class="btn btn-sm" onclick="addTop3GlobalToPlanner()">⚡ Auto-Pin Top 3 Global Combos</button>
+                <button class="btn btn-sm" onclick="clearPlannerGoals()">🗑️ Clear Saved Goals</button>
+            </div>
+        </div>
+
+        <div id="planner-empty" style="text-align:center; padding:42px 20px; color:#94a3b8; border:1px dashed var(--border); border-radius:var(--radius-md);">
+            <div style="font-size:32px; margin-bottom:8px;">📌</div>
+            <div style="font-weight:700; color:var(--heading); font-size:15px; margin-bottom:4px;">No Breeding Goals Saved Yet</div>
+            <div style="font-size:13px; margin-bottom:14px;">Click <b>"📌 Save Goal"</b> on any combo in the Matchmaker, Global Leaderboard, or Fusion Lab to build your checklist!</div>
+            <button class="btn btn-primary" onclick="addTop3GlobalToPlanner()">⚡ Pin Top 3 All-Time Best Combos Now</button>
+        </div>
+
+        <div class="planner-grid" id="planner-grid"></div>
+    </div>
+</div>
+
+<!-- MODAL FOR INVENTORY IMPORT/EXPORT -->
+<div class="modal-backdrop" id="inv-modal" onclick="if(event.target===this)closeInventoryModal()">
+    <div class="modal-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <h3 style="margin:0; color:var(--heading); font-size:16px;">💾 Backup or Restore Unlocked Animals</h3>
+            <button class="btn btn-sm" onclick="closeInventoryModal()">✕</button>
+        </div>
+        <p style="font-size:12.5px; color:#94a3b8; margin:0 0 8px 0;">Copy this JSON list to back up your unlocked roster or paste a list below to restore:</p>
+        <textarea id="inv-json-box" spellcheck="false"></textarea>
+        <div style="display:flex; justify-content:flex-end; gap:8px;">
+            <button class="btn btn-sm" onclick="copyInventoryJson()">📋 Copy JSON</button>
+            <button class="btn btn-sm btn-primary" onclick="importInventoryJson()">📥 Load JSON Roster</button>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toast-container"></div>
+
+<script>
+const ANIMALS = [
+    "anglerfish", "ankylosaurus", "ant", "aurora", "axolotl", "banana", "beetle", 
+    "black-hole", "butterfly", "car", "cheeseburger", "cheetah", "chicken", "clouds", 
+    "cobra", "coral", "cowboy", "crab", "crocodile", "demon", "dolphin", "dragon", 
+    "dragonfly", "eagle", "electricity", "elephant", "excavator", "ferret", "fox", 
+    "giraffe", "glitter", "goat", "gorilla", "human-man", "jade", "jellyfish", 
+    "jerboa", "lava", "mermaid", "millipede", "monkey", "moose", "narwhal", 
+    "octopus", "orangutan", "owl", "panther", "plasma", "praying-mantis", 
+    "psychic-power", "pterodactyl", "pufferfish", "red panda", "rhino", "ruby", 
+    "shark", "skeleton", "solar-eclipse", "spider", "stegosaurus", "stingray", 
+    "strawberry", "t-rex", "tank", "tiger", "toilet", "triceratops", "turtle", 
+    "uranium", "velociraptor", "venus-fly-trap", "warthog", "wasp", "water", 
+    "wolf", "zebra", "zombie"
+];
+
+const ANIMAL_ICONS = {
+    "anglerfish": "🐟", "ankylosaurus": "🦕", "ant": "🐜", "aurora": "🌌", "axolotl": "🦎",
+    "banana": "🍌", "beetle": "🪲", "black-hole": "🕳️", "butterfly": "🦋", "car": "🚗",
+    "cheeseburger": "🍔", "cheetah": "🐆", "chicken": "🐔", "clouds": "☁️", "cobra": "🐍",
+    "coral": "🪸", "cowboy": "🤠", "crab": "🦀", "crocodile": "🐊", "demon": "👹",
+    "dolphin": "🐬", "dragon": "🐉", "dragonfly": "蜻", "eagle": "🦅", "electricity": "⚡",
+    "elephant": "🐘", "excavator": "🚜", "ferret": "🦦", "fox": "🦊", "giraffe": "🦒",
+    "glitter": "✨", "goat": "🐐", "gorilla": "🦍", "human-man": "🧍", "jade": "🟢",
+    "jellyfish": "🪼", "jerboa": "🐁", "lava": "🌋", "mermaid": "🧜‍♀️", "millipede": "🐛",
+    "monkey": "🐒", "moose": "🫎", "narwhal": "🦄", "octopus": "🐙", "orangutan": "🦧",
+    "owl": "🦉", "panther": "🐈‍⬛", "plasma": "🔮", "praying-mantis": "🦗", "psychic-power": "🧠",
+    "pterodactyl": "🦅", "pufferfish": "🐡", "red panda": "🦊", "rhino": "🦏", "ruby": "💎",
+    "shark": "🦈", "skeleton": "💀", "solar-eclipse": "🌑", "spider": "🕷️", "stegosaurus": "🦕",
+    "stingray": "🐟", "strawberry": "🍓", "t-rex": "🦖", "tank": "🪖", "tiger": "🐅",
+    "toilet": "🚽", "triceratops": "🦕", "turtle": "🐢", "uranium": "☢️", "velociraptor": "🦖",
+    "venus-fly-trap": "🪴", "warthog": "🐗", "wasp": "🐝", "water": "💧", "wolf": "🐺",
+    "zebra": "🦓", "zombie": "🧟"
+};
+
+const WEIGHTS = [
+    250000, 225690, 157983, 110588, 77412, 54188, 
+    37932, 26552, 18587, 13011, 9107, 6375, 
+    4463, 3124, 2187, 1531, 1070, 200
+];
+
+const SPECIAL_BONUS = {
+    "ruby": 1, "electricity": 2, "lava": 2, "uranium": 2, "aurora": 2,
+    "black-hole": 3, "clouds": 1, "glitter": 1, "jade": 1, "water": 1,
+    "psychic-power": 2, "plasma": 2, "solar-eclipse": 3
+};
+
+const MUTATION_DATA = {
+    "none": { name: "Normal", bonus: 0 },
+    "golden": { name: "Golden", bonus: 2 },
+    "diamond": { name: "Diamond", bonus: 4 },
+    "iridescent": { name: "Iridescent", bonus: 6 },
+    "chaos": { name: "Chaos", bonus: 10 }
+};
+
+const SHINY_ORDER = ["none", "golden", "diamond", "iridescent", "chaos"];
+
+const INCOME_RANGES = {
+    3: [1, 2], 4: [3, 5], 5: [6, 9], 6: [10, 19], 7: [20, 49],
+    8: [50, 99], 9: [100, 199], 10: [200, 499], 11: [500, 999],
+    12: [1000, 1900], 13: [2000, 4900], 14: [5000, 9900],
+    15: [10000, 19900], 16: [20000, 49900], 17: [50000, 99900],
+    18: [100000, 199900], 19: [200000, 499900], 20: [500000, 999900],
+    21: [1000000, 1990000], 22: [2000000, 4990000], 23: [5000000, 9990000],
+    24: [10000000, 19990000], 25: [20000000, 49990000], 26: [50000000, 99990000],
+    27: [100000000, 199990000], 28: [200000000, 499990000], 29: [500000000, 999990000],
+    30: [1000000000, 3000000000], 31: [3000000001, 5999999999],
+    32: [6000000000, 11999999999], 33: [12000000000, 23999999999],
+    34: [24000000000, 47999999999], 35: [48000000000, 95999999999],
+    36: [96000000000, 191999999999], 37: [192000000000, 383999999999],
+    38: [384000000000, 767999999999]
+};
+
+// Formatting helpers
+let useCompactNumbers = true;
+
+function formatMoney(val) {
+    if (!useCompactNumbers) {
+        return "$" + Math.round(val).toLocaleString() + "/s";
+    }
+    if (val >= 1e12) return "$" + (val / 1e12).toFixed(2) + "T/s";
+    if (val >= 1e9) return "$" + (val / 1e9).toFixed(2) + "B/s";
+    if (val >= 1e6) return "$" + (val / 1e6).toFixed(2) + "M/s";
+    if (val >= 1e3) return "$" + (val / 1e3).toFixed(2) + "K/s";
+    return "$" + Math.round(val).toLocaleString() + "/s";
+}
+
+function getAnimalLabel(name) {
+    const icon = ANIMAL_ICONS[name] || "🐾";
+    const bonus = SPECIAL_BONUS[name];
+    const bonusTag = bonus ? ` (+${bonus}★)` : "";
+    return `${icon} ${name}${bonusTag}`;
+}
+
+
+// ROBLOX CHAT FORMATTERS & FUZZY TYPO MATCHER (TATAYDIGS MODE)
+function formatRobloxRate(val) {
+    if (val >= 1e12) return parseFloat((val / 1e12).toFixed(2)) + "T/s";
+    if (val >= 1e9) return parseFloat((val / 1e9).toFixed(2)) + "B/s";
+    if (val >= 1e6) return parseFloat((val / 1e6).toFixed(2)) + "M/s";
+    if (val >= 1e3) return Math.round(val / 1e3) + "k/s";
+    return Math.round(val) + "/s";
+}
+
+function capFirst(str) {
+    return str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
+}
+
+function buildSingleChatString(p1, p2, stars, income, mut) {
+    const mutTag = mut && mut !== "none" ? ` (${capFirst(mut)})` : "";
+    return `${capFirst(p1)} + ${p2}${mutTag} ${stars} stars ${formatRobloxRate(income)}`;
+}
+
+function buildDualChatString(a1, a2, b1, b2, stars, income, mut) {
+    const mutTag = mut && mut !== "none" ? ` (${capFirst(mut)})` : "";
+    return `(${capFirst(a1)} + ${a2}) x (${capFirst(b1)} + ${b2})${mutTag} ${stars} stars ${formatRobloxRate(income)}`;
+}
+
+function copySingleChat(p1, p2, stars, income, mut) {
+    const msg = buildSingleChatString(p1, p2, stars, income, mut);
+    copyTextToClipboard(msg, `Copied for Roblox Chat: "${msg}"`);
+}
+
+function copyDualChat(a1, a2, b1, b2, stars, income, mut) {
+    const msg = buildDualChatString(a1, a2, b1, b2, stars, income, mut);
+    copyTextToClipboard(msg, `Copied for Roblox Chat: "${msg}"`);
+}
+
+function copyPodiumChat(idx) {
+    const item = mmResults[idx];
+    if (!item) return;
+    const msg = `${capFirst(item.b1)} + ${item.b2} (makes ${item.finalStars} stars ${formatRobloxRate(item.income)})`;
+    copyTextToClipboard(msg, `Copied for Roblox Chat: "${msg}"`);
+}
+
+function editDistance(a, b) {
+    const dp = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
+    for (let i = 0; i <= a.length; i++) dp[i][0] = i;
+    for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+    for (let i = 1; i <= a.length; i++) {
+        for (let j = 1; j <= b.length; j++) {
+            const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+            dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost);
+        }
+    }
+    return dp[a.length][b.length];
+}
+
+const COMMON_ALIASES = {
+    "ancalasaurus": "ankylosaurus",
+    "ankylo": "ankylosaurus",
+    "anky": "ankylosaurus",
+    "sting": "stingray",
+    "trex": "t-rex",
+    "rex": "t-rex",
+    "bh": "black-hole",
+    "blackhole": "black-hole",
+    "se": "solar-eclipse",
+    "eclipse": "solar-eclipse",
+    "solar": "solar-eclipse",
+    "mantis": "praying-mantis",
+    "flytrap": "venus-fly-trap",
+    "venus": "venus-fly-trap",
+    "psychic": "psychic-power",
+    "redpanda": "red panda",
+    "panda": "red panda",
+    "human": "human-man",
+    "burger": "cheeseburger",
+    "ptero": "pterodactyl",
+    "raptor": "velociraptor",
+    "stego": "stegosaurus",
+    "trike": "triceratops",
+    "croc": "crocodile",
+    "puffer": "pufferfish",
+    "angler": "anglerfish",
+    "elec": "electricity",
+    "electric": "electricity"
+};
+
+function resolveFuzzyAnimal(token) {
+    if (!token) return null;
+    const clean = token.toLowerCase().replace(/[^a-z0-9- ]/g, "").trim();
+    if (!clean) return null;
+    if (ANIMALS.includes(clean)) return clean;
+    if (COMMON_ALIASES[clean]) return COMMON_ALIASES[clean];
+
+    // Prefix or substring match
+    const prefixMatch = ANIMALS.find(a => a.startsWith(clean));
+    if (prefixMatch) return prefixMatch;
+    const subMatch = ANIMALS.find(a => a.includes(clean));
+    if (subMatch) return subMatch;
+
+    // Fuzzy Levenshtein distance match (for typos like "ancalasaurus" -> "ankylosaurus")
+    let bestAnimal = null;
+    let bestScore = 999;
+    for (const animal of ANIMALS) {
+        const d = editDistance(clean, animal.replace("-", ""));
+        if (d < bestScore && d <= Math.max(3, Math.floor(animal.length * 0.4))) {
+            bestScore = d;
+            bestAnimal = animal;
+        }
+    }
+    return bestAnimal;
+}
+
+let currentChatReplies = [];
+let currentChatTargetAnimal = "";
+
+function runChatResponder() {
+    const raw = (document.getElementById("chat-quick-query")?.value || "").toLowerCase().replace(/[?]/g, " ").trim();
+    const mut = document.getElementById("chat-quick-mut")?.value || "none";
+    const strip = document.getElementById("chat-results-strip");
+    if (!strip) return;
+
+    // Default to "stingray" example if empty so the user sees how it works immediately!
+    const queryToUse = raw || "stingray";
+    const tokens = queryToUse.split(/[+,×x/|\s]+/).filter(Boolean);
+
+    // Check if user typed 2 animals (e.g. "glitter sting") or 1 animal (e.g. "sting+?" or "ancalasaurus+")
+    let resolved = [];
+    for (const t of tokens) {
+        const match = resolveFuzzyAnimal(t);
+        if (match && !resolved.includes(match)) resolved.push(match);
+    }
+
+    currentChatReplies = [];
+    if (resolved.length >= 2) {
+        // Specific pair lookup (e.g. "glitter sting" -> Glitter + stingray 18 stars 102k/s)
+        const a = resolved[0], b = resolved[1];
+        const exact = calculateSingle(a, b, mut);
+        const exactStr = buildSingleChatString(a, b, exact.finalStars, exact.income, mut);
+        currentChatReplies.push({ label: `Exact Pair`, text: exactStr, stars: exact.finalStars, income: exact.income });
+        currentChatTargetAnimal = `${a} + ${b}`;
+    }
+
+    if (resolved.length >= 1) {
+        const target = resolved[0];
+        currentChatTargetAnimal = target;
+        const partners = [];
+        for (const other of ANIMALS) {
+            if (other === target) continue;
+            if (filterOwnedOnly && !ownedAnimals.has(other)) continue;
+            partners.push({ partner: other, calc: calculateSingle(other, target, mut) });
+        }
+        partners.sort((x, y) => y.calc.income - x.calc.income);
+
+        // Also include the best NON-special (normal base animal) partner in case the asker doesn't own Black-hole/Solar-eclipse!
+        const bestNormal = partners.find(p => !SPECIAL_BONUS[p.partner]);
+        const topList = partners.slice(0, 5);
+        if (bestNormal && !topList.some(p => p.partner === bestNormal.partner)) {
+            topList.push(bestNormal);
+        }
+
+        topList.forEach((p, idx) => {
+            const replyText = buildSingleChatString(p.partner, target, p.calc.finalStars, p.calc.income, mut);
+            const tag = !SPECIAL_BONUS[p.partner] ? "No-Special" : `#${idx + 1}`;
+            currentChatReplies.push({
+                label: tag,
+                text: replyText,
+                stars: p.calc.finalStars,
+                income: p.calc.income
+            });
+        });
+    }
+
+    if (currentChatReplies.length === 0) {
+        strip.innerHTML = `<span style="font-size:12px; color:#94a3b8;">No matching animal found. Try typing part of an animal name like <b>sting</b>, <b>anky</b>, or <b>glitter sting</b>.</span>`;
+        return;
+    }
+
+    strip.innerHTML = currentChatReplies.map((item, i) => `
+        <button type="button" class="chat-reply-pill" onclick="copyChatReplyIndex(${i})" title="Click to copy for Roblox chat">
+            <span style="font-size:10.5px; font-weight:800; color:var(--accent); text-transform:uppercase;">${item.label}</span>
+            <span style="font-weight:700;">${item.text}</span>
+            <span style="font-size:11px; color:var(--green-bright);">📋</span>
+        </button>
+    `).join("");
+}
+
+function copyChatReplyIndex(idx) {
+    const item = currentChatReplies[idx];
+    if (!item) return;
+    copyTextToClipboard(item.text, `Copied for Roblox Chat: "${item.text}"`);
+}
+
+function copyFirstChatReply() {
+    if (currentChatReplies.length === 0) runChatResponder();
+    if (currentChatReplies.length > 0) {
+        copyChatReplyIndex(0);
+    }
+}
+
+function copyTop3ChatReply() {
+    if (currentChatReplies.length === 0) runChatResponder();
+    if (currentChatReplies.length === 0) return;
+    const top3 = currentChatReplies.slice(0, 3).map(r => r.text).join("  |  ");
+    copyTextToClipboard(top3, `Copied Top 3 Replies: "${top3}"`);
+}
+
+function showToast(msg) {
+    const container = document.getElementById("toast-container");
+    const el = document.createElement("div");
+    el.className = "toast";
+    el.textContent = msg;
+    container.appendChild(el);
+    setTimeout(() => {
+        el.style.opacity = "0";
+        el.style.transition = "opacity 0.25s";
+        setTimeout(() => el.remove(), 260);
+    }, 2600);
+}
+
+function copyTextToClipboard(text, message) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => showToast(message)).catch(() => fallbackCopy(text, message));
+    } else {
+        fallbackCopy(text, message);
+    }
+}
+
+function fallbackCopy(text, message) {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); showToast(message); } catch (e) {}
+    ta.remove();
+}
+
+// 32-bit Jenkins Hash
+function jenkinsHash(str) {
+    let v9 = 0;
+    for (let i = 0; i < str.length; i++) {
+        let code = str.charCodeAt(i);
+        let v11 = (v9 + code) >>> 0;
+        let v12 = (v11 + ((v11 << 10) >>> 0)) >>> 0;
+        let v13 = (v12 >>> 6) >>> 0;
+        v9 = (v12 ^ v13) >>> 0;
+    }
+    let v14 = (v9 + ((v9 << 3) >>> 0)) >>> 0;
+    let v15 = (v14 >>> 11) >>> 0;
+    let v16 = (v14 ^ v15) >>> 0;
+    return ((v16 + ((v16 << 15) >>> 0)) >>> 0);
+}
+
+// DJB2 Hash
+function djb2Hash(str) {
+    let hash = 5381;
+    for (let i = 0; i < str.length; i++) {
+        hash = ((hash * 33 + str.charCodeAt(i)) % 2147483647) >>> 0;
+    }
+    return hash;
+}
+
+function getBestShiny(shinyA, shinyB) {
+    const rankA = SHINY_ORDER.indexOf(shinyA || "none");
+    const rankB = SHINY_ORDER.indexOf(shinyB || "none");
+    return rankA >= rankB ? shinyA : shinyB;
+}
+
+function getLevelMultiplier(lvl) {
+    const cleanLvl = Math.max(1, parseInt(lvl) || 1);
+    return 1 + (cleanLvl - 1) * 0.5;
+}
+
+// INVENTORY & PLANNER STORAGE
+let ownedAnimals = new Set(ANIMALS);
+let filterOwnedOnly = false;
+let savedGoals = [];
+
+function loadState() {
+    try {
+        const saved = localStorage.getItem("ia_owned");
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            if (Array.isArray(parsed)) ownedAnimals = new Set(parsed);
+        }
+        const goalsRaw = localStorage.getItem("ia_planner_goals");
+        if (goalsRaw) {
+            const parsedGoals = JSON.parse(goalsRaw);
+            if (Array.isArray(parsedGoals)) savedGoals = parsedGoals;
+        }
+    } catch(e) {}
+    updateInventoryUI();
+    renderPlanner();
+}
+
+function saveInventory() {
+    try {
+        localStorage.setItem("ia_owned", JSON.stringify([...ownedAnimals]));
+    } catch(e) {}
+    updateInventoryUI();
+}
+
+function savePlannerGoals() {
+    try {
+        localStorage.setItem("ia_planner_goals", JSON.stringify(savedGoals));
+    } catch(e) {}
+    document.getElementById("planner-count-badge").textContent = savedGoals.length;
+    renderPlanner();
+}
+
+function updateInventoryUI() {
+    const count = ownedAnimals.size;
+    const total = ANIMALS.length;
+    const pct = Math.round((count / total) * 100);
+    document.getElementById("inv-count-badge").textContent = `${count}/${total}`;
+    document.getElementById("hdr-owned-stat").textContent = `${count} / ${total} (${pct}%)`;
+    const pairs = count >= 2 ? (count * (count - 1)) / 2 : 0;
+    document.getElementById("hdr-gen1-stat").textContent = `${pairs.toLocaleString()} Pairs`;
+
+    renderChips();
+    runChatResponder();
+    runMatchmaker();
+    runLabCalculator();
+    if (document.getElementById("panel-global").style.display !== "none") resetGlobalPage();
+    if (document.getElementById("panel-single").style.display !== "none") resetDbPage();
+    if (document.getElementById("panel-planner").style.display !== "none") renderPlanner();
+}
+
+function renderChips() {
+    const grid = document.getElementById("chip-grid");
+    const query = (document.getElementById("inv-search")?.value || "").toLowerCase().trim();
+    const tierFilter = document.getElementById("inv-tier-filter")?.value || "all";
+
+    grid.innerHTML = "";
+    let shown = 0;
+
+    ANIMALS.forEach(animal => {
+        const bonus = SPECIAL_BONUS[animal] || 0;
+        if (query && !animal.includes(query)) return;
+        if (tierFilter === "special" && bonus === 0) return;
+        if (tierFilter === "3" && bonus !== 3) return;
+        if (tierFilter === "2" && bonus !== 2) return;
+        if (tierFilter === "1" && bonus !== 1) return;
+        if (tierFilter === "0" && bonus !== 0) return;
+
+        shown++;
+        const chip = document.createElement("div");
+        chip.className = `chip ${ownedAnimals.has(animal) ? "active" : ""}`;
+        const icon = ANIMAL_ICONS[animal] || "🐾";
+        let bonusBadge = "";
+        if (bonus > 0) {
+            bonusBadge = `<span class="chip-bonus bonus-${bonus}">+${bonus}★</span>`;
+        }
+        chip.innerHTML = `<span>${icon} ${animal}</span>${bonusBadge}`;
+        chip.onclick = () => {
+            if (ownedAnimals.has(animal)) {
+                ownedAnimals.delete(animal);
+            } else {
+                ownedAnimals.add(animal);
+            }
+            saveInventory();
+        };
+        grid.appendChild(chip);
+    });
+
+    const summaryEl = document.getElementById("inv-filter-summary");
+    if (summaryEl) summaryEl.textContent = `Showing ${shown} of ${ANIMALS.length} animals`;
+}
+
+function setAllAnimals(state) {
+    if (state) {
+        ownedAnimals = new Set(ANIMALS);
+        showToast("All 77 animals marked as Owned!");
+    } else {
+        ownedAnimals.clear();
+        showToast("Cleared owned animal roster.");
+    }
+    saveInventory();
+}
+
+function selectSpecialOnly() {
+    ownedAnimals = new Set(Object.keys(SPECIAL_BONUS));
+    saveInventory();
+    showToast("Selected all 13 Special Bonus (+1★ to +3★) animals!");
+}
+
+function invertAnimals() {
+    const next = new Set();
+    ANIMALS.forEach(a => {
+        if (!ownedAnimals.has(a)) next.add(a);
+    });
+    ownedAnimals = next;
+    saveInventory();
+    showToast("Inverted animal ownership selection.");
+}
+
+function toggleInvPanel() {
+    const panel = document.getElementById("inv-panel");
+    const isHidden = panel.style.display !== "block";
+    panel.style.display = isHidden ? "block" : "none";
+    document.getElementById("inv-caret").textContent = isHidden ? "▲" : "▼";
+}
+
+function toggleOwnedOnly() {
+    filterOwnedOnly = !filterOwnedOnly;
+    document.getElementById("toggle-owned-wrap").classList.toggle("active", filterOwnedOnly);
+    runMatchmaker();
+    resetGlobalPage();
+    resetDbPage();
+    showToast(filterOwnedOnly ? "Filtering by Owned Animals Only" : "Showing All Possible Game Recipes");
+}
+
+function toggleCompactNumbers() {
+    useCompactNumbers = !useCompactNumbers;
+    document.getElementById("toggle-compact-wrap").classList.toggle("active", useCompactNumbers);
+    runMatchmaker();
+    runLabCalculator();
+    renderGlobalDualTable();
+    renderDbTable();
+    renderPlanner();
+}
+
+// SINGLE FUSE ENGINE
+function calculateSingle(p1, p2, mutation = "none", lvl = 1) {
+    let pHigh = p1, pLow = p2;
+    if (p2 >= p1) { pHigh = p2; pLow = p1; }
+
+    const starsKey = `ImpossibleAnimals:stars:v1:seed:67673:${pLow.length}:${pLow}${pHigh.length}:${pHigh}`;
+    const starRoll = (jenkinsHash(starsKey) / 4294967296) * 1000000;
+
+    let v21 = 0;
+    let baseStars = 20;
+    for (let k = 0; k < WEIGHTS.length; k++) {
+        v21 += WEIGHTS[k];
+        if (starRoll < v21) {
+            baseStars = k + 3;
+            break;
+        }
+    }
+
+    const specialBonus = Math.max(SPECIAL_BONUS[p1] || 0, SPECIAL_BONUS[p2] || 0);
+    const mutBonus = MUTATION_DATA[mutation] ? MUTATION_DATA[mutation].bonus : 0;
+    const finalStars = Math.min(38, Math.max(3, baseStars + specialBonus + mutBonus));
+
+    const mutString = mutation === "none" ? "4:none" : `${mutation.length}:${mutation}`;
+    const incomeKey = `ImpossibleAnimals:income:v1:seed:67673:${pLow.length}:${pLow}${pHigh.length}:${pHigh}${mutString}`;
+    const incomeHash = jenkinsHash(incomeKey);
+
+    const range = INCOME_RANGES[finalStars] || [384000000000, 767999999999];
+    const income = range[0] + Math.floor((incomeHash / 4294967296) * (range[1] - range[0] + 1));
+    const scaledIncome = Math.floor(income * getLevelMultiplier(lvl));
+
+    return {
+        name: `${p1} + ${p2}`,
+        p1, p2,
+        pLow, pHigh,
+        starRoll: Math.floor(starRoll),
+        baseStars,
+        specialBonus,
+        mutBonus,
+        finalStars,
+        income,
+        scaledIncome,
+        mutation,
+        lvl: Math.max(1, parseInt(lvl) || 1)
+    };
+}
+
+// DOUBLE FUSE ENGINE
+function calculateDouble(a1, a2, mutA, lvlA, b1, b2, mutB, lvlB) {
+    const h1 = calculateSingle(a1, a2, mutA, lvlA);
+    const h2 = calculateSingle(b1, b2, mutB, lvlB);
+
+    let [d1, m1] = [h1.pLow, h1.pHigh];
+    if (m1 < d1) [d1, m1] = [m1, d1];
+    const str1 = `${d1.length}:${d1}${m1.length}:${m1}`;
+
+    let [d2, m2] = [h2.pLow, h2.pHigh];
+    if (m2 >= d2) [d2, m2] = [m2, d2];
+    const str2 = `${m2.length}:${m2}${d2.length}:${d2}`;
+
+    let v43 = str2, v38 = str1;
+    if (v43 >= v38) { v38 = str2; v43 = str1; }
+
+    const doubleKey = `ImpossibleAnimals:double-stars:v1:${v43.length}:${v43}${v38.length}:${v38}`;
+    const doubleBonus = Math.floor((jenkinsHash(doubleKey) / 4294967296) * 5) + 1;
+
+    // TRUE LUA RULE (DoubleFusionRules.lua v_u_63):
+    // Parent stars only use (Base Stars + Mutation Bonus); Special Element Bonus is added ONLY ONCE at the end!
+    const p1RawStars = h1.baseStars + h1.mutBonus;
+    const p2RawStars = h2.baseStars + h2.mutBonus;
+
+    const minParentStars = Math.min(p1RawStars, p2RawStars);
+    let thresholdCap = 0;
+    if (3 <= minParentStars) thresholdCap++;
+    if (9 <= minParentStars) thresholdCap++;
+    if (15 <= minParentStars) thresholdCap++;
+    if (21 <= minParentStars) thresholdCap++;
+    if (29 <= minParentStars) thresholdCap++;
+
+    const effectiveDoubleBonus = Math.min(doubleBonus, thresholdCap);
+    const baseDoubleStars = Math.max(p1RawStars, p2RawStars) + effectiveDoubleBonus;
+
+    const allParents = [h1.pLow, h1.pHigh, h2.pLow, h2.pHigh];
+    let specialBonus = 0;
+    for (let p of allParents) {
+        specialBonus = Math.max(specialBonus, SPECIAL_BONUS[p] || 0);
+    }
+
+    const inheritedMutation = getBestShiny(mutA, mutB);
+    const finalDoubleStars = Math.min(38, Math.max(3, baseDoubleStars + specialBonus));
+
+    const mutString = inheritedMutation === "none" ? "none" : inheritedMutation;
+    const incomeSeed = `${allParents.join("|")}|${mutString}`;
+    const djbHash = djb2Hash(incomeSeed);
+    const range = INCOME_RANGES[finalDoubleStars] || [384000000000, 767999999999];
+    const income = range[0] + Math.floor((djbHash / 2147483647) * (range[1] - range[0] + 1));
+    const inheritedLevel = Math.max(parseInt(lvlA) || 1, parseInt(lvlB) || 1);
+    const scaledIncome = Math.floor(income * getLevelMultiplier(inheritedLevel));
+    const bracketPct = Math.round(((income - range[0]) / Math.max(1, range[1] - range[0])) * 100);
+
+    return {
+        fullComboName: `(${a1} + ${a2}) × (${b1} + ${b2})`,
+        partnerRecipe: `${b1} + ${b2}`,
+        a1, a2, b1, b2,
+        mutA, mutB,
+        h1, h2,
+        p1RawStars,
+        p2RawStars,
+        doubleBonus,
+        thresholdCap,
+        effectiveDoubleBonus,
+        specialBonus,
+        finalStars: finalDoubleStars,
+        inheritedMutation,
+        income,
+        scaledIncome,
+        inheritedLevel,
+        incomeSeed,
+        doubleKey,
+        bracketPct
+    };
+}
+
+const COMBO_IDS = ["mm-a1", "mm-a2", "lab-a1", "lab-a2", "lab-b1", "lab-b2"];
+
+function initDropdowns() {
+    COMBO_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.innerHTML = "";
+        ANIMALS.forEach(animal => {
+            const opt = document.createElement("option");
+            opt.value = animal;
+            opt.textContent = getAnimalLabel(animal);
+            el.appendChild(opt);
+        });
+    });
+
+    document.getElementById("mm-a1").value = "tiger";
+    document.getElementById("mm-a2").value = "black-hole";
+
+    document.getElementById("lab-a1").value = "axolotl";
+    document.getElementById("lab-a2").value = "panther";
+    document.getElementById("lab-mut-a").value = "diamond";
+    document.getElementById("lab-b1").value = "coral";
+    document.getElementById("lab-b2").value = "ruby";
+    document.getElementById("lab-mut-b").value = "none";
+
+    COMBO_IDS.forEach(id => mountSearchableCombo(id));
+}
+
+function mountSearchableCombo(selectId) {
+    const selectEl = document.getElementById(selectId);
+    if (!selectEl || selectEl.dataset.comboMounted === "true") return;
+    selectEl.dataset.comboMounted = "true";
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "Combo-wrap";
+    selectEl.parentNode.insertBefore(wrapper, selectEl);
+    wrapper.appendChild(selectEl);
+
+    const inputBox = document.createElement("div");
+    inputBox.className = "combo-input-box";
+
+    const input = document.createElement("input");
+    input.type = "text";
+    input.id = selectId + "-search";
+    input.className = "combo-input";
+    input.placeholder = "Type animal name...";
+    input.autocomplete = "off";
+    input.value = getAnimalLabel(selectEl.value);
+
+    const clearBtn = document.createElement("button");
+    clearBtn.type = "button";
+    clearBtn.className = "combo-clear-btn";
+    clearBtn.title = "Clear & search";
+    clearBtn.textContent = "🔍";
+
+    const dropdown = document.createElement("div");
+    dropdown.className = "combo-dropdown";
+    dropdown.id = selectId + "-dropdown";
+
+    inputBox.appendChild(input);
+    inputBox.appendChild(clearBtn);
+    wrapper.appendChild(inputBox);
+    wrapper.appendChild(dropdown);
+
+    let highlightIdx = 0;
+    let currentMatches = [...ANIMALS];
+
+    function renderList(filterText) {
+        const q = (filterText || "").toLowerCase().trim();
+        currentMatches = ANIMALS.filter(a => {
+            if (filterOwnedOnly && !ownedAnimals.has(a) && a !== selectEl.value) return false;
+            return !q || a.includes(q);
+        });
+        highlightIdx = 0;
+        dropdown.innerHTML = "";
+
+        if (currentMatches.length === 0) {
+            const empty = document.createElement("div");
+            empty.className = "combo-option";
+            empty.style.color = "#64748b";
+            empty.textContent = "No matching animal found";
+            dropdown.appendChild(empty);
+            return;
+        }
+
+        currentMatches.forEach((animal, idx) => {
+            const item = document.createElement("div");
+            item.className = "combo-option" +
+                (idx === highlightIdx ? " highlighted" : "") +
+                (animal === selectEl.value ? " selected" : "");
+            const icon = ANIMAL_ICONS[animal] || "🐾";
+            const bonus = SPECIAL_BONUS[animal] || 0;
+            const bonusHtml = bonus > 0 ? `<span class="chip-bonus bonus-${bonus}">+${bonus}★</span>` : "";
+            item.innerHTML = `<span>${icon} ${animal}</span>${bonusHtml}`;
+            item.onmousedown = (e) => {
+                e.preventDefault();
+                selectAnimalValue(selectId, animal, true);
+                dropdown.classList.remove("open");
+                input.blur();
+            };
+            dropdown.appendChild(item);
+        });
+    }
+
+    function updateHighlight() {
+        const opts = dropdown.querySelectorAll(".combo-option");
+        opts.forEach((el, i) => {
+            el.classList.toggle("highlighted", i === highlightIdx);
+            if (i === highlightIdx) {
+                el.scrollIntoView({ block: "nearest" });
+            }
+        });
+    }
+
+    input.addEventListener("focus", () => {
+        input.value = "";
+        renderList("");
+        dropdown.classList.add("open");
+    });
+
+    input.addEventListener("input", () => {
+        renderList(input.value);
+        dropdown.classList.add("open");
+    });
+
+    input.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowDown") {
+            e.preventDefault();
+            if (currentMatches.length > 0) {
+                highlightIdx = (highlightIdx + 1) % currentMatches.length;
+                updateHighlight();
+            }
+        } else if (e.key === "ArrowUp") {
+            e.preventDefault();
+            if (currentMatches.length > 0) {
+                highlightIdx = (highlightIdx - 1 + currentMatches.length) % currentMatches.length;
+                updateHighlight();
+            }
+        } else if (e.key === "Enter") {
+            e.preventDefault();
+            if (currentMatches.length > 0) {
+                const chosen = currentMatches[highlightIdx] || currentMatches[0];
+                selectAnimalValue(selectId, chosen, true);
+                dropdown.classList.remove("open");
+                input.blur();
+            }
+        } else if (e.key === "Escape") {
+            dropdown.classList.remove("open");
+            input.value = getAnimalLabel(selectEl.value);
+            input.blur();
+        }
+    });
+
+    input.addEventListener("blur", () => {
+        setTimeout(() => {
+            dropdown.classList.remove("open");
+            input.value = getAnimalLabel(selectEl.value);
+        }, 120);
+    });
+
+    clearBtn.addEventListener("mousedown", (e) => {
+        e.preventDefault();
+        input.focus();
+        input.value = "";
+        renderList("");
+        dropdown.classList.add("open");
+    });
+}
+
+function selectAnimalValue(selectId, animal, triggerChange = false) {
+    const selectEl = document.getElementById(selectId);
+    if (!selectEl || !ANIMALS.includes(animal)) return;
+    selectEl.value = animal;
+    const searchInput = document.getElementById(selectId + "-search");
+    if (searchInput && document.activeElement !== searchInput) {
+        searchInput.value = getAnimalLabel(animal);
+    } else if (searchInput && triggerChange) {
+        searchInput.value = getAnimalLabel(animal);
+    }
+    if (triggerChange) {
+        if (selectId.startsWith("mm-")) runMatchmaker();
+        if (selectId.startsWith("lab-")) runLabCalculator();
+    }
+}
+
+function syncAllComboInputs() {
+    COMBO_IDS.forEach(id => {
+        const selectEl = document.getElementById(id);
+        const searchInput = document.getElementById(id + "-search");
+        if (selectEl && searchInput && document.activeElement !== searchInput) {
+            searchInput.value = getAnimalLabel(selectEl.value);
+        }
+    });
+}
+
+function handleQuickPairInput(e, mode) {
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    const raw = e.target.value.toLowerCase().trim();
+    if (!raw) return;
+
+    // Match any 2 animals mentioned in the query or partial tokens
+    const parts = raw.split(/[+,×x/|\s]+/).filter(Boolean);
+    let found = [];
+
+    // First check exact or multi-word animal matches in raw string
+    const sortedByLen = [...ANIMALS].sort((a, b) => b.length - a.length);
+    let tempRaw = raw;
+    for (const an of sortedByLen) {
+        if (tempRaw.includes(an) && !found.includes(an)) {
+            found.push(an);
+            tempRaw = tempRaw.replace(an, " ");
+            if (found.length === 2) break;
+        }
+    }
+
+    // Fallback prefix/substring match on tokens
+    if (found.length < 2) {
+        for (const token of parts) {
+            const match = ANIMALS.find(a => a.startsWith(token) || a.includes(token));
+            if (match && !found.includes(match)) {
+                found.push(match);
+                if (found.length === 2) break;
+            }
+        }
+    }
+
+    if (found.length >= 2) {
+        if (mode === "mm") {
+            selectAnimalValue("mm-a1", found[0], false);
+            selectAnimalValue("mm-a2", found[1], true);
+            showToast(`Selected ${found[0]} + ${found[1]}!`);
+            e.target.value = "";
+        }
+    } else if (found.length === 1) {
+        if (mode === "mm") {
+            selectAnimalValue("mm-a1", found[0], true);
+            showToast(`Set Animal 1 to ${found[0]} — type a second animal name to set both!`);
+        }
+    } else {
+        showToast("No matching animal names found.");
+    }
+}
+
+function swapMatchmakerAnimals() {
+    const el1 = document.getElementById("mm-a1");
+    const el2 = document.getElementById("mm-a2");
+    const tmp = el1.value;
+    el1.value = el2.value;
+    el2.value = tmp;
+    runMatchmaker();
+}
+
+function randomizeMatchmakerPet() {
+    const pool = filterOwnedOnly && ownedAnimals.size >= 2 ? [...ownedAnimals] : ANIMALS;
+    const idx1 = Math.floor(Math.random() * pool.length);
+    let idx2 = Math.floor(Math.random() * pool.length);
+    if (idx2 === idx1) idx2 = (idx1 + 1) % pool.length;
+    document.getElementById("mm-a1").value = pool[idx1];
+    document.getElementById("mm-a2").value = pool[idx2];
+    runMatchmaker();
+    showToast(`Randomized to ${pool[idx1]} + ${pool[idx2]}!`);
+}
+
+function setBestOwnedGen1Pet() {
+    const mut = document.getElementById("mm-mut").value;
+    let best = null;
+    for (let i = 0; i < ANIMALS.length; i++) {
+        for (let j = i + 1; j < ANIMALS.length; j++) {
+            const a = ANIMALS[i], b = ANIMALS[j];
+            if (filterOwnedOnly && (!ownedAnimals.has(a) || !ownedAnimals.has(b))) continue;
+            const res = calculateSingle(a, b, mut);
+            if (!best || res.income > best.income) best = res;
+        }
+    }
+    if (best) {
+        document.getElementById("mm-a1").value = best.pLow;
+        document.getElementById("mm-a2").value = best.pHigh;
+        runMatchmaker();
+        showToast(`Loaded #1 Gen-1 Pet: ${best.pLow} + ${best.pHigh} (${best.finalStars}★)!`);
+    } else {
+        showToast("Unlock at least 2 animals in your inventory first!");
+    }
+}
+
+// ==========================================
+// TAB 1: THE DUAL FUSION MATCHMAKER
+// ==========================================
+let mmResults = [];
+let mmPage = 1;
+const MM_PAGE_SIZE = 50;
+
+function runMatchmaker() {
+    syncAllComboInputs();
+    const a1 = document.getElementById("mm-a1").value;
+    const a2 = document.getElementById("mm-a2").value;
+    const mutA = document.getElementById("mm-mut").value;
+    const lvlA = Math.max(1, parseInt(document.getElementById("mm-lvl").value) || 1);
+    const partnerMut = document.getElementById("mm-partner-mut").value;
+    const partnerLvl = Math.max(1, parseInt(document.getElementById("mm-partner-lvl").value) || 1);
+    const search = document.getElementById("mm-search").value.toLowerCase().trim();
+
+    if (a1 === a2) {
+        document.getElementById("mm-user-title").textContent = "⚠️ Select 2 different animals";
+        document.getElementById("mm-user-breakdown").textContent = "In Impossible Animals, a Gen-1 hybrid requires two distinct base animals.";
+        return;
+    }
+
+    const userH = calculateSingle(a1, a2, mutA, lvlA);
+    const mutPrefix = mutA !== "none" ? `[${mutA.toUpperCase()}] ` : "";
+    document.getElementById("mm-user-title").textContent = `${mutPrefix}${a1} + ${a2}`;
+    document.getElementById("mm-user-breakdown").textContent =
+        `Base Hash Roll: ${userH.baseStars}★ | Special Bonus: +${userH.specialBonus}★ | Mutation Bonus: +${userH.mutBonus}★ | Treadmill Lvl ${lvlA} (${getLevelMultiplier(lvlA).toFixed(1)}x)`;
+    document.getElementById("mm-user-stars").textContent = `${userH.finalStars} ★`;
+    document.getElementById("mm-user-inc").textContent = formatMoney(userH.income);
+    document.getElementById("mm-user-scaled-inc").textContent = formatMoney(userH.scaledIncome);
+
+    mmResults = [];
+    for (let i = 0; i < ANIMALS.length; i++) {
+        for (let j = i + 1; j < ANIMALS.length; j++) {
+            const b1 = ANIMALS[i];
+            const b2 = ANIMALS[j];
+
+            if (filterOwnedOnly && (!ownedAnimals.has(b1) || !ownedAnimals.has(b2))) {
+                continue;
+            }
+            if (search && !b1.includes(search) && !b2.includes(search)) continue;
+
+            const res = calculateDouble(a1, a2, mutA, lvlA, b1, b2, partnerMut, partnerLvl);
+            mmResults.push(res);
+        }
+    }
+
+    mmResults.sort((a, b) => b.income !== a.income ? b.income - a.income : b.finalStars - a.finalStars);
+
+    // Populate Top 3 Podium
+    if (mmResults.length > 0) {
+        [0, 1, 2].forEach(idx => {
+            const item = mmResults[idx] || mmResults[0];
+            const num = idx + 1;
+            const multGain = userH.income > 0 ? (item.income / userH.income) : 1;
+            const gainText = multGain >= 10
+                ? `${multGain.toFixed(1)}x Income`
+                : `+${Math.max(0, Math.round((multGain - 1) * 100)).toLocaleString()}%`;
+
+            document.getElementById(`podium-${num}-name`).textContent = item.fullComboName;
+            document.getElementById(`podium-${num}-partner`).textContent = `Breed Partner: ${item.partnerRecipe} (${item.h2.finalStars}★)`;
+            document.getElementById(`podium-${num}-stars`).textContent = `${item.finalStars} ★ (+${item.finalStars - userH.finalStars}★)`;
+            document.getElementById(`podium-${num}-inc`).textContent = formatMoney(item.scaledIncome);
+            document.getElementById(`podium-${num}-gain`).textContent = gainText;
+        });
+    } else {
+        ["1", "2", "3"].forEach(num => {
+            document.getElementById(`podium-${num}-name`).textContent = "No craftable combos found";
+            document.getElementById(`podium-${num}-partner`).textContent = "Unlock more animals in inventory!";
+            document.getElementById(`podium-${num}-stars`).textContent = "- ★";
+            document.getElementById(`podium-${num}-inc`).textContent = "$0/s";
+            document.getElementById(`podium-${num}-gain`).textContent = "-";
+        });
+    }
+
+    renderMmTable();
+}
+
+function renderMmTable() {
+    const tbody = document.getElementById("mm-table-body");
+    const totalPages = Math.ceil(mmResults.length / MM_PAGE_SIZE) || 1;
+    mmPage = Math.min(mmPage, totalPages);
+
+    const start = (mmPage - 1) * MM_PAGE_SIZE;
+    const slice = mmResults.slice(start, start + MM_PAGE_SIZE);
+
+    let html = "";
+    slice.forEach((item, idx) => {
+        const globalIdx = start + idx;
+        html += `
+            <tr>
+                <td class="rank">#${globalIdx + 1}</td>
+                <td style="font-weight:700; color:var(--heading); text-transform:capitalize;">${item.fullComboName}</td>
+                <td style="font-weight:700; text-transform:capitalize; color:var(--accent);">${ANIMAL_ICONS[item.b1] || "🐾"} ${item.b1} + ${ANIMAL_ICONS[item.b2] || "🐾"} ${item.b2}</td>
+                <td><span style="color:#94a3b8; font-weight:600;">${item.h2.finalStars} ★ (${formatMoney(item.h2.income)})</span></td>
+                <td style="color:var(--gold); font-weight:800;">${item.finalStars} ★</td>
+                <td class="mono" style="color:var(--green-bright); font-weight:700;">${formatMoney(item.income)}</td>
+                <td class="mono" style="color:var(--accent); font-weight:700;">${formatMoney(item.scaledIncome)}</td>
+                <td>
+                    <div class="action-cell">
+                        <button class="btn btn-sm btn-chat-copy" onclick="copyDualChat('${item.a1}','${item.a2}','${item.b1}','${item.b2}',${item.finalStars},${item.income},'${item.inheritedMutation}')" title="Copy Roblox Chat Reply">💬</button>
+                        <button class="btn btn-sm" onclick="loadComboIntoLab('${item.a1}','${item.a2}','${item.mutA}',${item.h1.lvl},'${item.b1}','${item.b2}','${item.mutB}',${item.h2.lvl})" title="Inspect Formula in Lab">🔬</button>
+                        <button class="btn btn-sm" onclick="addGoalToPlanner('${item.a1}','${item.a2}','${item.mutA}','${item.b1}','${item.b2}','${item.mutB}')" title="Save to Breeding Planner">📌</button>
+                    </div>
+                </td>
+            </tr>
+        `;
+    });
+    tbody.innerHTML = html;
+
+    document.getElementById("mm-page-info").textContent = `Page ${mmPage} of ${totalPages} (${mmResults.length.toLocaleString()} craftable partner options)`;
+    document.getElementById("btn-mm-prev").disabled = mmPage === 1;
+    document.getElementById("btn-mm-next").disabled = mmPage >= totalPages;
+}
+
+function resetMmPage() {
+    mmPage = 1;
+    runMatchmaker();
+}
+
+function changeMmPage(delta) {
+    mmPage += delta;
+    renderMmTable();
+}
+
+function inspectPodiumInLab(idx) {
+    const item = mmResults[idx];
+    if (!item) return;
+    loadComboIntoLab(item.a1, item.a2, item.mutA, item.h1.lvl, item.b1, item.b2, item.mutB, item.h2.lvl);
+}
+
+function pinPodiumToPlanner(idx) {
+    const item = mmResults[idx];
+    if (!item) return;
+    addGoalToPlanner(item.a1, item.a2, item.mutA, item.b1, item.b2, item.mutB);
+}
+
+// ==========================================
+// TAB 2: DUAL FUSION SANDBOX & FORMULA LAB
+// ==========================================
+let currentLabResult = null;
+
+function runLabCalculator() {
+    syncAllComboInputs();
+    const a1 = document.getElementById("lab-a1").value;
+    const a2 = document.getElementById("lab-a2").value;
+    const mutA = document.getElementById("lab-mut-a").value;
+    const lvlA = Math.max(1, parseInt(document.getElementById("lab-lvl-a").value) || 1);
+
+    const b1 = document.getElementById("lab-b1").value;
+    const b2 = document.getElementById("lab-b2").value;
+    const mutB = document.getElementById("lab-mut-b").value;
+    const lvlB = Math.max(1, parseInt(document.getElementById("lab-lvl-b").value) || 1);
+
+    const badgeA = document.getElementById("lab-h1-badge");
+    badgeA.className = `badge badge-${mutA}`;
+    badgeA.textContent = MUTATION_DATA[mutA].name;
+
+    const badgeB = document.getElementById("lab-h2-badge");
+    badgeB.className = `badge badge-${mutB}`;
+    badgeB.textContent = MUTATION_DATA[mutB].name;
+
+    const res = calculateDouble(a1, a2, mutA, lvlA, b1, b2, mutB, lvlB);
+    currentLabResult = res;
+
+    document.getElementById("lab-h1-summary").innerHTML = `
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+            <span style="color:#94a3b8;">Gen-1 Stars:</span>
+            <b style="color:var(--gold);">${res.h1.finalStars} ★ (Roll ${res.h1.baseStars}★ + Spec ${res.h1.specialBonus}★ + Mut ${res.h1.mutBonus}★)</b>
+        </div>
+        <div style="display:flex; justify-content:space-between;">
+            <span style="color:#94a3b8;">Gen-1 Base Income:</span>
+            <b class="mono" style="color:var(--green-bright);">${formatMoney(res.h1.income)}</b>
+        </div>
+    `;
+
+    document.getElementById("lab-h2-summary").innerHTML = `
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+            <span style="color:#94a3b8;">Gen-1 Stars:</span>
+            <b style="color:var(--gold);">${res.h2.finalStars} ★ (Roll ${res.h2.baseStars}★ + Spec ${res.h2.specialBonus}★ + Mut ${res.h2.mutBonus}★)</b>
+        </div>
+        <div style="display:flex; justify-content:space-between;">
+            <span style="color:#94a3b8;">Gen-1 Base Income:</span>
+            <b class="mono" style="color:var(--green-bright);">${formatMoney(res.h2.income)}</b>
+        </div>
+    `;
+
+    document.getElementById("lab-result-name").textContent = res.fullComboName;
+    document.getElementById("lab-result-sub").textContent = `DJB2 Income Seed: "${res.incomeSeed}" • Bracket Roll Percentile: ${res.bracketPct}%`;
+    document.getElementById("lab-result-mut").innerHTML = `<span class="badge badge-${res.inheritedMutation}">${MUTATION_DATA[res.inheritedMutation].name}</span>`;
+    document.getElementById("lab-result-stars").textContent = `${res.finalStars} ★`;
+    document.getElementById("lab-result-inc").textContent = formatMoney(res.income);
+    document.getElementById("lab-result-lvl").textContent = res.inheritedLevel;
+    document.getElementById("lab-result-scaled").textContent = formatMoney(res.scaledIncome);
+
+    const grid = document.getElementById("lab-formula-grid");
+    grid.innerHTML = `
+        <div class="formula-step">
+            <div class="step-num">Step 1 • Raw Parent Stars (No Spec)</div>
+            <div class="step-val">${Math.max(res.p1RawStars, res.p2RawStars)} ★</div>
+            <div class="step-sub">Uses Base + Mut only: Hybrid A (${res.p1RawStars}★) vs Hybrid B (${res.p2RawStars}★). Special bonus is not counted here.</div>
+        </div>
+        <div class="formula-step">
+            <div class="step-num">Step 2 • Weakest Raw Parent Cap</div>
+            <div class="step-val">+${res.thresholdCap} ★ Max Cap</div>
+            <div class="step-sub">Min raw parent is ${Math.min(res.p1RawStars, res.p2RawStars)}★ (Thresholds at 3, 9, 15, 21, 29★ unlock +1 to +5 cap).</div>
+        </div>
+        <div class="formula-step">
+            <div class="step-num">Step 3 • Jenkins Double Roll</div>
+            <div class="step-val">+${res.effectiveDoubleBonus} ★ (Rolled +${res.doubleBonus}★)</div>
+            <div class="step-sub">Jenkins hash rolled +${res.doubleBonus}★, clamped by Step 2 cap (+${res.thresholdCap}★) = +${res.effectiveDoubleBonus}★.</div>
+        </div>
+        <div class="formula-step">
+            <div class="step-num">Step 4 • 4-Parent Special Bonus</div>
+            <div class="step-val">+${res.specialBonus} ★</div>
+            <div class="step-sub">Highest special animal bonus among [${res.a1}, ${res.a2}, ${res.b1}, ${res.b2}], capped at 38★ max.</div>
+        </div>
+        <div class="formula-step">
+            <div class="step-num">Step 5 • Inherited Mutation &amp; Level</div>
+            <div class="step-val">${MUTATION_DATA[res.inheritedMutation].name} • Lvl ${res.inheritedLevel}</div>
+            <div class="step-sub">Inherits best shiny (${res.mutA} vs ${res.mutB}) and max Treadmill Level (${lvlA} vs ${lvlB}).</div>
+        </div>
+    `;
+}
+
+function swapLabHybrids() {
+    const a1 = document.getElementById("lab-a1").value;
+    const a2 = document.getElementById("lab-a2").value;
+    const mutA = document.getElementById("lab-mut-a").value;
+    const lvlA = document.getElementById("lab-lvl-a").value;
+
+    document.getElementById("lab-a1").value = document.getElementById("lab-b1").value;
+    document.getElementById("lab-a2").value = document.getElementById("lab-b2").value;
+    document.getElementById("lab-mut-a").value = document.getElementById("lab-mut-b").value;
+    document.getElementById("lab-lvl-a").value = document.getElementById("lab-lvl-b").value;
+
+    document.getElementById("lab-b1").value = a1;
+    document.getElementById("lab-b2").value = a2;
+    document.getElementById("lab-mut-b").value = mutA;
+    document.getElementById("lab-lvl-b").value = lvlA;
+
+    runLabCalculator();
+}
+
+function loadComboIntoLab(a1, a2, mutA, lvlA, b1, b2, mutB, lvlB) {
+    document.getElementById("lab-a1").value = a1;
+    document.getElementById("lab-a2").value = a2;
+    document.getElementById("lab-mut-a").value = mutA || "none";
+    document.getElementById("lab-lvl-a").value = lvlA || 1;
+
+    document.getElementById("lab-b1").value = b1;
+    document.getElementById("lab-b2").value = b2;
+    document.getElementById("lab-mut-b").value = mutB || "none";
+    document.getElementById("lab-lvl-b").value = lvlB || 1;
+
+    switchTab("lab");
+    showToast(`Loaded ${a1}+${a2} × ${b1}+${b2} into Formula Lab!`);
+}
+
+function pinLabToPlanner() {
+    if (!currentLabResult) return;
+    addGoalToPlanner(
+        currentLabResult.a1, currentLabResult.a2, currentLabResult.mutA,
+        currentLabResult.b1, currentLabResult.b2, currentLabResult.mutB
+    );
+}
+
+function copyLabSummary() {
+    if (!currentLabResult) return;
+    const r = currentLabResult;
+    const txt = `Impossible Animals Dual Fusion: ${r.fullComboName} | Mutation: ${r.inheritedMutation.toUpperCase()} | Stars: ${r.finalStars}★ | Base Income: $${r.income.toLocaleString()}/s | Scaled (Lvl ${r.inheritedLevel}): $${r.scaledIncome.toLocaleString()}/s`;
+    copyTextToClipboard(txt, "Copied Dual Fusion summary to clipboard!");
+}
+
+// ==========================================
+// TAB 3: GLOBAL ALL-TIME BEST COMBOS
+// ==========================================
+let globalDualData = [];
+let globalPage = 1;
+const GLOBAL_PAGE_SIZE = 50;
+
+function computeGlobalDualDataset() {
+    const search = document.getElementById("global-search").value.toLowerCase().trim();
+    const mutA = document.getElementById("global-mut-a").value;
+    const mutB = document.getElementById("global-mut-b").value;
+    const depth = parseInt(document.getElementById("global-depth").value) || 120;
+    const sort = document.getElementById("global-sort").value;
+
+    globalDualData = [];
+
+    const blocksA = [];
+    const blocksB = [];
+    for (let i = 0; i < ANIMALS.length; i++) {
+        for (let j = i + 1; j < ANIMALS.length; j++) {
+            const anA = ANIMALS[i], anB = ANIMALS[j];
+            if (filterOwnedOnly && (!ownedAnimals.has(anA) || !ownedAnimals.has(anB))) continue;
+            blocksA.push(calculateSingle(anA, anB, mutA));
+            blocksB.push(calculateSingle(anA, anB, mutB));
+        }
+    }
+    blocksA.sort((a, b) => b.income - a.income);
+    blocksB.sort((a, b) => b.income - a.income);
+
+    const scanLimit = Math.min(blocksA.length, depth);
+    for (let i = 0; i < scanLimit; i++) {
+        for (let j = i + 1; j < scanLimit; j++) {
+            const h1 = blocksA[i];
+            const h2 = blocksB[j];
+
+            if (search && !h1.pLow.includes(search) && !h1.pHigh.includes(search) && !h2.pLow.includes(search) && !h2.pHigh.includes(search)) {
+                continue;
+            }
+
+            const res = calculateDouble(h1.pLow, h1.pHigh, mutA, 1, h2.pLow, h2.pHigh, mutB, 1);
+            globalDualData.push(res);
+        }
+    }
+
+    if (sort === "income-desc") globalDualData.sort((a, b) => b.income - a.income);
+    if (sort === "income-asc") globalDualData.sort((a, b) => a.income - b.income);
+    if (sort === "stars-desc") globalDualData.sort((a, b) => b.finalStars !== a.finalStars ? b.finalStars - a.finalStars : b.income - a.income);
+    if (sort === "stars-asc") globalDualData.sort((a, b) => a.finalStars !== b.finalStars ? a.finalStars - b.finalStars : a.income - b.income);
+}
+
+function renderGlobalDualTable() {
+    const tbody = document.getElementById("global-table-body");
+    const totalPages = Math.ceil(globalDualData.length / GLOBAL_PAGE_SIZE) || 1;
+    globalPage = Math.min(globalPage, totalPages);
+
+    const start = (globalPage - 1) * GLOBAL_PAGE_SIZE;
+    const slice = globalDualData.slice(start, start + GLOBAL_PAGE_SIZE);
+
+    let html = "";
+    slice.forEach((item, idx) => {
+        html += `
+            <tr>
+                <td class="rank">#${start + idx + 1}</td>
+                <td style="font-weight:700; color:var(--heading); text-transform:capitalize;">${item.fullComboName}</td>
+                <td><span class="badge badge-${item.inheritedMutation}">${MUTATION_DATA[item.inheritedMutation].name}</span></td>
+                <td style="color:var(--gold); font-weight:800;">${item.finalStars} ★</td>
+                <td class="mono" style="color:var(--green-bright); font-weight:800;">${formatMoney(item.income)}</td>
+                <td><span style="font-size:12px; color:#94a3b8;">${item.bracketPct}% of ${item.finalStars}★ max</span></td>
+                <td>
+                    <div class="action-cell">
+                        <button class="btn btn-sm btn-chat-copy" onclick="copyDualChat('${item.a1}','${item.a2}','${item.b1}','${item.b2}',${item.finalStars},${item.income},'${item.inheritedMutation}')" title="Copy Roblox Chat Reply">💬</button>
+                        <button class="btn btn-sm" onclick="loadComboIntoLab('${item.a1}','${item.a2}','${item.mutA}',1,'${item.b1}','${item.b2}','${item.mutB}',1)" title="Inspect in Lab">🔬</button>
+                        <button class="btn btn-sm" onclick="addGoalToPlanner('${item.a1}','${item.a2}','${item.mutA}','${item.b1}','${item.b2}','${item.mutB}')" title="Pin to Planner">📌</button>
+                    </div>
+                </td>
+            </tr>
+        `;
+    });
+    tbody.innerHTML = html;
+
+    document.getElementById("global-page-info").textContent = `Page ${globalPage} of ${totalPages} (${globalDualData.length.toLocaleString()} combos evaluated)`;
+    document.getElementById("btn-global-prev").disabled = globalPage === 1;
+    document.getElementById("btn-global-next").disabled = globalPage >= totalPages;
+}
+
+function resetGlobalPage() {
+    globalPage = 1;
+    computeGlobalDualDataset();
+    renderGlobalDualTable();
+}
+
+function changeGlobalPage(delta) {
+    globalPage += delta;
+    renderGlobalDualTable();
+}
+
+// ==========================================
+// TAB 4: SINGLE FUSIONS (GEN 1 DATABASE)
+// ==========================================
+let dbItems = [];
+let dbPage = 1;
+const DB_PAGE_SIZE = 50;
+
+function computeDbDataset() {
+    const search = document.getElementById("db-search").value.toLowerCase().trim();
+    const mut = document.getElementById("db-mut").value;
+    const bonusFilter = document.getElementById("db-bonus-filter").value;
+    const sort = document.getElementById("db-sort").value;
+
+    dbItems = [];
+    for (let i = 0; i < ANIMALS.length; i++) {
+        for (let j = i + 1; j < ANIMALS.length; j++) {
+            const a = ANIMALS[i], b = ANIMALS[j];
+            if (filterOwnedOnly && (!ownedAnimals.has(a) || !ownedAnimals.has(b))) continue;
+            if (search && !a.includes(search) && !b.includes(search)) continue;
+            const item = calculateSingle(a, b, mut);
+            if (bonusFilter !== "all" && item.specialBonus !== parseInt(bonusFilter)) continue;
+            dbItems.push(item);
+        }
+    }
+
+    if (sort === "income-desc") dbItems.sort((a, b) => b.income - a.income);
+    if (sort === "income-asc") dbItems.sort((a, b) => a.income - b.income);
+    if (sort === "stars-desc") dbItems.sort((a, b) => b.finalStars !== a.finalStars ? b.finalStars - a.finalStars : b.income - a.income);
+    if (sort === "stars-asc") dbItems.sort((a, b) => a.finalStars !== b.finalStars ? a.finalStars - b.finalStars : a.income - b.income);
+    if (sort === "base-desc") dbItems.sort((a, b) => b.baseStars !== a.baseStars ? b.baseStars - a.baseStars : b.income - a.income);
+}
+
+function renderDbTable() {
+    const tbody = document.getElementById("db-table-body");
+    const totalPages = Math.ceil(dbItems.length / DB_PAGE_SIZE) || 1;
+    dbPage = Math.min(dbPage, totalPages);
+
+    const start = (dbPage - 1) * DB_PAGE_SIZE;
+    const slice = dbItems.slice(start, start + DB_PAGE_SIZE);
+
+    let html = "";
+    slice.forEach((item, idx) => {
+        const specBadge = item.specialBonus > 0
+            ? `<span class="chip-bonus bonus-${item.specialBonus}">+${item.specialBonus}★</span>`
+            : `<span style="color:#64748b;">+0★</span>`;
+        html += `
+            <tr>
+                <td class="rank">#${start + idx + 1}</td>
+                <td style="font-weight:700; text-transform:capitalize; color:var(--heading);">${ANIMAL_ICONS[item.p1] || "🐾"} ${item.p1} + ${ANIMAL_ICONS[item.p2] || "🐾"} ${item.p2}</td>
+                <td style="color:#94a3b8; font-weight:600;">${item.baseStars} ★</td>
+                <td>${specBadge}</td>
+                <td><span class="badge badge-${item.mutation}">${MUTATION_DATA[item.mutation].name}</span></td>
+                <td style="color:var(--gold); font-weight:800;">${item.finalStars} ★</td>
+                <td class="mono" style="color:var(--green-bright); font-weight:800;">${formatMoney(item.income)}</td>
+                <td>
+                    <div class="action-cell">
+                        <button class="btn btn-sm btn-chat-copy" onclick="copySingleChat('${item.p1}','${item.p2}',${item.finalStars},${item.income},'${item.mutation}')" title="Copy Roblox Chat Reply (e.g. Glitter + stingray 18 stars 102k/s)">💬 Copy Chat</button>
+                        <button class="btn btn-sm" onclick="sendSingleToMatchmaker('${item.p1}','${item.p2}','${item.mutation}')">🧬 Find Best Partner</button>
+                    </div>
+                </td>
+            </tr>
+        `;
+    });
+    tbody.innerHTML = html;
+
+    document.getElementById("db-page-info").textContent = `Page ${dbPage} of ${totalPages} (${dbItems.length.toLocaleString()} craftable Gen-1 recipes)`;
+    document.getElementById("btn-prev").disabled = dbPage === 1;
+    document.getElementById("btn-next").disabled = dbPage >= totalPages;
+}
+
+function sendSingleToMatchmaker(p1, p2, mut) {
+    document.getElementById("mm-a1").value = p1;
+    document.getElementById("mm-a2").value = p2;
+    document.getElementById("mm-mut").value = mut || "none";
+    switchTab("matchmaker");
+    showToast(`Loaded ${p1} + ${p2} into Matchmaker!`);
+}
+
+function resetDbPage() {
+    dbPage = 1;
+    computeDbDataset();
+    renderDbTable();
+}
+
+function changeDbPage(delta) {
+    dbPage += delta;
+    renderDbTable();
+}
+
+// ==========================================
+// TAB 5: BREEDING PLANNER & SAVED GOALS
+// ==========================================
+function addGoalToPlanner(a1, a2, mutA, b1, b2, mutB) {
+    const id = `${a1}|${a2}|${mutA}|${b1}|${b2}|${mutB}`;
+    if (savedGoals.some(g => g.id === id)) {
+        showToast("Combo is already in your Breeding Planner!");
+        return;
+    }
+    savedGoals.unshift({ id, a1, a2, mutA: mutA || "none", b1, b2, mutB: mutB || "none" });
+    savePlannerGoals();
+    showToast(`Pinned (${a1} + ${a2}) × (${b1} + ${b2}) to Planner!`);
+}
+
+function removeGoalFromPlanner(id) {
+    savedGoals = savedGoals.filter(g => g.id !== id);
+    savePlannerGoals();
+}
+
+function clearPlannerGoals() {
+    savedGoals = [];
+    savePlannerGoals();
+    showToast("Cleared all saved breeding goals.");
+}
+
+function addTop3GlobalToPlanner() {
+    if (globalDualData.length === 0) computeGlobalDualDataset();
+    const top3 = globalDualData.slice(0, 3);
+    top3.forEach(item => {
+        const id = `${item.a1}|${item.a2}|${item.mutA}|${item.b1}|${item.b2}|${item.mutB}`;
+        if (!savedGoals.some(g => g.id === id)) {
+            savedGoals.push({
+                id,
+                a1: item.a1, a2: item.a2, mutA: item.mutA,
+                b1: item.b1, b2: item.b2, mutB: item.mutB
+            });
+        }
+    });
+    savePlannerGoals();
+    switchTab("planner");
+    showToast("Pinned Top 3 Global Dual Combos to your Breeding Planner!");
+}
+
+function renderPlanner() {
+    document.getElementById("planner-count-badge").textContent = savedGoals.length;
+    const emptyEl = document.getElementById("planner-empty");
+    const gridEl = document.getElementById("planner-grid");
+
+    if (savedGoals.length === 0) {
+        emptyEl.style.display = "block";
+        gridEl.innerHTML = "";
+        return;
+    }
+    emptyEl.style.display = "none";
+
+    let html = "";
+    savedGoals.forEach(g => {
+        const calc = calculateDouble(g.a1, g.a2, g.mutA, 1, g.b1, g.b2, g.mutB, 1);
+        const parents = [g.a1, g.a2, g.b1, g.b2];
+        const ownedCount = parents.filter(p => ownedAnimals.has(p)).length;
+        const readyBadge = ownedCount === 4
+            ? `<span class="gain-pill">✅ Ready to Craft (4/4 Owned)</span>`
+            : `<span class="badge" style="background:rgba(248,113,113,0.15); color:#fca5a5; border:1px solid rgba(248,113,113,0.4);">${ownedCount}/4 Base Animals Owned</span>`;
+
+        const ingHtml = parents.map(p => {
+            const has = ownedAnimals.has(p);
+            return `
+                <div class="ing-pill ${has ? 'owned' : 'missing'}" onclick="toggleSingleAnimalFromPlanner('${p}')" style="cursor:pointer;" title="Click to toggle ownership">
+                    <span>${ANIMAL_ICONS[p] || "🐾"} ${p}</span>
+                    <span>${has ? "✓" : "✕"}</span>
+                </div>
+            `;
+        }).join("");
+
+        html += `
+            <div class="planner-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                    ${readyBadge}
+                    <span class="badge badge-${calc.inheritedMutation}">${MUTATION_DATA[calc.inheritedMutation].name}</span>
+                </div>
+                <div style="font-size:15.5px; font-weight:800; color:var(--heading); text-transform:capitalize;">
+                    ${calc.fullComboName}
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:13px; background:#070a10; padding:8px 12px; border-radius:6px; border:1px solid var(--border);">
+                    <span style="color:var(--gold); font-weight:800;">${calc.finalStars} ★ Dual Hybrid</span>
+                    <span class="mono" style="color:var(--green-bright); font-weight:800;">${formatMoney(calc.income)}</span>
+                </div>
+                <div style="font-size:11px; color:#94a3b8; font-weight:700; text-transform:uppercase;">Required 4 Base Animals (Click to Toggle):</div>
+                <div class="ingredient-list">${ingHtml}</div>
+                <div style="display:flex; gap:6px; margin-top:4px;">
+                    <button class="btn btn-sm" style="flex:1; justify-content:center;" onclick="loadComboIntoLab('${g.a1}','${g.a2}','${g.mutA}',1,'${g.b1}','${g.b2}','${g.mutB}',1)">🔬 Inspect</button>
+                    <button class="btn btn-sm" onclick="removeGoalFromPlanner('${g.id}')">🗑️ Remove</button>
+                </div>
+            </div>
+        `;
+    });
+    gridEl.innerHTML = html;
+}
+
+function toggleSingleAnimalFromPlanner(animal) {
+    if (ownedAnimals.has(animal)) ownedAnimals.delete(animal);
+    else ownedAnimals.add(animal);
+    saveInventory();
+}
+
+// ==========================================
+// CSV EXPORT & INVENTORY MODAL
+// ==========================================
+function exportCurrentTableCSV(mode) {
+    let rows = [];
+    let filename = "impossible_animals_export.csv";
+
+    if (mode === "matchmaker") {
+        rows.push(["Rank", "Full Dual Combo", "Partner Recipe", "Dual Stars", "Base Income ($/s)", "Scaled Income ($/s)"]);
+        mmResults.slice(0, 250).forEach((r, i) => {
+            rows.push([i + 1, `"${r.fullComboName}"`, `"${r.partnerRecipe}"`, r.finalStars, r.income, r.scaledIncome]);
+        });
+        filename = "matchmaker_top_combos.csv";
+    } else if (mode === "global") {
+        rows.push(["Rank", "Full Dual Combo", "Inherited Mutation", "Stars", "Base Income ($/s)"]);
+        globalDualData.slice(0, 250).forEach((r, i) => {
+            rows.push([i + 1, `"${r.fullComboName}"`, r.inheritedMutation, r.finalStars, r.income]);
+        });
+        filename = "global_best_dual_combos.csv";
+    } else if (mode === "single") {
+        rows.push(["Rank", "Recipe", "Base Roll Stars", "Special Bonus", "Mutation", "Final Stars", "Base Income ($/s)"]);
+        dbItems.slice(0, 500).forEach((r, i) => {
+            rows.push([i + 1, `"${r.name}"`, r.baseStars, r.specialBonus, r.mutation, r.finalStars, r.income]);
+        });
+        filename = "single_gen1_fusions.csv";
+    }
+
+    const csvContent = rows.map(e => e.join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    showToast(`Exported ${filename}!`);
+}
+
+function openInventoryModal() {
+    document.getElementById("inv-json-box").value = JSON.stringify([...ownedAnimals]);
+    document.getElementById("inv-modal").style.display = "flex";
+}
+
+function closeInventoryModal() {
+    document.getElementById("inv-modal").style.display = "none";
+}
+
+function copyInventoryJson() {
+    const val = document.getElementById("inv-json-box").value;
+    copyTextToClipboard(val, "Copied inventory JSON to clipboard!");
+}
+
+function importInventoryJson() {
+    try {
+        const raw = document.getElementById("inv-json-box").value.trim();
+        const arr = JSON.parse(raw);
+        if (Array.isArray(arr)) {
+            const valid = arr.filter(x => ANIMALS.includes(x));
+            ownedAnimals = new Set(valid);
+            saveInventory();
+            closeInventoryModal();
+            showToast(`Loaded ${valid.length} unlocked animals!`);
+        }
+    } catch (e) {
+        showToast("Invalid JSON format — please check your pasted array.");
+    }
+}
+
+// TAB SWITCHER
+function switchTab(tab) {
+    const tabs = ['matchmaker', 'lab', 'global', 'single', 'planner'];
+    tabs.forEach(t => {
+        document.getElementById(`btn-tab-${t}`).classList.toggle('active', t === tab);
+        document.getElementById(`panel-${t}`).style.display = t === tab ? 'block' : 'none';
+    });
+
+    if (tab === 'matchmaker') runMatchmaker();
+    if (tab === 'lab') runLabCalculator();
+    if (tab === 'global') resetGlobalPage();
+    if (tab === 'single') resetDbPage();
+    if (tab === 'planner') renderPlanner();
+}
+
+window.onload = () => {
+    initDropdowns();
+    loadState();
+};
+</script>
+</body>
+</html>
