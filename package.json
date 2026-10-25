@@ -1,0 +1,29 @@
+{
+  "name": "impossible-animals-wiki",
+  "version": "1.0.0",
+  "description": "Impossible Animals — Dual Fusion Studio, Matchmaker & Breeding Lab",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve .",
+    "build": "echo 'Static web build ready for Vercel'"
+  },
+  "keywords": [
+    "roblox",
+    "impossible-animals",
+    "wiki",
+    "fusion-calculator",
+    "dual-fusion",
+    "breeding-lab"
+  ],
+  "author": "Amashing0411",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Amashing0411/Impossible-Animals-Wiki.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Amashing0411/Impossible-Animals-Wiki/issues"
+  },
+  "homepage": "https://github.com/Amashing0411/Impossible-Animals-Wiki#readme"
+}

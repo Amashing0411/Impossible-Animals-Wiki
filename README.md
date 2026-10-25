@@ -1,6 +1,8 @@
 # 🧬 Impossible Animals — Dual Fusion Studio, Matchmaker & Breeding Lab
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FAmashing0411%2FImpossible-Animals-Wiki)
 [![GitHub Pages](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-38bdf8?style=for-the-badge&logo=github)](https://amashing0411.github.io/Impossible-Animals-Wiki/)
+[![Vercel Ready](https://img.shields.io/badge/Vercel-Ready-000000?style=for-the-badge&logo=vercel)](https://vercel.com)
 [![Game](https://img.shields.io/badge/Roblox-Impossible%20Animals-10b981?style=for-the-badge&logo=roblox)](https://www.roblox.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-fbbf24?style=for-the-badge)](LICENSE)
 
@@ -10,12 +12,27 @@ Powered by exact reverse-engineered game engine formulas, this tool calculates d
 
 ---
 
+## ⚡ 1-Click Deploy to Vercel
+
+Deploy your own live instance of this Wiki to Vercel with one click:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FAmashing0411%2FImpossible-Animals-Wiki)
+
+### Manual Vercel Deployment:
+1. Go to **[Vercel Dashboard](https://vercel.com/dashboard)**.
+2. Click **"Add New..."** $\rightarrow$ **"Project"**.
+3. Import your GitHub repository: `Amashing0411/Impossible-Animals-Wiki`.
+4. Leave all build settings as default (Framework Preset: *Other* / *Static Site*).
+5. Click **"Deploy"**. Your Wiki will be live on a high-speed global CDN with a free SSL certificate!
+
+---
+
 ## 🌟 Live Demo
 
-> **Open the Web App:**  
+> **Live GitHub Pages URL:**  
 > 👉 **[https://amashing0411.github.io/Impossible-Animals-Wiki/](https://amashing0411.github.io/Impossible-Animals-Wiki/)**
 
-Zero installation, zero setup. Runs 100% client-side in any modern web browser.
+Zero installation, zero setup. Runs 100% client-side in any modern web browser or mobile device.
 
 ---
 
@@ -45,7 +62,7 @@ Zero installation, zero setup. Runs 100% client-side in any modern web browser.
 * View an auto-aggregated checklist of base animal ingredients needed to craft your breeding goals.
 * Progress is automatically saved in your browser's `localStorage`.
 
-### 6. 💬 Roblox Quick Chat Responder
+### 6. 💬 Roblox Quick Chat Responder ("TatayDigs Mode")
 * When players in your Roblox server ask for fusion recipes or optimal combinations, generate clean, formatted responses with one click:
   * `[IA Wiki] 🐅 Tiger + 🐉 Dragon = 18★ | $/sec: $12.5M`
 * Supports fuzzy search for quick lookups during active gameplay.
@@ -81,40 +98,21 @@ $$\text{Input} = \text{"ImpossibleAnimals:double-stars:v1:"} .. \text{sorted}(H_
 
 ---
 
-## 🛠️ Local Development & Running
+## 🛠️ Local Development
 
-Because the entire application is contained within `index.html` with zero external build dependencies:
+Because the entire application is contained with zero external dependencies:
 
 ```bash
 # 1. Clone the repository
 git clone https://github.com/Amashing0411/Impossible-Animals-Wiki.git
 
-# 2. Open the directory
+# 2. Enter project folder
 cd Impossible-Animals-Wiki
 
-# 3. Launch directly in your default browser
-start index.html   # On Windows
-# open index.html  # On macOS
-# xdg-open index.html # On Linux
+# 3. Launch with npm / npx
+npm start
+# or open index.html directly in any browser
 ```
-
-Or run a local development server:
-```bash
-python -m http.server 8000
-# Then visit http://localhost:8000 in your browser
-```
-
----
-
-## 🌐 Deploying to GitHub Pages
-
-1. Push this repository to GitHub: `git push -u origin main`
-2. Go to your repository on GitHub $\rightarrow$ **Settings** $\rightarrow$ **Pages**.
-3. Under **Build and deployment**:
-   * **Source**: `Deploy from a branch`
-   * **Branch**: `main` / `root`
-4. Click **Save**. Within 1–2 minutes, your wiki will be live at:
-   `https://amashing0411.github.io/Impossible-Animals-Wiki/`
 
 ---
 
