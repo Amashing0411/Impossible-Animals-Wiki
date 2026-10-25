@@ -1564,20 +1564,222 @@ function importInventoryJson() {
 // (Extracted from game engine: WildRules.lua & LinearWildMap.lua)
 // =========================================================
 const BIOMES_DATA = [
-    { tier: 1, name: "Grassland", stars: 1, guard: "e1", diff: "Tutorial", color: "#4ade80", icon: "🌱", rewards: ["chicken", "dog", "cat", "sheep"] },
-    { tier: 2, name: "Dense Forest", stars: 5, guard: "e3", diff: "Easy", color: "#22c55e", icon: "🌲", rewards: ["cow", "pig", "horse", "wolf"] },
-    { tier: 3, name: "Scorching Desert", stars: 25, guard: "e5", diff: "Normal", color: "#eab308", icon: "🏜️", rewards: ["camel", "snake", "scorpion", "vulture"] },
-    { tier: 4, name: "Subzero Tundra", stars: 125, guard: "e7", diff: "Normal+", color: "#38bdf8", icon: "❄️", rewards: ["polar bear", "penguin", "walrus", "arctic fox"] },
-    { tier: 5, name: "Volcanic Caverns", stars: 600, guard: "e9", diff: "Hard", color: "#f97316", icon: "🌋", rewards: ["fire lizard", "magma hound", "lava turtle", "obsidian golem"] },
-    { tier: 6, name: "Abyssal Trench", stars: 3000, guard: "e11", diff: "Hard+", color: "#06b6d4", icon: "🌊", rewards: ["anglerfish", "giant squid", "kraken spawn", "abyssal shark"] },
-    { tier: 7, name: "Celestial Peaks", stars: 15000, guard: "e13", diff: "Expert", color: "#a855f7", icon: "🏔️", rewards: ["griffin", "storm eagle", "pegasus", "sky serpent"] },
-    { tier: 8, name: "Shadow Realm", stars: 80000, guard: "e15", diff: "Expert+", color: "#6366f1", icon: "🌑", rewards: ["shadow panther", "phantom wolf", "nightmare steed", "void bat"] },
-    { tier: 9, name: "Ancient Ruins", stars: 450000, guard: "e17", diff: "Master", color: "#ec4899", icon: "🏛️", rewards: ["sphynx", "chimera", "manticore", "ouroboros"] },
-    { tier: 10, name: "Astral Expanse", stars: 2500000, guard: "e19", diff: "Master+", color: "#c084fc", icon: "🌌", rewards: ["cosmic jellyfish", "star whale", "nebula drake", "solar lion"] },
-    { tier: 11, name: "Infernal Abyss", stars: 15000000, guard: "e21", diff: "Nightmare", color: "#ef4444", icon: "🔥", rewards: ["cerberus", "phoenix", "inferno wyrm", "hellhound"] },
-    { tier: 12, name: "Chrono Dimension", stars: 80000000, guard: "e23", diff: "Nightmare+", color: "#facc15", icon: "⏳", rewards: ["time weaver", "chrono tiger", "aeon basilisk", "rift stalker"] },
-    { tier: 13, name: "Quantum Void", stars: 200000000, guard: "e25", diff: "Mythic", color: "#818cf8", icon: "🌀", rewards: ["quantum hydra", "tachyon cheetah", "singularity worm", "void leviathan"] },
-    { tier: 14, name: "The Singularity", stars: 500000000, guard: "e27", diff: "Apex", color: "#f43f5e", icon: "💠", rewards: ["singularity chimera", "void dragon", "primordial phoenix"] }
+    {
+        "tier": 1,
+        "name": "Grasslands",
+        "stars": 1,
+        "guard": "e1",
+        "diff": "Easy",
+        "emoji": "\ud83d\ude0a",
+        "color": "#4ade80",
+        "icon": "\ud83c\udf31",
+        "rewards": [
+            "owl",
+            "skeleton",
+            "turtle"
+        ]
+    },
+    {
+        "tier": 2,
+        "name": "Desert",
+        "stars": 10,
+        "guard": "e3",
+        "diff": "Medium",
+        "emoji": "\ud83d\ude10",
+        "color": "#f59e0b",
+        "icon": "\ud83c\udfdc\ufe0f",
+        "rewards": [
+            "car",
+            "cowboy",
+            "millipede"
+        ]
+    },
+    {
+        "tier": 3,
+        "name": "Mushroom Marsh",
+        "stars": 125,
+        "guard": "e5",
+        "diff": "Hard",
+        "emoji": "\ud83d\ude20",
+        "color": "#a855f7",
+        "icon": "\ud83c\udf44",
+        "rewards": [
+            "crocodile",
+            "orangutan",
+            "stegosaurus"
+        ]
+    },
+    {
+        "tier": 4,
+        "name": "Arctic",
+        "stars": 350,
+        "guard": "e7",
+        "diff": "Brutal",
+        "emoji": "\ud83d\udcaa",
+        "color": "#38bdf8",
+        "icon": "\u2744\ufe0f",
+        "rewards": [
+            "ankylosaurus",
+            "demon",
+            "tank",
+            "wasp"
+        ]
+    },
+    {
+        "tier": 5,
+        "name": "Jungle Ruins",
+        "stars": 4250,
+        "guard": "e9",
+        "diff": "Extreme",
+        "emoji": "\u26a1",
+        "color": "#10b981",
+        "icon": "\ud83c\udfdb\ufe0f",
+        "rewards": [
+            "gorilla",
+            "stingray",
+            "toilet",
+            "velociraptor"
+        ]
+    },
+    {
+        "tier": 6,
+        "name": "Redrock Canyon",
+        "stars": 17500,
+        "guard": "e11",
+        "diff": "Merciless",
+        "emoji": "\ud83d\ude08",
+        "color": "#ea580c",
+        "icon": "\ud83e\uddd7",
+        "rewards": [
+            "cheeseburger",
+            "chicken",
+            "pterodactyl",
+            "zombie"
+        ]
+    },
+    {
+        "tier": 7,
+        "name": "Crystal Caverns",
+        "stars": 100000,
+        "guard": "e13",
+        "diff": "Nightmare",
+        "emoji": "\ud83d\udc7b",
+        "color": "#06b6d4",
+        "icon": "\ud83d\udc8e",
+        "rewards": [
+            "coral",
+            "excavator",
+            "ferret",
+            "moose"
+        ]
+    },
+    {
+        "tier": 8,
+        "name": "Haunted Forest",
+        "stars": 550000,
+        "guard": "e15",
+        "diff": "Infernal",
+        "emoji": "\ud83d\udd25",
+        "color": "#8b5cf6",
+        "icon": "\ud83c\udf32",
+        "rewards": [
+            "eagle",
+            "panther",
+            "tiger"
+        ]
+    },
+    {
+        "tier": 9,
+        "name": "Storm Peaks",
+        "stars": 3750000,
+        "guard": "e17",
+        "diff": "Cataclysmic",
+        "emoji": "\ud83c\udf0a",
+        "color": "#3b82f6",
+        "icon": "\u26a1",
+        "rewards": [
+            "beetle",
+            "cobra",
+            "elephant",
+            "octopus"
+        ]
+    },
+    {
+        "tier": 10,
+        "name": "Acid Wastes",
+        "stars": 40000000,
+        "guard": "e19",
+        "diff": "Apocalyptic",
+        "emoji": "\u2623\ufe0f",
+        "color": "#84cc16",
+        "icon": "\ud83e\uddea",
+        "rewards": [
+            "dragon",
+            "mermaid",
+            "pufferfish",
+            "zebra"
+        ]
+    },
+    {
+        "tier": 11,
+        "name": "Volcanic Fields",
+        "stars": 120000000,
+        "guard": "e21",
+        "diff": "Armageddon",
+        "emoji": "\ud83d\udca5",
+        "color": "#ef4444",
+        "icon": "\ud83c\udf0b",
+        "rewards": [
+            "banana",
+            "human-man",
+            "narwhal"
+        ]
+    },
+    {
+        "tier": 12,
+        "name": "Obsidian Wastes",
+        "stars": 300000000,
+        "guard": "e23",
+        "diff": "Oblivion",
+        "emoji": "\ud83d\udc80",
+        "color": "#64748b",
+        "icon": "\ud83c\udf11",
+        "rewards": [
+            "jellyfish",
+            "praying-mantis",
+            "wolf"
+        ]
+    },
+    {
+        "tier": 13,
+        "name": "Shattered Moon",
+        "stars": 425000000,
+        "guard": "e25",
+        "diff": "Godslayer",
+        "emoji": "\u2694\ufe0f",
+        "color": "#c084fc",
+        "icon": "\ud83c\udf19",
+        "rewards": [
+            "butterfly",
+            "goat",
+            "shark"
+        ]
+    },
+    {
+        "tier": 14,
+        "name": "Cosmic Abyss",
+        "stars": 500000000,
+        "guard": "e27",
+        "diff": "Reality Shattering",
+        "emoji": "\ud83c\udf0c",
+        "color": "#f43f5e",
+        "icon": "\ud83c\udf00",
+        "rewards": [
+            "anglerfish",
+            "strawberry",
+            "triceratops"
+        ]
+    }
 ];
 
 function formatPower(num) {
