@@ -37,6 +37,8 @@
 | 🐾 **2,926 Single Fusions** | Complete searchable encyclopedia of all Gen-1 combinations across all 77 base animals. |
 | 📌 **Breeding Planner** | Pin target fusions to a local breeding roadmap. Automatically tallies base ingredient shopping lists. |
 | 💬 **Roblox Chat Responder** | Generate formatted replies to paste into in-game chat when players ask for fusion recipes. |
+| 🗺️ **14 Wild Biomes Guide** | Complete 14-tier world map guide showing boss guards (`e1`, `e2`...), required power ratings, and guaranteed animal unlocks. |
+| 💬 **Community Hub** | Integrated GitHub Discussions feed & private browser scratchpad for sharing discoveries, asking questions, and trading combos. |
 | 💾 **Inventory Sync** | Toggle which animals you own in your pens to get customized partner recommendations. Export/import data via JSON or CSV. |
 
 ---
@@ -53,6 +55,8 @@ Navigate the entire studio without touching your mouse:
 | <kbd>3</kbd> | Switch to **Global Top Duals** tab |
 | <kbd>4</kbd> | Switch to **Single Fusions (Gen 1)** database |
 | <kbd>5</kbd> | Switch to **Breeding Planner** tab |
+| <kbd>6</kbd> | Switch to **Wilderness Biomes** guide |
+| <kbd>7</kbd> | Switch to **Community Hub** discussions |
 | <kbd>?</kbd> | Open the **Help & Shortcuts** dialog |
 | <kbd>Esc</kbd> | Close any active modal or dropdown |
 

@@ -151,6 +151,12 @@
             <span>📌 Breeding Planner</span>
             <span class="tab-count" id="planner-count-badge">0</span>
         </button>
+        <button class="tab-btn" id="btn-tab-biomes" onclick="switchTab('biomes')">
+            <span>🗺️ Wilderness Biomes</span>
+        </button>
+        <button class="tab-btn" id="btn-tab-community" onclick="switchTab('community')">
+            <span>💬 Community Hub</span>
+        </button>
     </div>
 
     <!-- ========================================== -->
@@ -643,6 +649,124 @@
         </div>
 
         <div class="planner-grid" id="planner-grid"></div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 6: 14 WILDERNESS BIOMES & UNLOCK GUIDE -->
+    <!-- ========================================== -->
+    <div id="panel-biomes" class="panel" style="display:none;">
+        <div class="panel-header">
+            <div>
+                <h2 class="panel-title">🗺️ Wilderness Biomes &amp; Guaranteed Animal Unlocks</h2>
+                <p class="desc">The complete 14-tier world progression map from the game engine. Track power requirements, boss guards, and discover which biome unlocks each animal.</p>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                <input type="text" id="biome-search" placeholder="Search biome or animal (e.g. dragon, arctic)..." style="padding:7px 12px; font-size:12.5px; max-width:280px;" oninput="renderBiomes()">
+            </div>
+        </div>
+
+        <div class="biomes-summary-bar">
+            <div class="biomes-stat-pill">
+                <span>Total Biomes</span>
+                <strong>14 Progression Tiers</strong>
+            </div>
+            <div class="biomes-stat-pill">
+                <span>Power Rating Range</span>
+                <strong>1★ to 500M★</strong>
+            </div>
+            <div class="biomes-stat-pill">
+                <span>Guaranteed Unlocks</span>
+                <strong>46 Base Animals</strong>
+            </div>
+            <div class="biomes-stat-pill">
+                <span>Click Any Animal</span>
+                <strong>Load in Matchmaker</strong>
+            </div>
+        </div>
+
+        <div id="biomes-grid" class="biomes-grid"></div>
+        <div id="biomes-empty" style="display:none; text-align:center; padding:36px; color:#94a3b8; border:1px dashed var(--border); border-radius:var(--radius-md);">
+            No biomes or animals found matching your search.
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 7: COMMUNITY HUB & DISCUSSIONS         -->
+    <!-- ========================================== -->
+    <div id="panel-community" class="panel" style="display:none;">
+        <div class="panel-header">
+            <div>
+                <h2 class="panel-title">💬 Impossible Animals Community Hub</h2>
+                <p class="desc">Ask questions, share your highest-star discoveries, post trade recipes, and discuss strategies with the community.</p>
+            </div>
+            <div>
+                <a href="https://github.com/Amashing0411/Impossible-Animals-Wiki/discussions" target="_blank" rel="noopener" class="btn btn-sm btn-primary">
+                    <span>View on GitHub Discussions</span> ↗
+                </a>
+            </div>
+        </div>
+
+        <div class="community-grid">
+            <!-- LEFT: FAQ & Local Scratchpad -->
+            <div class="community-sidebar">
+                <div class="community-card">
+                    <h3 class="community-card-title">📝 My Fusion Notes &amp; Ideas</h3>
+                    <p style="font-size:12px; color:#94a3b8; margin:0 0 8px 0;">Private browser scratchpad saved automatically in your browser:</p>
+                    <textarea id="community-scratchpad" placeholder="Jot down notes here... e.g.
+- Need to breed Dragon + Tiger for 18★
+- Biome 10 Acid Wastes unlocks Dragon
+- Goal: craft Uranium + Black Hole dual fusion" style="min-height:160px; font-size:12.5px;"></textarea>
+                    <div style="display:flex; justify-content:flex-end; gap:8px;">
+                        <button class="btn btn-sm btn-primary" onclick="saveCommunityNotes()">💾 Save Notes</button>
+                    </div>
+                </div>
+
+                <div class="community-card" style="margin-top:14px;">
+                    <h3 class="community-card-title">💡 Pro Breeding Tips</h3>
+                    <ul class="community-tips-list">
+                        <li><b>Elemental God Tiers:</b> 🕳️ Black Hole and 🌘 Solar Eclipse grant a guaranteed <b>+3 Stars</b> on every fusion.</li>
+                        <li><b>Dual Bonus:</b> When combining two hybrids in Dual Fusion, you always roll an extra <b>+1★ to +5★ bonus</b>!</li>
+                        <li><b>Biome Unlocks:</b> Rush Biome 10 (Acid Wastes) to unlock 🐉 Dragon, one of the best high-tier fusion parents.</li>
+                        <li><b>Offline Earnings:</b> High-star dual fusions generate exponentially more $/sec in pens.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- RIGHT: Live Giscus / GitHub Discussions Feed -->
+            <div class="community-feed-wrap">
+                <div class="community-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; padding-bottom:10px; border-bottom:1px solid var(--border);">
+                        <div>
+                            <h3 class="community-card-title" style="margin:0;">💬 Live Community Comments</h3>
+                            <p style="font-size:12px; color:#94a3b8; margin:3px 0 0 0;">Powered by GitHub Discussions. Sign in with GitHub to post replies, ask questions, and share combos.</p>
+                        </div>
+                    </div>
+
+                    <!-- Giscus Container -->
+                    <div class="giscus-container" id="giscus-slot">
+                        <script src="https://giscus.app/client.js"
+                                data-repo="Amashing0411/Impossible-Animals-Wiki"
+                                data-repo-id="R_kgDOVW9oUQ"
+                                data-category="General"
+                                data-category-id="DIC_kwDOVW9oUc4C..."
+                                data-mapping="pathname"
+                                data-strict="0"
+                                data-reactions-enabled="1"
+                                data-emit-metadata="0"
+                                data-input-position="top"
+                                data-theme="dark_dimmed"
+                                data-lang="en"
+                                data-loading="lazy"
+                                crossorigin="anonymous"
+                                async>
+                        </script>
+                        <noscript>
+                            <p style="color:#94a3b8; text-align:center; padding:20px;">Please enable JavaScript to view community comments.</p>
+                        </noscript>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

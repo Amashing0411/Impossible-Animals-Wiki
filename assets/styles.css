@@ -1043,3 +1043,223 @@ tbody td{border-color:#1a1a1a}
 .modal-card{background:#0a0a0a}
 .site-footer{margin-top:48px;line-height:1.7}
 @media (max-width:860px){.app-header{padding-top:24px}.tab-btn{padding:12px 12px}}
+
+
+/* ========================================== */
+/* BIOMES GUIDE STYLING                       */
+/* ========================================== */
+.biomes-summary-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+    margin-bottom: 16px;
+}
+.biomes-stat-pill {
+    background: var(--card-sub);
+    border: 1px solid var(--border);
+    padding: 10px 14px;
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+}
+.biomes-stat-pill span {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    font-weight: 700;
+}
+.biomes-stat-pill strong {
+    font-size: 15px;
+    color: var(--heading);
+    font-weight: 800;
+    margin-top: 3px;
+}
+.biomes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 14px;
+}
+.biome-card {
+    background: var(--card-solid);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    transition: transform 0.16s ease, border-color 0.16s ease;
+}
+.biome-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-bright);
+}
+.biome-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(38, 51, 77, 0.4);
+}
+.biome-header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.biome-icon {
+    font-size: 26px;
+    width: 42px;
+    height: 42px;
+    background: var(--card-sub);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.biome-tier-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+}
+.biome-title {
+    margin: 2px 0 0 0;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--heading);
+}
+.biome-diff-badge {
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 800;
+    border: 1px solid;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+.biome-stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    background: var(--card-sub);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+}
+.biome-stat {
+    display: flex;
+    flex-direction: column;
+}
+.biome-stat span {
+    font-size: 10px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 700;
+}
+.biome-stat strong {
+    font-size: 12.5px;
+    color: var(--heading);
+    font-weight: 800;
+    margin-top: 1px;
+}
+.biome-rewards-section {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+.biome-rewards-heading {
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #94a3b8;
+}
+.biome-rewards-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.biome-reward-chip {
+    background: #0f1623;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 5px 9px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+    transition: all 0.12s ease;
+}
+.biome-reward-chip:hover {
+    border-color: var(--accent);
+    background: #172236;
+    color: var(--heading);
+    transform: translateY(-1px);
+}
+.biome-reward-chip.is-owned {
+    border-color: rgba(16, 185, 129, 0.4);
+}
+.biome-owned-badge {
+    font-size: 9.5px;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-weight: 800;
+}
+.biome-owned-badge.owned {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+}
+.biome-owned-badge.locked {
+    background: rgba(248, 113, 113, 0.16);
+    color: #fca5a5;
+}
+
+/* ========================================== */
+/* COMMUNITY HUB STYLING                      */
+/* ========================================== */
+.community-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 16px;
+}
+@media (max-width: 900px) {
+    .community-grid {
+        grid-template-columns: 1fr;
+    }
+}
+.community-card {
+    background: var(--card-solid);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 18px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+.community-card-title {
+    margin: 0 0 8px 0;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--heading);
+}
+.community-tips-list {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 12.5px;
+    color: var(--text);
+    line-height: 1.6;
+}
+.community-tips-list li {
+    margin-bottom: 8px;
+}
+.community-tips-list b {
+    color: var(--heading);
+}
+.giscus-container {
+    min-height: 380px;
+    padding-top: 10px;
+}

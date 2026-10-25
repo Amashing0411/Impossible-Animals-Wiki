@@ -1556,12 +1556,135 @@ function importInventoryJson() {
     }
 }
 
+
+// ==========================================
+// WILDERNESS BIOMES & REWARDS GUIDE
+// ==========================================
+const BIOMES_DATA = [
+    { tier: 1, name: "Grasslands", diff: "Easy", stars: 1, guard: "e1", rewards: ["owl", "skeleton", "turtle"], color: "#10b981", icon: "🌱" },
+    { tier: 2, name: "Desert", diff: "Medium", stars: 10, guard: "e2 / e3", rewards: ["car", "cowboy", "millipede"], color: "#fbbf24", icon: "🏜️" },
+    { tier: 3, name: "Mushroom Marsh", diff: "Hard", stars: 125, guard: "e4 / e5", rewards: ["crocodile", "orangutan", "stegosaurus"], color: "#c084fc", icon: "🍄" },
+    { tier: 4, name: "Arctic", diff: "Brutal", stars: 350, guard: "e6 / e7", rewards: ["ankylosaurus", "demon", "tank", "wasp"], color: "#38bdf8", icon: "❄️" },
+    { tier: 5, name: "Jungle Ruins", diff: "Extreme", stars: 4250, guard: "e8 / e9", rewards: ["gorilla", "stingray", "toilet", "velociraptor"], color: "#34d399", icon: "🌴" },
+    { tier: 6, name: "Redrock Canyon", diff: "Merciless", stars: 17500, guard: "e10 / e11", rewards: ["cheeseburger", "chicken", "pterodactyl", "zombie"], color: "#fb923c", icon: "🏜️" },
+    { tier: 7, name: "Crystal Caverns", diff: "Nightmare", stars: 100000, guard: "e12 / e13", rewards: ["coral", "excavator", "ferret", "moose"], color: "#f472b6", icon: "💎" },
+    { tier: 8, name: "Haunted Forest", diff: "Infernal", stars: 550000, guard: "e14 / e15", rewards: ["eagle", "panther", "tiger"], color: "#a855f7", icon: "👻" },
+    { tier: 9, name: "Storm Peaks", diff: "Cataclysmic", stars: 3750000, guard: "e16 / e17", rewards: ["beetle", "cobra", "elephant", "octopus"], color: "#60a5fa", icon: "⚡" },
+    { tier: 10, name: "Acid Wastes", diff: "Apocalyptic", stars: 40000000, guard: "e18 / e19", rewards: ["dragon", "mermaid", "pufferfish", "zebra"], color: "#22c55e", icon: "🧪" },
+    { tier: 11, name: "Volcanic Fields", diff: "Armageddon", stars: 120000000, guard: "e20 / e21", rewards: ["banana", "human-man", "narwhal"], color: "#ef4444", icon: "🌋" },
+    { tier: 12, name: "Obsidian Wastes", diff: "Oblivion", stars: 300000000, guard: "e22 / e23", rewards: ["jellyfish", "praying-mantis", "wolf"], color: "#818cf8", icon: "🌑" },
+    { tier: 13, name: "Shattered Moon", diff: "Godslayer", stars: 425000000, guard: "e24 / e25", rewards: ["butterfly", "goat", "shark"], color: "#e879f9", icon: "🌙" },
+    { tier: 14, name: "Cosmic Abyss", diff: "Reality Shattering", stars: 500000000, guard: "e26 / e27", rewards: ["anglerfish", "strawberry", "triceratops"], color: "#f43f5e", icon: "🌌" }
+];
+
+function formatPower(num) {
+    if (num >= 1000000) return (num / 1000000).toLocaleString() + "M";
+    if (num >= 1000) return (num / 1000).toLocaleString() + "K";
+    return num.toString();
+}
+
+function selectBiomeAnimalForMatchmaker(animal) {
+    selectAnimalValue("mm-a", animal);
+    switchTab("matchmaker");
+    showToast(`Loaded ${capFirst(animal)} into Matchmaker!`);
+}
+
+function renderBiomes() {
+    const container = document.getElementById("biomes-grid");
+    if (!container) return;
+    const filter = (document.getElementById("biome-search")?.value || "").toLowerCase().trim();
+
+    container.innerHTML = "";
+    let matchesCount = 0;
+
+    BIOMES_DATA.forEach(b => {
+        const matchesName = b.name.toLowerCase().includes(filter);
+        const matchesDiff = b.diff.toLowerCase().includes(filter);
+        const matchesReward = b.rewards.some(r => r.toLowerCase().includes(filter));
+
+        if (filter && !matchesName && !matchesDiff && !matchesReward) return;
+        matchesCount++;
+
+        const card = document.createElement("div");
+        card.className = "biome-card";
+        card.style.borderColor = b.color + "55";
+
+        const rewardChips = b.rewards.map(animal => {
+            const isOwned = typeof ownedAnimals !== 'undefined' && ownedAnimals.has(animal);
+            const icon = (typeof ANIMAL_ICONS !== 'undefined' && ANIMAL_ICONS[animal]) || "🐾";
+            const ownedTag = isOwned
+                ? `<span class="biome-owned-badge owned">✓ Owned</span>`
+                : `<span class="biome-owned-badge locked">🔒 Locked</span>`;
+            return `
+                <div class="biome-reward-chip ${isOwned ? 'is-owned' : ''}" onclick="selectBiomeAnimalForMatchmaker('${animal}')" title="Click to load ${capFirst(animal)} into Matchmaker">
+                    <span>${icon}</span>
+                    <span>${capFirst(animal)}</span>
+                    ${ownedTag}
+                </div>
+            `;
+        }).join("");
+
+        card.innerHTML = `
+            <div class="biome-card-top">
+                <div class="biome-header-left">
+                    <span class="biome-icon">${b.icon}</span>
+                    <div>
+                        <div class="biome-tier-label">Biome ${b.tier}</div>
+                        <h3 class="biome-title">${b.name}</h3>
+                    </div>
+                </div>
+                <div class="biome-badges">
+                    <span class="biome-diff-badge" style="background:${b.color}22; color:${b.color}; border-color:${b.color}66">${b.diff}</span>
+                </div>
+            </div>
+            <div class="biome-stats-row">
+                <div class="biome-stat">
+                    <span>Target Power</span>
+                    <strong>${formatPower(b.stars)} ★</strong>
+                </div>
+                <div class="biome-stat">
+                    <span>Boss Guard</span>
+                    <strong>${b.guard}</strong>
+                </div>
+                <div class="biome-stat">
+                    <span>Unlocks</span>
+                    <strong>${b.rewards.length} Animals</strong>
+                </div>
+            </div>
+            <div class="biome-rewards-section">
+                <div class="biome-rewards-heading">Guaranteed Animal Unlock Rewards:</div>
+                <div class="biome-rewards-grid">${rewardChips}</div>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+
+    const empty = document.getElementById("biomes-empty");
+    if (empty) empty.style.display = matchesCount === 0 ? "block" : "none";
+}
+
+// Community Notes
+function saveCommunityNotes() {
+    const text = document.getElementById("community-scratchpad")?.value || "";
+    localStorage.setItem("ia_community_notes", text);
+    showToast("Notes saved to browser localStorage!");
+}
+
+function loadCommunityNotes() {
+    const saved = localStorage.getItem("ia_community_notes");
+    const pad = document.getElementById("community-scratchpad");
+    if (pad && saved !== null) pad.value = saved;
+}
+
+
 // TAB SWITCHER
 function switchTab(tab) {
-    const tabs = ['matchmaker', 'lab', 'global', 'single', 'planner'];
+    const tabs = ['matchmaker', 'lab', 'global', 'single', 'planner', 'biomes', 'community'];
     tabs.forEach(t => {
-        document.getElementById(`btn-tab-${t}`).classList.toggle('active', t === tab);
-        document.getElementById(`panel-${t}`).style.display = t === tab ? 'block' : 'none';
+        const btn = document.getElementById(`btn-tab-${t}`);
+        const panel = document.getElementById(`panel-${t}`);
+        if (btn) btn.classList.toggle('active', t === tab);
+        if (panel) panel.style.display = t === tab ? 'block' : 'none';
     });
 
     if (tab === 'matchmaker') runMatchmaker();
@@ -1569,6 +1692,8 @@ function switchTab(tab) {
     if (tab === 'global') resetGlobalPage();
     if (tab === 'single') resetDbPage();
     if (tab === 'planner') renderPlanner();
+    if (tab === 'biomes') renderBiomes();
+    if (tab === 'community') loadCommunityNotes();
     if (location.hash !== '#' + tab) history.replaceState(null, '', '#' + tab);
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -1576,6 +1701,11 @@ function switchTab(tab) {
 document.addEventListener('DOMContentLoaded', () => {
     initDropdowns();
     loadState();
+    loadCommunityNotes();
     const h = location.hash.replace('#','');
-    if (['matchmaker','lab','global','single','planner'].includes(h)) switchTab(h);
+    if (['matchmaker','lab','global','single','planner','biomes','community'].includes(h)) {
+        switchTab(h);
+    } else {
+        switchTab('matchmaker');
+    }
 });
