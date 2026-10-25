@@ -355,9 +355,11 @@ function djb2Hash(str) {
 }
 
 function getBestShiny(shinyA, shinyB) {
-    const rankA = SHINY_ORDER.indexOf(shinyA || "none");
-    const rankB = SHINY_ORDER.indexOf(shinyB || "none");
-    return rankA >= rankB ? shinyA : shinyB;
+    const sA = (shinyA && SHINY_ORDER.includes(shinyA)) ? shinyA : "none";
+    const sB = (shinyB && SHINY_ORDER.includes(shinyB)) ? shinyB : "none";
+    const rankA = SHINY_ORDER.indexOf(sA);
+    const rankB = SHINY_ORDER.indexOf(sB);
+    return rankA >= rankB ? sA : sB;
 }
 
 function getLevelMultiplier(lvl) {
@@ -1260,7 +1262,7 @@ function renderGlobalDualTable() {
             <tr>
                 <td class="rank">#${start + idx + 1}</td>
                 <td style="font-weight:700; color:var(--heading); text-transform:capitalize;">${item.fullComboName}</td>
-                <td><span class="badge badge-${item.inheritedMutation}">${MUTATION_DATA[item.inheritedMutation].name}</span></td>
+                <td><span class="badge badge-${item.inheritedMutation}">${(MUTATION_DATA[item.inheritedMutation] || MUTATION_DATA["none"]).name}</span></td>
                 <td style="color:var(--gold); font-weight:800;">${item.finalStars} ★</td>
                 <td class="mono" style="color:var(--green-bright); font-weight:800;">${formatMoney(item.income)}</td>
                 <td><span style="font-size:12px; color:#94a3b8;">${item.bracketPct}% of ${item.finalStars}★ max</span></td>
@@ -1937,3 +1939,19 @@ document.addEventListener('DOMContentLoaded', () => {
         switchTab('matchmaker');
     }
 });
+
+
+// EXPLICIT WINDOW ASSIGNMENTS FOR INLINE HTML ONCLICK HANDLERS
+window.switchTab = switchTab;
+window.runMatchmaker = runMatchmaker;
+window.runLabCalculator = runLabCalculator;
+window.swapLabHybrids = swapLabHybrids;
+window.renderPlanner = renderPlanner;
+window.renderBiomes = renderBiomes;
+window.toggleCommunityWidget = toggleCommunityWidget;
+window.submitCommunityPost = submitCommunityPost;
+window.likeCommunityPost = likeCommunityPost;
+window.flagCommunityPost = flagCommunityPost;
+window.filterCommunityFeed = filterCommunityFeed;
+window.updateCommCharCount = updateCommCharCount;
+window.selectBiomeAnimalForMatchmaker = selectBiomeAnimalForMatchmaker;
