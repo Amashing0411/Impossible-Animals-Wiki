@@ -1,0 +1,678 @@
+{{DISPLAYTITLE:Fusion Database - Top Single Hybrids}}
+
+The '''Top Single Hybrids''' table lists the highest-yielding single fusion combinations in ''Impossible Animals'' (10★ to 21★), sorted by maximum standard cash-per-second income.
+
+== Community Tools & Matchmaker ==
+* '''[https://discord.gg/mXKUsgmUD3 Impossible Animals Official Community Discord & Web Wiki]''' — Access the interactive breeding calculator, test dual fusions, and find optimal breeding paths.
+
+== Top Tier Single Fusions (10★ to 21★) ==
+
+{| class="wikitable sortable"
+! Rank !! Hybrid !! Parents !! Stars !! Income shown !! Variant !! Method / origin
+|-
+| #1 || Glitter-Gorilla || Glitter + Gorilla || data-sort-value="21" | 21★ || data-sort-value="1533654" | $1.53M/s || Standard || Fusion
+|-
+| #2 || Moose-Strawberry || Moose + Strawberry || data-sort-value="20" | 20★ || data-sort-value="879029" | $879.03K/s || Standard || Fusion
+|-
+| #3 || Car-Plasma || Car + Plasma || data-sort-value="20" | 20★ || data-sort-value="838789" | $838.79K/s || Standard || Fusion
+|-
+| #4 || Triceratops-Warthog || Triceratops + Warthog || data-sort-value="20" | 20★ || data-sort-value="702516" | $702.52K/s || Standard || Fusion
+|-
+| #5 || Lava-Wolf || Lava + Wolf || data-sort-value="19" | 19★ || data-sort-value="492282" | $492.28K/s || Standard || Fusion
+|-
+| #6 || Anglerfish-Skeleton || Anglerfish + Skeleton || data-sort-value="19" | 19★ || data-sort-value="416339" | $416.34K/s || Standard || Fusion
+|-
+| #7 || Dolphin-Goat || Dolphin + Goat || data-sort-value="19" | 19★ || data-sort-value="298791" | $298.79K/s || Standard || Fusion
+|-
+| #8 || Black-hole-Warthog || Black-hole + Warthog || data-sort-value="19" | 19★ || data-sort-value="289285" | $289.29K/s || Standard || Fusion
+|-
+| #9 || Aurora-Jerboa || Aurora + Jerboa || data-sort-value="19" | 19★ || data-sort-value="256866" | $256.87K/s || Standard || Fusion
+|-
+| #10 || Shark-Skeleton || Shark + Skeleton || data-sort-value="19" | 19★ || data-sort-value="238017" | $238.02K/s || Standard || Fusion
+|-
+| #11 || Butterfly-Clouds || Butterfly + Clouds || data-sort-value="18" | 18★ || data-sort-value="199788" | $199.79K/s || Standard || Fusion
+|-
+| #12 || Ankylosaurus-Black-hole || Ankylosaurus + Black-hole || data-sort-value="18" | 18★ || data-sort-value="190301" | $190.30K/s || Standard || Fusion
+|-
+| #13 || Warthog-Water || Warthog + Water || data-sort-value="18" | 18★ || data-sort-value="186006" | $186.01K/s || Standard || Fusion
+|-
+| #14 || Anglerfish-Praying-mantis || Anglerfish + Praying-mantis || data-sort-value="18" | 18★ || data-sort-value="179057" | $179.06K/s || Standard || Fusion
+|-
+| #15 || Strawberry-T-rex || Strawberry + T-rex || data-sort-value="18" | 18★ || data-sort-value="166209" | $166.21K/s || Standard || Fusion
+|-
+| #16 || Butterfly-Plasma || Butterfly + Plasma || data-sort-value="18" | 18★ || data-sort-value="163921" | $163.92K/s || Standard || Fusion
+|-
+| #17 || Chicken-Psychic-power || Chicken + Psychic-power || data-sort-value="18" | 18★ || data-sort-value="145171" | $145.17K/s || Standard || Fusion
+|-
+| #18 || Praying-mantis-Turtle || Praying-mantis + Turtle || data-sort-value="18" | 18★ || data-sort-value="138651" | $138.65K/s || Standard || Fusion
+|-
+| #19 || Butterfly-Spider || Butterfly + Spider || data-sort-value="18" | 18★ || data-sort-value="136856" | $136.86K/s || Standard || Fusion
+|-
+| #20 || Butterfly-Cheetah || Butterfly + Cheetah || data-sort-value="18" | 18★ || data-sort-value="125877" | $125.88K/s || Standard || Fusion
+|-
+| #21 || Glitter-Stingray || Glitter + Stingray || data-sort-value="18" | 18★ || data-sort-value="102163" | $102.16K/s || Standard || Fusion
+|-
+| #22 || Cheeseburger-Solar-eclipse || Cheeseburger + Solar-eclipse || data-sort-value="18" | 18★ || data-sort-value="101960" | $101.96K/s || Standard || Fusion
+|-
+| #23 || Human-man-Spider || Human-man + Spider || data-sort-value="17" | 17★ || data-sort-value="98904" | $98.90K/s || Standard || Fusion
+|-
+| #24 || Spider-Wolf || Spider + Wolf || data-sort-value="17" | 17★ || data-sort-value="96453" | $96.45K/s || Standard || Fusion
+|-
+| #25 || Butterfly-Praying-mantis || Butterfly + Praying-mantis || data-sort-value="17" | 17★ || data-sort-value="94972" | $94.97K/s || Standard || Fusion
+|-
+| #26 || Ant-Narwhal || Ant + Narwhal || data-sort-value="17" | 17★ || data-sort-value="89735" | $89.73K/s || Standard || Fusion
+|-
+| #27 || Crocodile-Jellyfish || Crocodile + Jellyfish || data-sort-value="17" | 17★ || data-sort-value="73270" | $73.27K/s || Standard || Fusion
+|-
+| #28 || Aurora-Lava || Aurora + Lava || data-sort-value="17" | 17★ || data-sort-value="72632" | $72.63K/s || Standard || Fusion
+|-
+| #29 || Jade-Monkey || Jade + Monkey || data-sort-value="17" | 17★ || data-sort-value="70211" | $70.21K/s || Standard || Fusion
+|-
+| #30 || Aurora-Elephant || Aurora + Elephant || data-sort-value="17" | 17★ || data-sort-value="64639" | $64.64K/s || Standard || Fusion
+|-
+| #31 || Anglerfish-Elephant || Anglerfish + Elephant || data-sort-value="17" | 17★ || data-sort-value="64550" | $64.55K/s || Standard || Fusion
+|-
+| #32 || Velociraptor-Wolf || Velociraptor + Wolf || data-sort-value="17" | 17★ || data-sort-value="54821" | $54.82K/s || Standard || Fusion
+|-
+| #33 || Aurora-Human-man || Aurora + Human-man || data-sort-value="17" | 17★ || data-sort-value="54213" | $54.21K/s || Standard || Fusion
+|-
+| #34 || Jade-Ruby || Jade + Ruby || data-sort-value="16" | 16★ || data-sort-value="48800" | $48.80K/s || Standard || Fusion
+|-
+| #35 || Black-hole-Uranium || Black-hole + Uranium || data-sort-value="16" | 16★ || data-sort-value="47946" | $47.95K/s || Standard || Fusion
+|-
+| #36 || Black-hole-Cobra || Black-hole + Cobra || data-sort-value="16" | 16★ || data-sort-value="44892" | $44.89K/s || Standard || Fusion
+|-
+| #37 || Pufferfish-Turtle || Pufferfish + Turtle || data-sort-value="16" | 16★ || data-sort-value="41673" | $41.67K/s || Standard || Fusion
+|-
+| #38 || Jellyfish-Red panda || Jellyfish + Red panda || data-sort-value="16" | 16★ || data-sort-value="40628" | $40.63K/s || Standard || Fusion
+|-
+| #39 || Coral-Electricity || Coral + Electricity || data-sort-value="16" | 16★ || data-sort-value="38790" | $38.79K/s || Standard || Fusion
+|-
+| #40 || Ant-Zebra || Ant + Zebra || data-sort-value="16" | 16★ || data-sort-value="38323" | $38.32K/s || Standard || Fusion
+|-
+| #41 || Ankylosaurus-Butterfly || Ankylosaurus + Butterfly || data-sort-value="16" | 16★ || data-sort-value="38027" | $38.03K/s || Standard || Fusion
+|-
+| #42 || Dragon-Stingray || Dragon + Stingray || data-sort-value="16" | 16★ || data-sort-value="37204" | $37.20K/s || Standard || Fusion
+|-
+| #43 || Glitter-Panther || Glitter + Panther || data-sort-value="16" | 16★ || data-sort-value="36506" | $36.51K/s || Standard || Fusion
+|-
+| #44 || Anglerfish-Crab || Anglerfish + Crab || data-sort-value="16" | 16★ || data-sort-value="33909" | $33.91K/s || Standard || Fusion
+|-
+| #45 || Water-Zombie || Water + Zombie || data-sort-value="16" | 16★ || data-sort-value="33792" | $33.79K/s || Standard || Fusion
+|-
+| #46 || Banana-Car || Banana + Car || data-sort-value="16" | 16★ || data-sort-value="22911" | $22.91K/s || Standard || Fusion
+|-
+| #47 || Crab-Mermaid || Crab + Mermaid || data-sort-value="16" | 16★ || data-sort-value="20827" | $20.83K/s || Standard || Fusion
+|-
+| #48 || Ankylosaurus-Dragon || Ankylosaurus + Dragon || data-sort-value="15" | 15★ || data-sort-value="19497" | $19.50K/s || Standard || Fusion
+|-
+| #49 || Butterfly-Elephant || Butterfly + Elephant || data-sort-value="15" | 15★ || data-sort-value="18964" | $18.96K/s || Standard || Fusion
+|-
+| #50 || Jade-Tiger || Jade + Tiger || data-sort-value="15" | 15★ || data-sort-value="18815" | $18.82K/s || Standard || Fusion
+|-
+| #51 || Uranium-Venus-fly-trap || Uranium + Venus-fly-trap || data-sort-value="15" | 15★ || data-sort-value="18287" | $18.29K/s || Standard || Fusion
+|-
+| #52 || Dragonfly-Elephant || Dragonfly + Elephant || data-sort-value="15" | 15★ || data-sort-value="18060" | $18.06K/s || Standard || Fusion
+|-
+| #53 || Cheeseburger-Jade || Cheeseburger + Jade || data-sort-value="15" | 15★ || data-sort-value="18018" | $18.02K/s || Standard || Fusion
+|-
+| #54 || Jade-Lava || Jade + Lava || data-sort-value="15" | 15★ || data-sort-value="17935" | $17.93K/s || Standard || Fusion
+|-
+| #55 || Crocodile-Pufferfish || Crocodile + Pufferfish || data-sort-value="15" | 15★ || data-sort-value="16897" | $16.90K/s || Standard || Fusion
+|-
+| #56 || Beetle-Fox || Beetle + Fox || data-sort-value="15" | 15★ || data-sort-value="16605" | $16.61K/s || Standard || Fusion
+|-
+| #57 || Black-hole-Cheeseburger || Black-hole + Cheeseburger || data-sort-value="15" | 15★ || data-sort-value="16498" | $16.50K/s || Standard || Fusion
+|-
+| #58 || Cobra-Dolphin || Cobra + Dolphin || data-sort-value="15" | 15★ || data-sort-value="15952" | $15.95K/s || Standard || Fusion
+|-
+| #59 || Electricity-Octopus || Electricity + Octopus || data-sort-value="15" | 15★ || data-sort-value="15908" | $15.91K/s || Standard || Fusion
+|-
+| #60 || Aurora-Zombie || Aurora + Zombie || data-sort-value="15" | 15★ || data-sort-value="15204" | $15.20K/s || Standard || Fusion
+|-
+| #61 || Dragon-Pterodactyl || Dragon + Pterodactyl || data-sort-value="15" | 15★ || data-sort-value="13902" | $13.90K/s || Standard || Fusion
+|-
+| #62 || Electricity-Jellyfish || Electricity + Jellyfish || data-sort-value="15" | 15★ || data-sort-value="11949" | $11.95K/s || Standard || Fusion
+|-
+| #63 || Dragonfly-Wolf || Dragonfly + Wolf || data-sort-value="15" | 15★ || data-sort-value="11470" | $11.47K/s || Standard || Fusion
+|-
+| #64 || Anglerfish-Gorilla || Anglerfish + Gorilla || data-sort-value="15" | 15★ || data-sort-value="11087" | $11.09K/s || Standard || Fusion
+|-
+| #65 || Butterfly-Skeleton || Butterfly + Skeleton || data-sort-value="15" | 15★ || data-sort-value="10865" | $10.87K/s || Standard || Fusion
+|-
+| #66 || Glitter-T-rex || Glitter + T-rex || data-sort-value="15" | 15★ || data-sort-value="10535" | $10.54K/s || Standard || Fusion
+|-
+| #67 || Rhino-Wolf || Rhino + Wolf || data-sort-value="14" | 14★ || data-sort-value="9768" | $9.77K/s || Standard || Fusion
+|-
+| #68 || Fox-Moose || Fox + Moose || data-sort-value="14" | 14★ || data-sort-value="9756" | $9.76K/s || Standard || Fusion
+|-
+| #69 || Octopus-Warthog || Octopus + Warthog || data-sort-value="14" | 14★ || data-sort-value="9753" | $9.75K/s || Standard || Fusion
+|-
+| #70 || Millipede-Ruby || Millipede + Ruby || data-sort-value="14" | 14★ || data-sort-value="9132" | $9.13K/s || Standard || Fusion
+|-
+| #71 || Demon-Dragon || Demon + Dragon || data-sort-value="14" | 14★ || data-sort-value="8895" | $8.89K/s || Standard || Fusion
+|-
+| #72 || Orangutan-Uranium || Orangutan + Uranium || data-sort-value="14" | 14★ || data-sort-value="8748" | $8.75K/s || Standard || Fusion
+|-
+| #73 || Banana-Turtle || Banana + Turtle || data-sort-value="14" | 14★ || data-sort-value="8502" | $8.50K/s || Standard || Fusion
+|-
+| #74 || Clouds-Tank || Clouds + Tank || data-sort-value="14" | 14★ || data-sort-value="8352" | $8.35K/s || Standard || Fusion
+|-
+| #75 || Dolphin-Panther || Dolphin + Panther || data-sort-value="14" | 14★ || data-sort-value="7984" | $7.98K/s || Standard || Fusion
+|-
+| #76 || Aurora-Octopus || Aurora + Octopus || data-sort-value="14" | 14★ || data-sort-value="7542" | $7.54K/s || Standard || Fusion
+|-
+| #77 || Eagle-Red panda || Eagle + Red panda || data-sort-value="14" | 14★ || data-sort-value="7415" | $7.42K/s || Standard || Fusion
+|-
+| #78 || Goat-Wasp || Goat + Wasp || data-sort-value="14" | 14★ || data-sort-value="7298" | $7.30K/s || Standard || Fusion
+|-
+| #79 || Car-Tiger || Car + Tiger || data-sort-value="14" | 14★ || data-sort-value="7266" | $7.27K/s || Standard || Fusion
+|-
+| #80 || Milleburger || Cheeseburger + Millipede || data-sort-value="14" | 14★ || data-sort-value="7264" | $7.26K/s || Standard || Fusion
+|-
+| #81 || Cowboy-Psychic-power || Cowboy + Psychic-power || data-sort-value="14" | 14★ || data-sort-value="7218" | $7.22K/s || Standard || Fusion
+|-
+| #82 || Eagle-Millipede || Eagle + Millipede || data-sort-value="14" | 14★ || data-sort-value="7194" | $7.19K/s || Standard || Fusion
+|-
+| #83 || Jellyfish-Velociraptor || Jellyfish + Velociraptor || data-sort-value="14" | 14★ || data-sort-value="7160" | $7.16K/s || Standard || Fusion
+|-
+| #84 || Moose-Octopus || Moose + Octopus || data-sort-value="14" | 14★ || data-sort-value="7139" | $7.14K/s || Standard || Fusion
+|-
+| #85 || Lava-Panther || Lava + Panther || data-sort-value="14" | 14★ || data-sort-value="6961" | $6.96K/s || Standard || Fusion
+|-
+| #86 || Axolotl-Excavator || Axolotl + Excavator || data-sort-value="14" | 14★ || data-sort-value="6910" | $6.91K/s || Standard || Fusion
+|-
+| #87 || Tank-Uranium || Tank + Uranium || data-sort-value="14" | 14★ || data-sort-value="6523" | $6.52K/s || Standard || Fusion
+|-
+| #88 || Ferret-Stegosaurus || Ferret + Stegosaurus || data-sort-value="14" | 14★ || data-sort-value="6400" | $6.40K/s || Standard || Fusion
+|-
+| #89 || Panther-Plasma || Panther + Plasma || data-sort-value="14" | 14★ || data-sort-value="6309" | $6.31K/s || Standard || Fusion
+|-
+| #90 || Cowboy-Electricity || Cowboy + Electricity || data-sort-value="14" | 14★ || data-sort-value="5498" | $5.50K/s || Standard || Fusion
+|-
+| #91 || Goat-Triceratops || Goat + Triceratops || data-sort-value="14" | 14★ || data-sort-value="5449" | $5.45K/s || Standard || Fusion
+|-
+| #92 || Cobra-Triceratops || Cobra + Triceratops || data-sort-value="14" | 14★ || data-sort-value="5285" | $5.29K/s || Standard || Fusion
+|-
+| #93 || Banana-Electricity || Banana + Electricity || data-sort-value="14" | 14★ || data-sort-value="5243" | $5.24K/s || Standard || Fusion
+|-
+| #94 || Black-hole-Stingray || Black-hole + Stingray || data-sort-value="14" | 14★ || data-sort-value="5052" | $5.05K/s || Standard || Fusion
+|-
+| #95 || Black-hole-Ferret || Black-hole + Ferret || data-sort-value="13" | 13★ || data-sort-value="4834" | $4.83K/s || Standard || Fusion
+|-
+| #96 || Beetle-Cobra || Beetle + Cobra || data-sort-value="13" | 13★ || data-sort-value="4766" | $4.77K/s || Standard || Fusion
+|-
+| #97 || Stingray-Strawberry || Stingray + Strawberry || data-sort-value="13" | 13★ || data-sort-value="4702" | $4.70K/s || Standard || Fusion
+|-
+| #98 || Dragon-Zebra || Dragon + Zebra || data-sort-value="13" | 13★ || data-sort-value="4613" | $4.61K/s || Standard || Fusion
+|-
+| #99 || Glitter-Pterodactyl || Glitter + Pterodactyl || data-sort-value="13" | 13★ || data-sort-value="4524" | $4.52K/s || Standard || Fusion
+|-
+| #100 || Cheerret || Cheetah + Ferret || data-sort-value="13" | 13★ || data-sort-value="4504" | $4.50K/s || Standard || Fusion
+|-
+| #101 || Plasma-Stegosaurus || Plasma + Stegosaurus || data-sort-value="13" | 13★ || data-sort-value="4437" | $4.44K/s || Standard || Fusion
+|-
+| #102 || Cheetah-Coral || Cheetah + Coral || data-sort-value="13" | 13★ || data-sort-value="4369" | $4.37K/s || Standard || Fusion
+|-
+| #103 || Uranium-Velociraptor || Uranium + Velociraptor || data-sort-value="13" | 13★ || data-sort-value="4307" | $4.31K/s || Standard || Fusion
+|-
+| #104 || Coral-Jade || Coral + Jade || data-sort-value="13" | 13★ || data-sort-value="3998" | $4.00K/s || Standard || Fusion
+|-
+| #105 || Pufferfish-Water || Pufferfish + Water || data-sort-value="13" | 13★ || data-sort-value="3978" | $3.98K/s || Standard || Fusion
+|-
+| #106 || Cobra-Pufferfish || Cobra + Pufferfish || data-sort-value="13" | 13★ || data-sort-value="3874" | $3.87K/s || Standard || Fusion
+|-
+| #107 || Electricity-Ruby || Electricity + Ruby || data-sort-value="13" | 13★ || data-sort-value="3778" | $3.78K/s || Standard || Fusion
+|-
+| #108 || Cheetah-Moose || Cheetah + Moose || data-sort-value="13" | 13★ || data-sort-value="3456" | $3.46K/s || Standard || Fusion
+|-
+| #109 || Lava-Plasma || Lava + Plasma || data-sort-value="13" | 13★ || data-sort-value="3344" | $3.34K/s || Standard || Fusion
+|-
+| #110 || Butterfly-Octopus || Butterfly + Octopus || data-sort-value="13" | 13★ || data-sort-value="3261" | $3.26K/s || Standard || Fusion
+|-
+| #111 || Goat-Orangutan || Goat + Orangutan || data-sort-value="13" | 13★ || data-sort-value="3241" | $3.24K/s || Standard || Fusion
+|-
+| #112 || Eagle-Zebra || Eagle + Zebra || data-sort-value="13" | 13★ || data-sort-value="3215" | $3.21K/s || Standard || Fusion
+|-
+| #113 || Cheeseburger-Stegosaurus || Cheeseburger + Stegosaurus || data-sort-value="13" | 13★ || data-sort-value="3190" | $3.19K/s || Standard || Fusion
+|-
+| #114 || Excavator-Fox || Excavator + Fox || data-sort-value="13" | 13★ || data-sort-value="3036" | $3.04K/s || Standard || Fusion
+|-
+| #115 || Axolotl-Panther || Axolotl + Panther || data-sort-value="13" | 13★ || data-sort-value="2944" | $2.94K/s || Standard || Fusion
+|-
+| #116 || Triceratops-Wasp || Triceratops + Wasp || data-sort-value="13" | 13★ || data-sort-value="2730" | $2.73K/s || Standard || Fusion
+|-
+| #117 || Ankylosaurus-Lava || Ankylosaurus + Lava || data-sort-value="13" | 13★ || data-sort-value="2507" | $2.51K/s || Standard || Fusion
+|-
+| #118 || Coral-Dragonfly || Coral + Dragonfly || data-sort-value="13" | 13★ || data-sort-value="2473" | $2.47K/s || Standard || Fusion
+|-
+| #119 || Ant-Pterodactyl || Ant + Pterodactyl || data-sort-value="13" | 13★ || data-sort-value="2452" | $2.45K/s || Standard || Fusion
+|-
+| #120 || Human-man-Owl || Human-man + Owl || data-sort-value="13" | 13★ || data-sort-value="2358" | $2.36K/s || Standard || Fusion
+|-
+| #121 || Black-hole-Moose || Black-hole + Moose || data-sort-value="13" | 13★ || data-sort-value="2332" | $2.33K/s || Standard || Fusion
+|-
+| #122 || Anglerfish-Car || Anglerfish + Car || data-sort-value="13" | 13★ || data-sort-value="2255" | $2.25K/s || Standard || Fusion
+|-
+| #123 || Goat-Mermaid || Goat + Mermaid || data-sort-value="13" | 13★ || data-sort-value="2201" | $2.20K/s || Standard || Fusion
+|-
+| #124 || Black-hole-Red panda || Black-hole + Red panda || data-sort-value="13" | 13★ || data-sort-value="2153" | $2.15K/s || Standard || Fusion
+|-
+| #125 || Mermaid-Solar-eclipse || Mermaid + Solar-eclipse || data-sort-value="13" | 13★ || data-sort-value="2140" | $2.14K/s || Standard || Fusion
+|-
+| #126 || Ankylosaurus-Pterodactyl || Ankylosaurus + Pterodactyl || data-sort-value="13" | 13★ || data-sort-value="2117" | $2.12K/s || Standard || Fusion
+|-
+| #127 || Uranium-Warthog || Uranium + Warthog || data-sort-value="13" | 13★ || data-sort-value="2084" | $2.08K/s || Standard || Fusion
+|-
+| #128 || Banana-T-rex || Banana + T-rex || data-sort-value="13" | 13★ || data-sort-value="2034" | $2.03K/s || Standard || Fusion
+|-
+| #129 || Glitter-Shark || Glitter + Shark || data-sort-value="12" | 12★ || data-sort-value="1894" | $1.89K/s || Standard || Fusion
+|-
+| #130 || Clouds-Solar-eclipse || Clouds + Solar-eclipse || data-sort-value="12" | 12★ || data-sort-value="1852" | $1.85K/s || Standard || Fusion
+|-
+| #131 || Psychic-power-Triceratops || Psychic-power + Triceratops || data-sort-value="12" | 12★ || data-sort-value="1843" | $1.84K/s || Standard || Fusion
+|-
+| #132 || Jade-Velociraptor || Jade + Velociraptor || data-sort-value="12" | 12★ || data-sort-value="1724" | $1.72K/s || Standard || Fusion
+|-
+| #133 || Eagle-Shark || Eagle + Shark || data-sort-value="12" | 12★ || data-sort-value="1722" | $1.72K/s || Standard || Fusion
+|-
+| #134 || Clouds-Dragonfly || Clouds + Dragonfly || data-sort-value="12" | 12★ || data-sort-value="1702" | $1.70K/s || Standard || Fusion
+|-
+| #135 || Psychic-power-Turtle || Psychic-power + Turtle || data-sort-value="12" | 12★ || data-sort-value="1634" | $1.63K/s || Standard || Fusion
+|-
+| #136 || Glitter-Tank || Glitter + Tank || data-sort-value="12" | 12★ || data-sort-value="1609" | $1.61K/s || Standard || Fusion
+|-
+| #137 || Tiger-Wasp || Tiger + Wasp || data-sort-value="12" | 12★ || data-sort-value="1605" | $1.60K/s || Standard || Fusion
+|-
+| #138 || Turtle-Uranium || Turtle + Uranium || data-sort-value="12" | 12★ || data-sort-value="1592" | $1.59K/s || Standard || Fusion
+|-
+| #139 || Beetle-Crab || Beetle + Crab || data-sort-value="12" | 12★ || data-sort-value="1586" | $1.59K/s || Standard || Fusion
+|-
+| #140 || Black-hole-Water || Black-hole + Water || data-sort-value="12" | 12★ || data-sort-value="1531" | $1.53K/s || Standard || Fusion
+|-
+| #141 || Red panda-Tiger || Red panda + Tiger || data-sort-value="12" | 12★ || data-sort-value="1517" | $1.52K/s || Standard || Fusion
+|-
+| #142 || Cheeseburger-Electricity || Cheeseburger + Electricity || data-sort-value="12" | 12★ || data-sort-value="1427" | $1.43K/s || Standard || Fusion
+|-
+| #143 || Butterfly-Red panda || Butterfly + Red panda || data-sort-value="12" | 12★ || data-sort-value="1423" | $1.42K/s || Standard || Fusion
+|-
+| #144 || Skeleton-Stingray || Skeleton + Stingray || data-sort-value="12" | 12★ || data-sort-value="1423" | $1.42K/s || Standard || Fusion
+|-
+| #145 || Lava-Narwhal || Lava + Narwhal || data-sort-value="12" | 12★ || data-sort-value="1418" | $1.42K/s || Standard || Fusion
+|-
+| #146 || Solar-eclipse-Tiger || Solar-eclipse + Tiger || data-sort-value="12" | 12★ || data-sort-value="1416" | $1.42K/s || Standard || Fusion
+|-
+| #147 || Shark-Wolf || Shark + Wolf || data-sort-value="12" | 12★ || data-sort-value="1383" | $1.38K/s || Standard || Fusion
+|-
+| #148 || Aurora-Dragonfly || Aurora + Dragonfly || data-sort-value="12" | 12★ || data-sort-value="1380" | $1.38K/s || Standard || Fusion
+|-
+| #149 || Cheetah-Electricity || Cheetah + Electricity || data-sort-value="12" | 12★ || data-sort-value="1353" | $1.35K/s || Standard || Fusion
+|-
+| #150 || Black-hole-Dolphin || Black-hole + Dolphin || data-sort-value="12" | 12★ || data-sort-value="1348" | $1.35K/s || Standard || Fusion
+|-
+| #151 || Elephant-Rhino || Elephant + Rhino || data-sort-value="12" | 12★ || data-sort-value="1281" | $1.28K/s || Standard || Fusion
+|-
+| #152 || Clouds-Venus-fly-trap || Clouds + Venus-fly-trap || data-sort-value="12" | 12★ || data-sort-value="1250" | $1.25K/s || Standard || Fusion
+|-
+| #153 || Psychic-power-Uranium || Psychic-power + Uranium || data-sort-value="12" | 12★ || data-sort-value="1245" | $1.25K/s || Standard || Fusion
+|-
+| #154 || Ankylosaurus-Water || Ankylosaurus + Water || data-sort-value="12" | 12★ || data-sort-value="1243" | $1.24K/s || Standard || Fusion
+|-
+| #155 || Praying-mantis-Pufferfish || Praying-mantis + Pufferfish || data-sort-value="12" | 12★ || data-sort-value="1242" | $1.24K/s || Standard || Fusion
+|-
+| #156 || Velocirarthog || Velociraptor + Warthog || data-sort-value="12" | 12★ || data-sort-value="1237" | $1.24K/s || Standard || Fusion
+|-
+| #157 || Electricity-Velociraptor || Electricity + Velociraptor || data-sort-value="12" | 12★ || data-sort-value="1213" | $1.21K/s || Standard || Fusion
+|-
+| #158 || Beetle-Spider || Beetle + Spider || data-sort-value="12" | 12★ || data-sort-value="1204" | $1.20K/s || Standard || Fusion
+|-
+| #159 || Clouds-Red panda || Clouds + Red panda || data-sort-value="12" | 12★ || data-sort-value="1195" | $1.20K/s || Standard || Fusion
+|-
+| #160 || Jerboa-Panther || Jerboa + Panther || data-sort-value="12" | 12★ || data-sort-value="1186" | $1.19K/s || Standard || Fusion
+|-
+| #161 || Cowboy-Mermaid || Cowboy + Mermaid || data-sort-value="12" | 12★ || data-sort-value="1183" | $1.18K/s || Standard || Fusion
+|-
+| #162 || Banana-Wasp || Banana + Wasp || data-sort-value="12" | 12★ || data-sort-value="1170" | $1.17K/s || Standard || Fusion
+|-
+| #163 || Black-hole-Jellyfish || Black-hole + Jellyfish || data-sort-value="12" | 12★ || data-sort-value="1165" | $1.17K/s || Standard || Fusion
+|-
+| #164 || Chicken-Jellyfish || Chicken + Jellyfish || data-sort-value="12" | 12★ || data-sort-value="1147" | $1.15K/s || Standard || Fusion
+|-
+| #165 || Ferret-Pterodactyl || Ferret + Pterodactyl || data-sort-value="12" | 12★ || data-sort-value="1147" | $1.15K/s || Standard || Fusion
+|-
+| #166 || Fox-Zombie || Fox + Zombie || data-sort-value="12" | 12★ || data-sort-value="1132" | $1.13K/s || Standard || Fusion
+|-
+| #167 || Moose-Solar-eclipse || Moose + Solar-eclipse || data-sort-value="12" | 12★ || data-sort-value="1130" | $1.13K/s || Standard || Fusion
+|-
+| #168 || Cobra-Jade || Cobra + Jade || data-sort-value="12" | 12★ || data-sort-value="1099" | $1.10K/s || Standard || Fusion
+|-
+| #169 || Goat-Velociraptor || Goat + Velociraptor || data-sort-value="12" | 12★ || data-sort-value="1095" | $1.09K/s || Standard || Fusion
+|-
+| #170 || Electricity-Shark || Electricity + Shark || data-sort-value="12" | 12★ || data-sort-value="1092" | $1.09K/s || Standard || Fusion
+|-
+| #171 || Human-man-Triceratops || Human-man + Triceratops || data-sort-value="12" | 12★ || data-sort-value="1084" | $1.08K/s || Standard || Fusion
+|-
+| #172 || Goat-Toilet || Goat + Toilet || data-sort-value="12" | 12★ || data-sort-value="1078" | $1.08K/s || Standard || Fusion
+|-
+| #173 || Coral-Human-man || Coral + Human-man || data-sort-value="12" | 12★ || data-sort-value="1033" | $1.03K/s || Standard || Fusion
+|-
+| #174 || Chicken-Spider || Chicken + Spider || data-sort-value="12" | 12★ || data-sort-value="1022" | $1.02K/s || Standard || Fusion
+|-
+| #175 || Banana-Clouds || Banana + Clouds || data-sort-value="11" | 11★ || data-sort-value="996" | $996/s || Standard || Fusion
+|-
+| #176 || Dragonfly-Tank || Dragonfly + Tank || data-sort-value="11" | 11★ || data-sort-value="993" | $993/s || Standard || Fusion
+|-
+| #177 || Ankylosaurus-Giraffe || Ankylosaurus + Giraffe || data-sort-value="11" | 11★ || data-sort-value="985" | $985/s || Standard || Fusion
+|-
+| #178 || Dolphin-Eagle || Dolphin + Eagle || data-sort-value="11" | 11★ || data-sort-value="957" | $957/s || Standard || Fusion
+|-
+| #179 || Cheeseburger-Uranium || Cheeseburger + Uranium || data-sort-value="11" | 11★ || data-sort-value="954" | $954/s || Standard || Fusion
+|-
+| #180 || Ruby-Water || Ruby + Water || data-sort-value="11" | 11★ || data-sort-value="945" | $945/s || Standard || Fusion
+|-
+| #181 || Ruby-Zebra || Ruby + Zebra || data-sort-value="11" | 11★ || data-sort-value="920" | $920/s || Standard || Fusion
+|-
+| #182 || Orangutan-Strawberry || Orangutan + Strawberry || data-sort-value="11" | 11★ || data-sort-value="919" | $919/s || Standard || Fusion
+|-
+| #183 || Chicken-Ferret || Chicken + Ferret || data-sort-value="11" | 11★ || data-sort-value="909" | $909/s || Standard || Fusion
+|-
+| #184 || Praying-mantis-Venus-fly-trap || Praying-mantis + Venus-fly-trap || data-sort-value="11" | 11★ || data-sort-value="896" | $896/s || Standard || Fusion
+|-
+| #185 || Crab-Praying-mantis || Crab + Praying-mantis || data-sort-value="11" | 11★ || data-sort-value="874" | $874/s || Standard || Fusion
+|-
+| #186 || Glitter-Pufferfish || Glitter + Pufferfish || data-sort-value="11" | 11★ || data-sort-value="863" | $863/s || Standard || Fusion
+|-
+| #187 || Psychic-power-Wolf || Psychic-power + Wolf || data-sort-value="11" | 11★ || data-sort-value="863" | $863/s || Standard || Fusion
+|-
+| #188 || Mermaid-Toilet || Mermaid + Toilet || data-sort-value="11" | 11★ || data-sort-value="860" | $860/s || Standard || Fusion
+|-
+| #189 || Solar-eclipse-T-rex || Solar-eclipse + T-rex || data-sort-value="11" | 11★ || data-sort-value="858" | $858/s || Standard || Fusion
+|-
+| #190 || Butterfly-Pufferfish || Butterfly + Pufferfish || data-sort-value="11" | 11★ || data-sort-value="848" | $848/s || Standard || Fusion
+|-
+| #191 || Butterfly-Dragon || Butterfly + Dragon || data-sort-value="11" | 11★ || data-sort-value="842" | $842/s || Standard || Fusion
+|-
+| #192 || Dragon-Psychic-power || Dragon + Psychic-power || data-sort-value="11" | 11★ || data-sort-value="829" | $829/s || Standard || Fusion
+|-
+| #193 || Praying-mantis-Spider || Praying-mantis + Spider || data-sort-value="11" | 11★ || data-sort-value="828" | $828/s || Standard || Fusion
+|-
+| #194 || Lava-Stingray || Lava + Stingray || data-sort-value="11" | 11★ || data-sort-value="824" | $824/s || Standard || Fusion
+|-
+| #195 || Aurora-Goat || Aurora + Goat || data-sort-value="11" | 11★ || data-sort-value="816" | $816/s || Standard || Fusion
+|-
+| #196 || Monkey-Zebra || Monkey + Zebra || data-sort-value="11" | 11★ || data-sort-value="815" | $815/s || Standard || Fusion
+|-
+| #197 || Shark-Stegosaurus || Shark + Stegosaurus || data-sort-value="11" | 11★ || data-sort-value="798" | $798/s || Standard || Fusion
+|-
+| #198 || Velocirtle || Turtle + Velociraptor || data-sort-value="11" | 11★ || data-sort-value="795" | $795/s || Standard || Fusion
+|-
+| #199 || Axolotl-Jellyfish || Axolotl + Jellyfish || data-sort-value="11" | 11★ || data-sort-value="777" | $777/s || Standard || Fusion
+|-
+| #200 || Cowboy-Toilet || Cowboy + Toilet || data-sort-value="11" | 11★ || data-sort-value="772" | $772/s || Standard || Fusion
+|-
+| #201 || Stingray-Wolf || Stingray + Wolf || data-sort-value="11" | 11★ || data-sort-value="758" | $758/s || Standard || Fusion
+|-
+| #202 || Solar-eclipse-Zombie || Solar-eclipse + Zombie || data-sort-value="11" | 11★ || data-sort-value="745" | $745/s || Standard || Fusion
+|-
+| #203 || Crab-Panther || Crab + Panther || data-sort-value="11" | 11★ || data-sort-value="737" | $737/s || Standard || Fusion
+|-
+| #204 || Lava-Solar-eclipse || Lava + Solar-eclipse || data-sort-value="11" | 11★ || data-sort-value="722" | $722/s || Standard || Fusion
+|-
+| #205 || Dragonfly-Human-man || Dragonfly + Human-man || data-sort-value="11" | 11★ || data-sort-value="718" | $718/s || Standard || Fusion
+|-
+| #206 || Gorilla-Jerboa || Gorilla + Jerboa || data-sort-value="11" | 11★ || data-sort-value="706" | $706/s || Standard || Fusion
+|-
+| #207 || Cheeseburger-Octopus || Cheeseburger + Octopus || data-sort-value="11" | 11★ || data-sort-value="702" | $702/s || Standard || Fusion
+|-
+| #208 || Axolotl-Lava || Axolotl + Lava || data-sort-value="11" | 11★ || data-sort-value="701" | $701/s || Standard || Fusion
+|-
+| #209 || Electricity-Orangutan || Electricity + Orangutan || data-sort-value="11" | 11★ || data-sort-value="693" | $693/s || Standard || Fusion
+|-
+| #210 || Crocodile-Zombie || Crocodile + Zombie || data-sort-value="11" | 11★ || data-sort-value="684" | $684/s || Standard || Fusion
+|-
+| #211 || Demon-Venus-fly-trap || Demon + Venus-fly-trap || data-sort-value="11" | 11★ || data-sort-value="684" | $684/s || Standard || Fusion
+|-
+| #212 || Ankylosaurus-Triceratops || Ankylosaurus + Triceratops || data-sort-value="11" | 11★ || data-sort-value="676" | $676/s || Standard || Fusion
+|-
+| #213 || Millipede-Uranium || Millipede + Uranium || data-sort-value="11" | 11★ || data-sort-value="671" | $671/s || Standard || Fusion
+|-
+| #214 || Fox-Human-man || Fox + Human-man || data-sort-value="11" | 11★ || data-sort-value="667" | $667/s || Standard || Fusion
+|-
+| #215 || Aurora-Warthog || Aurora + Warthog || data-sort-value="11" | 11★ || data-sort-value="639" | $639/s || Standard || Fusion
+|-
+| #216 || Elephant-Ferret || Elephant + Ferret || data-sort-value="11" | 11★ || data-sort-value="637" | $637/s || Standard || Fusion
+|-
+| #217 || Black-hole-Pufferfish || Black-hole + Pufferfish || data-sort-value="11" | 11★ || data-sort-value="628" | $628/s || Standard || Fusion
+|-
+| #218 || Millipede-Panther || Millipede + Panther || data-sort-value="11" | 11★ || data-sort-value="627" | $627/s || Standard || Fusion
+|-
+| #219 || Crocodilla || Crocodile + Gorilla || data-sort-value="11" | 11★ || data-sort-value="621" | $621/s || Standard || Fusion
+|-
+| #220 || Human-man-Wolf || Human-man + Wolf || data-sort-value="11" | 11★ || data-sort-value="620" | $620/s || Standard || Fusion
+|-
+| #221 || Goat-Plasma || Goat + Plasma || data-sort-value="11" | 11★ || data-sort-value="616" | $616/s || Standard || Fusion
+|-
+| #222 || Plasma-Stingray || Plasma + Stingray || data-sort-value="11" | 11★ || data-sort-value="612" | $612/s || Standard || Fusion
+|-
+| #223 || Dragon-Wasp || Dragon + Wasp || data-sort-value="11" | 11★ || data-sort-value="610" | $610/s || Standard || Fusion
+|-
+| #224 || Cobra-Giraffe || Cobra + Giraffe || data-sort-value="11" | 11★ || data-sort-value="608" | $608/s || Standard || Fusion
+|-
+| #225 || Giraffe-Jade || Giraffe + Jade || data-sort-value="11" | 11★ || data-sort-value="605" | $605/s || Standard || Fusion
+|-
+| #226 || Goat-Solar-eclipse || Goat + Solar-eclipse || data-sort-value="11" | 11★ || data-sort-value="596" | $596/s || Standard || Fusion
+|-
+| #227 || Skelegoat || Goat + Skeleton || data-sort-value="11" | 11★ || data-sort-value="593" | $593/s || Standard || Fusion
+|-
+| #228 || Mermaid-Tank || Mermaid + Tank || data-sort-value="11" | 11★ || data-sort-value="579" | $579/s || Standard || Fusion
+|-
+| #229 || Elephant-Moose || Elephant + Moose || data-sort-value="11" | 11★ || data-sort-value="565" | $565/s || Standard || Fusion
+|-
+| #230 || Owl-Pterodactyl || Owl + Pterodactyl || data-sort-value="11" | 11★ || data-sort-value="557" | $557/s || Standard || Fusion
+|-
+| #231 || Solar-eclipse-Water || Solar-eclipse + Water || data-sort-value="11" | 11★ || data-sort-value="547" | $547/s || Standard || Fusion
+|-
+| #232 || Crab-Wasp || Crab + Wasp || data-sort-value="11" | 11★ || data-sort-value="541" | $541/s || Standard || Fusion
+|-
+| #233 || Black-hole-Spider || Black-hole + Spider || data-sort-value="11" | 11★ || data-sort-value="536" | $536/s || Standard || Fusion
+|-
+| #234 || Excavator-Stingray || Excavator + Stingray || data-sort-value="11" | 11★ || data-sort-value="533" | $533/s || Standard || Fusion
+|-
+| #235 || Mermaid-Praying-mantis || Mermaid + Praying-mantis || data-sort-value="11" | 11★ || data-sort-value="522" | $522/s || Standard || Fusion
+|-
+| #236 || Dragon-Fox || Dragon + Fox || data-sort-value="11" | 11★ || data-sort-value="515" | $515/s || Standard || Fusion
+|-
+| #237 || Aurora-Dragon || Aurora + Dragon || data-sort-value="11" | 11★ || data-sort-value="513" | $513/s || Standard || Fusion
+|-
+| #238 || Banana-Velociraptor || Banana + Velociraptor || data-sort-value="10" | 10★ || data-sort-value="499" | $499/s || Standard || Fusion
+|-
+| #239 || Jellyfish-Wolf || Jellyfish + Wolf || data-sort-value="10" | 10★ || data-sort-value="498" | $498/s || Standard || Fusion
+|-
+| #240 || Lava-T-rex || Lava + T-rex || data-sort-value="10" | 10★ || data-sort-value="497" | $497/s || Standard || Fusion
+|-
+| #241 || Dragon-Glitter || Dragon + Glitter || data-sort-value="10" | 10★ || data-sort-value="496" | $496/s || Standard || Fusion
+|-
+| #242 || Solar-eclipse-Spider || Solar-eclipse + Spider || data-sort-value="10" | 10★ || data-sort-value="493" | $493/s || Standard || Fusion
+|-
+| #243 || Gorilla-Solar-eclipse || Gorilla + Solar-eclipse || data-sort-value="10" | 10★ || data-sort-value="485" | $485/s || Standard || Fusion
+|-
+| #244 || Electricity-Glitter || Electricity + Glitter || data-sort-value="10" | 10★ || data-sort-value="484" | $484/s || Standard || Fusion
+|-
+| #245 || Beetle-Ruby || Beetle + Ruby || data-sort-value="10" | 10★ || data-sort-value="480" | $480/s || Standard || Fusion
+|-
+| #246 || Black-hole-Narwhal || Black-hole + Narwhal || data-sort-value="10" | 10★ || data-sort-value="480" | $480/s || Standard || Fusion
+|-
+| #247 || Giraptor || Giraffe + Velociraptor || data-sort-value="10" | 10★ || data-sort-value="476" | $476/s || Standard || Fusion
+|-
+| #248 || Solar-eclipse-Strawberry || Solar-eclipse + Strawberry || data-sort-value="10" | 10★ || data-sort-value="476" | $476/s || Standard || Fusion
+|-
+| #249 || Banana-Zebra || Banana + Zebra || data-sort-value="10" | 10★ || data-sort-value="475" | $475/s || Standard || Fusion
+|-
+| #250 || Axolotl-Crocodile || Axolotl + Crocodile || data-sort-value="10" | 10★ || data-sort-value="473" | $473/s || Standard || Fusion
+|-
+| #251 || Cheeseburger-Triceratops || Cheeseburger + Triceratops || data-sort-value="10" | 10★ || data-sort-value="469" | $469/s || Standard || Fusion
+|-
+| #252 || Elephant-Red panda || Elephant + Red panda || data-sort-value="10" | 10★ || data-sort-value="461" | $461/s || Standard || Fusion
+|-
+| #253 || Electricity-Owl || Electricity + Owl || data-sort-value="10" | 10★ || data-sort-value="457" | $457/s || Standard || Fusion
+|-
+| #254 || Butterfly-Turtle || Butterfly + Turtle || data-sort-value="10" | 10★ || data-sort-value="449" | $449/s || Standard || Fusion
+|-
+| #255 || Red panda-Stegosaurus || Red panda + Stegosaurus || data-sort-value="10" | 10★ || data-sort-value="449" | $449/s || Standard || Fusion
+|-
+| #256 || Black-hole-Glitter || Black-hole + Glitter || data-sort-value="10" | 10★ || data-sort-value="448" | $448/s || Standard || Fusion
+|-
+| #257 || Cheetah-Stingray || Cheetah + Stingray || data-sort-value="10" | 10★ || data-sort-value="446" | $446/s || Standard || Fusion
+|-
+| #258 || Black-hole-Millipede || Black-hole + Millipede || data-sort-value="10" | 10★ || data-sort-value="443" | $443/s || Standard || Fusion
+|-
+| #259 || Strawberry-Uranium || Strawberry + Uranium || data-sort-value="10" | 10★ || data-sort-value="443" | $443/s || Standard || Fusion
+|-
+| #260 || Chicken-Coral || Chicken + Coral || data-sort-value="10" | 10★ || data-sort-value="434" | $434/s || Standard || Fusion
+|-
+| #261 || Anglerfish-Strawberry || Anglerfish + Strawberry || data-sort-value="10" | 10★ || data-sort-value="428" | $428/s || Standard || Fusion
+|-
+| #262 || Monkey-Ruby || Monkey + Ruby || data-sort-value="10" | 10★ || data-sort-value="426" | $426/s || Standard || Fusion
+|-
+| #263 || Ruby-Stegosaurus || Ruby + Stegosaurus || data-sort-value="10" | 10★ || data-sort-value="417" | $417/s || Standard || Fusion
+|-
+| #264 || Jellyfish-Pufferfish || Jellyfish + Pufferfish || data-sort-value="10" | 10★ || data-sort-value="416" | $416/s || Standard || Fusion
+|-
+| #265 || Gorilla-Shark || Gorilla + Shark || data-sort-value="10" | 10★ || data-sort-value="414" | $414/s || Standard || Fusion
+|-
+| #266 || Stegosawasp || Stegosaurus + Wasp || data-sort-value="10" | 10★ || data-sort-value="410" | $410/s || Standard || Fusion
+|-
+| #267 || Cobra-Psychic-power || Cobra + Psychic-power || data-sort-value="10" | 10★ || data-sort-value="409" | $409/s || Standard || Fusion
+|-
+| #268 || Ankylosaurus-Aurora || Ankylosaurus + Aurora || data-sort-value="10" | 10★ || data-sort-value="407" | $407/s || Standard || Fusion
+|-
+| #269 || Electricity-Strawberry || Electricity + Strawberry || data-sort-value="10" | 10★ || data-sort-value="400" | $400/s || Standard || Fusion
+|-
+| #270 || Goat-Turtle || Goat + Turtle || data-sort-value="10" | 10★ || data-sort-value="400" | $400/s || Standard || Fusion
+|-
+| #271 || Ant-Uranium || Ant + Uranium || data-sort-value="10" | 10★ || data-sort-value="397" | $397/s || Standard || Fusion
+|-
+| #272 || Rhino-Uranium || Rhino + Uranium || data-sort-value="10" | 10★ || data-sort-value="397" | $397/s || Standard || Fusion
+|-
+| #273 || Clouds-Narwhal || Clouds + Narwhal || data-sort-value="10" | 10★ || data-sort-value="389" | $389/s || Standard || Fusion
+|-
+| #274 || Shark-Warthog || Shark + Warthog || data-sort-value="10" | 10★ || data-sort-value="385" | $385/s || Standard || Fusion
+|-
+| #275 || Demon-Lava || Demon + Lava || data-sort-value="10" | 10★ || data-sort-value="384" | $384/s || Standard || Fusion
+|-
+| #276 || Black-hole-Dragonfly || Black-hole + Dragonfly || data-sort-value="10" | 10★ || data-sort-value="379" | $379/s || Standard || Fusion
+|-
+| #277 || Narwhal-Tiger || Narwhal + Tiger || data-sort-value="10" | 10★ || data-sort-value="376" | $376/s || Standard || Fusion
+|-
+| #278 || Ant-Black-hole || Ant + Black-hole || data-sort-value="10" | 10★ || data-sort-value="373" | $373/s || Standard || Fusion
+|-
+| #279 || Beetle-Jerboa || Beetle + Jerboa || data-sort-value="10" | 10★ || data-sort-value="368" | $368/s || Standard || Fusion
+|-
+| #280 || Dolphin-Zombie || Dolphin + Zombie || data-sort-value="10" | 10★ || data-sort-value="365" | $365/s || Standard || Fusion
+|-
+| #281 || Cheeseburger-Tank || Cheeseburger + Tank || data-sort-value="10" | 10★ || data-sort-value="364" | $364/s || Standard || Fusion
+|-
+| #282 || Jade-Wolf || Jade + Wolf || data-sort-value="10" | 10★ || data-sort-value="363" | $363/s || Standard || Fusion
+|-
+| #283 || Goat-Stingray || Goat + Stingray || data-sort-value="10" | 10★ || data-sort-value="361" | $361/s || Standard || Fusion
+|-
+| #284 || Octopus-Pufferfish || Octopus + Pufferfish || data-sort-value="10" | 10★ || data-sort-value="358" | $358/s || Standard || Fusion
+|-
+| #285 || Pufferfish-Strawberry || Pufferfish + Strawberry || data-sort-value="10" | 10★ || data-sort-value="357" | $357/s || Standard || Fusion
+|-
+| #286 || Cowboy-Jade || Cowboy + Jade || data-sort-value="10" | 10★ || data-sort-value="356" | $356/s || Standard || Fusion
+|-
+| #287 || Gorilla-Strawberry || Gorilla + Strawberry || data-sort-value="10" | 10★ || data-sort-value="351" | $351/s || Standard || Fusion
+|-
+| #288 || Elephant-Uranium || Elephant + Uranium || data-sort-value="10" | 10★ || data-sort-value="348" | $348/s || Standard || Fusion
+|-
+| #289 || Black-hole-Jade || Black-hole + Jade || data-sort-value="10" | 10★ || data-sort-value="345" | $345/s || Standard || Fusion
+|-
+| #290 || Anglerfish-Glitter || Anglerfish + Glitter || data-sort-value="10" | 10★ || data-sort-value="344" | $344/s || Standard || Fusion
+|-
+| #291 || Plasma-Psychic-power || Plasma + Psychic-power || data-sort-value="10" | 10★ || data-sort-value="342" | $342/s || Standard || Fusion
+|-
+| #292 || Dragonfly-Pufferfish || Dragonfly + Pufferfish || data-sort-value="10" | 10★ || data-sort-value="339" | $339/s || Standard || Fusion
+|-
+| #293 || Black-hole-Owl || Black-hole + Owl || data-sort-value="10" | 10★ || data-sort-value="332" | $332/s || Standard || Fusion
+|-
+| #294 || Clouds-Strawberry || Clouds + Strawberry || data-sort-value="10" | 10★ || data-sort-value="331" | $331/s || Standard || Fusion
+|-
+| #295 || Jerboa-Narwhal || Jerboa + Narwhal || data-sort-value="10" | 10★ || data-sort-value="326" | $326/s || Standard || Fusion
+|-
+| #296 || T-rex-Tank || T-rex + Tank || data-sort-value="10" | 10★ || data-sort-value="322" | $322/s || Standard || Fusion
+|-
+| #297 || Stegosaurus-Venus-fly-trap || Stegosaurus + Venus-fly-trap || data-sort-value="10" | 10★ || data-sort-value="319" | $319/s || Standard || Fusion
+|-
+| #298 || Crocodile-Uranium || Crocodile + Uranium || data-sort-value="10" | 10★ || data-sort-value="316" | $316/s || Standard || Fusion
+|-
+| #299 || Chicken-Dragonfly || Chicken + Dragonfly || data-sort-value="10" | 10★ || data-sort-value="314" | $314/s || Standard || Fusion
+|-
+| #300 || Electricity-Narwhal || Electricity + Narwhal || data-sort-value="10" | 10★ || data-sort-value="308" | $308/s || Standard || Fusion
+|-
+| #301 || Aurora-Car || Aurora + Car || data-sort-value="10" | 10★ || data-sort-value="307" | $307/s || Standard || Fusion
+|-
+| #302 || Cowboy-Octopus || Cowboy + Octopus || data-sort-value="10" | 10★ || data-sort-value="304" | $304/s || Standard || Fusion
+|-
+| #303 || Octopus-Solar-eclipse || Octopus + Solar-eclipse || data-sort-value="10" | 10★ || data-sort-value="300" | $300/s || Standard || Fusion
+|-
+| #304 || Spider-Stingray || Spider + Stingray || data-sort-value="10" | 10★ || data-sort-value="299" | $299/s || Standard || Fusion
+|-
+| #305 || Cheetah-Wasp || Cheetah + Wasp || data-sort-value="10" | 10★ || data-sort-value="297" | $297/s || Standard || Fusion
+|-
+| #306 || Ankylosaurus-Jerboa || Ankylosaurus + Jerboa || data-sort-value="10" | 10★ || data-sort-value="293" | $293/s || Standard || Fusion
+|-
+| #307 || Butterfly-Zebra || Butterfly + Zebra || data-sort-value="10" | 10★ || data-sort-value="290" | $290/s || Standard || Fusion
+|-
+| #308 || Tiger-Turtle || Tiger + Turtle || data-sort-value="10" | 10★ || data-sort-value="288" | $288/s || Standard || Fusion
+|-
+| #309 || Uranium-Wasp || Uranium + Wasp || data-sort-value="10" | 10★ || data-sort-value="287" | $287/s || Standard || Fusion
+|-
+| #310 || Stingray-Tank || Stingray + Tank || data-sort-value="10" | 10★ || data-sort-value="283" | $283/s || Standard || Fusion
+|-
+| #311 || Crocodile-Glitter || Crocodile + Glitter || data-sort-value="10" | 10★ || data-sort-value="278" | $278/s || Standard || Fusion
+|-
+| #312 || Ant-Eagle || Ant + Eagle || data-sort-value="10" | 10★ || data-sort-value="272" | $272/s || Standard || Fusion
+|-
+| #313 || Millipede-Shark || Millipede + Shark || data-sort-value="10" | 10★ || data-sort-value="262" | $262/s || Standard || Fusion
+|-
+| #314 || Psychic-power-Tank || Psychic-power + Tank || data-sort-value="10" | 10★ || data-sort-value="262" | $262/s || Standard || Fusion
+|-
+| #315 || Cheetah-Panther || Cheetah + Panther || data-sort-value="10" | 10★ || data-sort-value="255" | $255/s || Standard || Fusion
+|-
+| #316 || Anglerfish-Solar-eclipse || Anglerfish + Solar-eclipse || data-sort-value="10" | 10★ || data-sort-value="249" | $249/s || Standard || Fusion
+|-
+| #317 || Axolotl-Black-hole || Axolotl + Black-hole || data-sort-value="10" | 10★ || data-sort-value="249" | $249/s || Standard || Fusion
+|-
+| #318 || Psychic-power-Skeleton || Psychic-power + Skeleton || data-sort-value="10" | 10★ || data-sort-value="248" | $248/s || Standard || Fusion
+|-
+| #319 || Chicken-Tiger || Chicken + Tiger || data-sort-value="10" | 10★ || data-sort-value="245" | $245/s || Standard || Fusion
+|-
+| #320 || Orangutan-Venus-fly-trap || Orangutan + Venus-fly-trap || data-sort-value="10" | 10★ || data-sort-value="243" | $243/s || Standard || Fusion
+|-
+| #321 || Crab-Stingray || Crab + Stingray || data-sort-value="10" | 10★ || data-sort-value="237" | $237/s || Standard || Fusion
+|-
+| #322 || Eagle-Giraffe || Eagle + Giraffe || data-sort-value="10" | 10★ || data-sort-value="237" | $237/s || Standard || Fusion
+|-
+| #323 || Banana-Excavator || Banana + Excavator || data-sort-value="10" | 10★ || data-sort-value="236" | $236/s || Standard || Fusion
+|-
+| #324 || Elephant-Gorilla || Elephant + Gorilla || data-sort-value="10" | 10★ || data-sort-value="234" | $234/s || Standard || Fusion
+|-
+| #325 || Ankylosaurus-Cowboy || Ankylosaurus + Cowboy || data-sort-value="10" | 10★ || data-sort-value="232" | $232/s || Standard || Fusion
+|-
+| #326 || Tank-Zebra || Tank + Zebra || data-sort-value="10" | 10★ || data-sort-value="231" | $231/s || Standard || Fusion
+|-
+| #327 || Panther-Venus-fly-trap || Panther + Venus-fly-trap || data-sort-value="10" | 10★ || data-sort-value="222" | $222/s || Standard || Fusion
+|-
+| #328 || Ankylosaurus-Cobra || Ankylosaurus + Cobra || data-sort-value="10" | 10★ || data-sort-value="217" | $217/s || Standard || Fusion
+|-
+| #329 || Dragonfly-Jade || Dragonfly + Jade || data-sort-value="10" | 10★ || data-sort-value="214" | $214/s || Standard || Fusion
+|-
+| #330 || Cheeseburger-Red panda || Cheeseburger + Red panda || data-sort-value="10" | 10★ || data-sort-value="203" | $203/s || Standard || Fusion
+|-
+| #331 || Anglerfish-Warthog || Anglerfish + Warthog || data-sort-value="10" | 10★ || data-sort-value="202" | $202/s || Standard || Fusion
+|}
+
+[[Category:Game Guides]]
+[[Category:Fusions]]
+[[Category:Database]]
