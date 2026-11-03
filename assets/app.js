@@ -1940,7 +1940,7 @@ Message: ${msg}`;
     }, 600);
 }
 
-function submitCommunityPost() {
+async function submitCommunityPost() {
     const userInput = document.getElementById("comm-username");
     const msgInput = document.getElementById("comm-message");
     const catInput = document.getElementById("comm-category");
@@ -1966,6 +1966,35 @@ function submitCommunityPost() {
 
     localStorage.setItem("ia_roblox_username", rawUser);
 
+    const submitBtns = document.querySelectorAll(".community-submit-bar button");
+    submitBtns.forEach(b => { if (b.classList.contains("btn-primary")) { b.disabled = true; b.textContent = "Sending..."; } });
+
+    try {
+        const resp = await fetch("/api/feedback", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                username: rawUser,
+                category: cat,
+                message: msg
+            })
+        });
+
+        const data = await resp.json().catch(() => ({}));
+
+        if (resp.ok) {
+            showToast("✨ Feedback sent directly to @TatayDigs on Discord!");
+        } else {
+            console.warn("Feedback API response:", data);
+            showToast(data.error || "Saved locally! Share to Discord for instant reply.");
+        }
+    } catch (e) {
+        console.warn("Offline or local test mode:", e);
+        showToast("Saved to feed! Click 'Share to Discord' to reach @TatayDigs.");
+    } finally {
+        submitBtns.forEach(b => { if (b.classList.contains("btn-primary")) { b.disabled = false; b.textContent = "🚀 Post to Feed"; } });
+    }
+
     const posts = getCommunityPosts();
     const newPost = {
         id: "post_" + Date.now(),
@@ -1983,7 +2012,6 @@ function submitCommunityPost() {
 
     msgInput.value = "";
     updateCommCharCount();
-    showToast("Feedback posted to feed! Click 'Share to Discord' to notify @TatayDigs directly.");
     renderCommunityFeed();
 }
 
