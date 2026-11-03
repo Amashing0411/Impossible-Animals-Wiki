@@ -1845,6 +1845,10 @@ function toggleCommunityWidget(forceState) {
     const newState = (forceState !== undefined) ? forceState : !isOpen;
 
     drawer.style.display = newState ? "flex" : "none";
+    const commTabBtn = document.getElementById("btn-tab-community");
+    if (commTabBtn) {
+        commTabBtn.classList.toggle("active", newState);
+    }
     if (newState) {
         loadCommunityFeed();
         const userSaved = localStorage.getItem("ia_roblox_username") || "";
@@ -1897,6 +1901,45 @@ function containsInappropriateWords(str) {
     return badWords.some(w => lower.includes(w));
 }
 
+function sendPostToDiscord() {
+    const userInput = document.getElementById("comm-username");
+    const msgInput = document.getElementById("comm-message");
+    const catInput = document.getElementById("comm-category");
+
+    const rawUser = (userInput?.value || "").trim().replace(/^@+/, "");
+    const msg = (msgInput?.value || "").trim();
+    const cat = catInput?.value || "feedback";
+
+    if (!msg) {
+        showToast("Please enter a message or feedback first!");
+        msgInput?.focus();
+        return;
+    }
+
+    if (rawUser) {
+        localStorage.setItem("ia_roblox_username", rawUser);
+    }
+
+    const catLabels = {
+        feedback: "💡 Feedback / Idea",
+        bug: "🐛 Bug Report",
+        trade: "🤝 Trade / Breeding",
+        discovery: "✨ High-Star Discovery",
+        general: "💬 General Question"
+    };
+
+    const header = catLabels[cat] || "Feedback";
+    const authorStr = rawUser ? `@${rawUser}` : "@AnonymousPlayer";
+    const textToCopy = `[Impossible Animals Wiki ${header}]
+From: ${authorStr}
+Message: ${msg}`;
+
+    copyTextToClipboard(textToCopy, "Feedback copied! Opening Discord...");
+    setTimeout(() => {
+        window.open("https://discord.gg/mXKUsgmUD3", "_blank");
+    }, 600);
+}
+
 function submitCommunityPost() {
     const userInput = document.getElementById("comm-username");
     const msgInput = document.getElementById("comm-message");
@@ -1940,7 +1983,7 @@ function submitCommunityPost() {
 
     msgInput.value = "";
     updateCommCharCount();
-    showToast("Feedback posted! Thank you for helping improve the wiki.");
+    showToast("Feedback posted to feed! Click 'Share to Discord' to notify @TatayDigs directly.");
     renderCommunityFeed();
 }
 
@@ -2050,9 +2093,20 @@ function renderCommunityFeed() {
 // =========================================================
 function switchTab(tab) {
     if (tab === 'community') {
+        const commBtn = document.getElementById('btn-tab-community');
+        const mainTabs = ['matchmaker', 'lab', 'global', 'single', 'planner', 'biomes'];
+        mainTabs.forEach(t => {
+            const b = document.getElementById(`btn-tab-${t}`);
+            if (b) b.classList.remove('active');
+        });
+        if (commBtn) commBtn.classList.add('active');
         if (typeof toggleCommunityWidget === 'function') toggleCommunityWidget(true);
+        if (location.hash !== '#community') history.replaceState(null, '', '#community');
         return;
     }
+
+    const commBtn = document.getElementById('btn-tab-community');
+    if (commBtn) commBtn.classList.remove('active');
 
     const tabs = ['matchmaker', 'lab', 'global', 'single', 'planner', 'biomes'];
     tabs.forEach(t => {
@@ -2096,6 +2150,7 @@ window.swapLabHybrids = swapLabHybrids;
 window.renderPlanner = renderPlanner;
 window.renderBiomes = renderBiomes;
 window.toggleCommunityWidget = toggleCommunityWidget;
+window.sendPostToDiscord = sendPostToDiscord;
 window.submitCommunityPost = submitCommunityPost;
 window.likeCommunityPost = likeCommunityPost;
 window.flagCommunityPost = flagCommunityPost;

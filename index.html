@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/styles.css?v=20261103_2300">
+<link rel="stylesheet" href="assets/styles.css?v=20261103_2315">
 </head>
 <body>
 
@@ -153,6 +153,9 @@
         </button>
         <button class="tab-btn" id="btn-tab-biomes" onclick="switchTab('biomes')">
             <span>🗺️ Wilderness Biomes</span>
+        </button>
+        <button class="tab-btn" id="btn-tab-community" onclick="switchTab('community')">
+            <span>💬 Community &amp; Feedback</span>
         </button>
     </div>
 
@@ -1467,7 +1470,6 @@
 
 <!-- TOAST CONTAINER -->
 <div class="toast-container" id="toast-container"></div>
-</div>
 
 <footer class="site-footer">
   <div><b style="color:var(--heading)">Credits:</b> created by <b style="color:var(--heading)">@TatayDigs</b> on Roblox.<br>Community-made fan wiki. Not affiliated with or endorsed by Roblox or the game's developers. Values are calculated from known formulas and may change after game updates.</div>
@@ -1506,6 +1508,18 @@
         <button class="community-drawer-close" onclick="toggleCommunityWidget()" title="Close">&times;</button>
     </div>
 
+    <!-- Official Community Discord Banner -->
+    <a href="https://discord.gg/mXKUsgmUD3" target="_blank" rel="noopener" class="community-discord-banner">
+        <div class="cd-banner-left">
+            <span class="cd-banner-icon">💬</span>
+            <div>
+                <div class="cd-banner-title">Join our Official Discord Server</div>
+                <div class="cd-banner-sub">Chat live with @TatayDigs &amp; the community</div>
+            </div>
+        </div>
+        <span class="cd-banner-btn">Join Discord ↗</span>
+    </a>
+
     <!-- Filter Pills -->
     <div class="community-filter-tabs">
         <button class="cf-btn active" id="cf-all" onclick="filterCommunityFeed('all')">🔥 All</button>
@@ -1533,7 +1547,10 @@
         <textarea id="comm-message" placeholder="Share a fusion discovery, ask for advice, or give wiki feedback..." maxlength="500" class="comm-textarea" oninput="updateCommCharCount()"></textarea>
         <div class="community-submit-bar">
             <span class="comm-char-count" id="comm-char-count">0/500</span>
-            <button class="btn btn-sm btn-primary" onclick="submitCommunityPost()">🚀 Post</button>
+            <div style="display:flex; gap:6px; align-items:center;">
+                <button class="btn btn-sm" onclick="sendPostToDiscord()" title="Copy formatted feedback and open Discord" style="background:#5865F222; border-color:#5865F266; color:#a5b4fc;">💬 Share to Discord</button>
+                <button class="btn btn-sm btn-primary" onclick="submitCommunityPost()">🚀 Post to Feed</button>
+            </div>
         </div>
     </div>
 
@@ -1541,12 +1558,12 @@
     <div class="community-feed" id="community-feed"></div>
 
     <div class="community-drawer-footer">
-        <span>Keep comments respectful for all Roblox players.</span>
+        <a href="https://discord.gg/mXKUsgmUD3" target="_blank" rel="noopener" style="color:#5865F2; font-weight:700;">💬 Official Discord</a>
         <a href="https://github.com/Amashing0411/Impossible-Animals-Wiki/discussions" target="_blank" rel="noopener">GitHub Discussions ↗</a>
     </div>
 </div>
 
-<script src="assets/app.js?v=20261103_2300"></script>
-<script src="assets/extras.js?v=20261103_2300"></script>
+<script src="assets/app.js?v=20261103_2315"></script>
+<script src="assets/extras.js?v=20261103_2315"></script>
 </body>
 </html>
