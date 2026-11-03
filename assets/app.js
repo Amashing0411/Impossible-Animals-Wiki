@@ -1,14 +1,16 @@
 
 const ANIMALS = [
-    "anglerfish", "ankylosaurus", "ant", "aurora", "axolotl", "banana", "beetle", 
-    "black-hole", "butterfly", "car", "cheeseburger", "cheetah", "chicken", "clouds", 
-    "cobra", "coral", "cowboy", "crab", "crocodile", "demon", "dolphin", "dragon", 
+    "anglerfish", "ankylosaurus", "ant", "aurora", "axolotl", "bamboo", "banana", "beetle", 
+    "black-hole", "blender", "boba-tea", "brachiosaurus", "broccoli", "butterfly", "cactus", 
+    "car", "carrot", "cheeseburger", "cheetah", "chicken", "clouds", "cobra", "coral", 
+    "cotton-candy", "cowboy", "crab", "crocodile", "demon", "dolphin", "dragon", 
     "dragonfly", "eagle", "electricity", "elephant", "excavator", "ferret", "fox", 
-    "giraffe", "glitter", "goat", "gorilla", "human-man", "jade", "jellyfish", 
-    "jerboa", "lava", "mermaid", "millipede", "monkey", "moose", "narwhal", 
-    "octopus", "orangutan", "owl", "panther", "plasma", "praying-mantis", 
-    "psychic-power", "pterodactyl", "pufferfish", "red panda", "rhino", "ruby", 
-    "shark", "skeleton", "solar-eclipse", "spider", "stegosaurus", "stingray", 
+    "ghost", "giraffe", "glitter", "goat", "gorilla", "human-man", "jade", "jellyfish", 
+    "jerboa", "lava", "lava-lamp", "mermaid", "millipede", "monkey", "moose", 
+    "mosasaurus", "mummy", "mushroom", "narwhal", "octopus", "orangutan", "owl", 
+    "panther", "pizza", "plasma", "praying-mantis", "psychic-power", "pterodactyl", 
+    "pufferfish", "quadcopter", "ramen", "red panda", "rhino", "robot", "ruby", 
+    "scorpion", "shark", "skeleton", "solar-eclipse", "spider", "stegosaurus", "stingray", 
     "strawberry", "t-rex", "tank", "tiger", "toilet", "triceratops", "turtle", 
     "uranium", "velociraptor", "venus-fly-trap", "warthog", "wasp", "water", 
     "wolf", "zebra", "zombie"
@@ -16,21 +18,24 @@ const ANIMALS = [
 
 const ANIMAL_ICONS = {
     "anglerfish": "🐟", "ankylosaurus": "🦕", "ant": "🐜", "aurora": "🌌", "axolotl": "🦎",
-    "banana": "🍌", "beetle": "🪲", "black-hole": "🕳️", "butterfly": "🦋", "car": "🚗",
-    "cheeseburger": "🍔", "cheetah": "🐆", "chicken": "🐔", "clouds": "☁️", "cobra": "🐍",
-    "coral": "🪸", "cowboy": "🤠", "crab": "🦀", "crocodile": "🐊", "demon": "👹",
-    "dolphin": "🐬", "dragon": "🐉", "dragonfly": "蜻", "eagle": "🦅", "electricity": "⚡",
-    "elephant": "🐘", "excavator": "🚜", "ferret": "🦦", "fox": "🦊", "giraffe": "🦒",
-    "glitter": "✨", "goat": "🐐", "gorilla": "🦍", "human-man": "🧍", "jade": "🟢",
-    "jellyfish": "🪼", "jerboa": "🐁", "lava": "🌋", "mermaid": "🧜‍♀️", "millipede": "🐛",
-    "monkey": "🐒", "moose": "🫎", "narwhal": "🦄", "octopus": "🐙", "orangutan": "🦧",
-    "owl": "🦉", "panther": "🐈‍⬛", "plasma": "🔮", "praying-mantis": "🦗", "psychic-power": "🧠",
-    "pterodactyl": "🦅", "pufferfish": "🐡", "red panda": "🦊", "rhino": "🦏", "ruby": "💎",
-    "shark": "🦈", "skeleton": "💀", "solar-eclipse": "🌑", "spider": "🕷️", "stegosaurus": "🦕",
-    "stingray": "🐟", "strawberry": "🍓", "t-rex": "🦖", "tank": "🪖", "tiger": "🐅",
-    "toilet": "🚽", "triceratops": "🦕", "turtle": "🐢", "uranium": "☢️", "velociraptor": "🦖",
-    "venus-fly-trap": "🪴", "warthog": "🐗", "wasp": "🐝", "water": "💧", "wolf": "🐺",
-    "zebra": "🦓", "zombie": "🧟"
+    "bamboo": "🎋", "banana": "🍌", "beetle": "🪲", "black-hole": "🕳️", "blender": "🥤",
+    "boba-tea": "🧋", "brachiosaurus": "🦕", "broccoli": "🥦", "butterfly": "🦋", "cactus": "🌵",
+    "car": "🚗", "carrot": "🥕", "cheeseburger": "🍔", "cheetah": "🐆", "chicken": "🐔",
+    "clouds": "☁️", "cobra": "🐍", "coral": "🪸", "cotton-candy": "🍭", "cowboy": "🤠",
+    "crab": "🦀", "crocodile": "🐊", "demon": "👹", "dolphin": "🐬", "dragon": "🐉",
+    "dragonfly": "🦗", "eagle": "🦅", "electricity": "⚡", "elephant": "🐘", "excavator": "🚜",
+    "ferret": "🦡", "fox": "🦊", "ghost": "👻", "giraffe": "🦒", "glitter": "✨",
+    "goat": "🐐", "gorilla": "🦍", "human-man": "🧍", "jade": "🟢", "jellyfish": "🪼",
+    "jerboa": "🐭", "lava": "🌋", "lava-lamp": "🪔", "mermaid": "🧜‍♀️", "millipede": "🐛",
+    "monkey": "🐒", "moose": "🫎", "mosasaurus": "🐋", "mummy": "🩹", "mushroom": "🍄",
+    "narwhal": "🦄", "octopus": "🐙", "orangutan": "🦧", "owl": "🦉", "panther": "🐈‍⬛",
+    "pizza": "🍕", "plasma": "🔮", "praying-mantis": "🦗", "psychic-power": "🧠", "pterodactyl": "🦅",
+    "pufferfish": "🐡", "quadcopter": "🚁", "ramen": "🍜", "red panda": "🦊", "rhino": "🦏",
+    "robot": "🤖", "ruby": "💎", "scorpion": "🦂", "shark": "🦈", "skeleton": "💀",
+    "solar-eclipse": "🌑", "spider": "🕷️", "stegosaurus": "🦕", "stingray": "🐟", "strawberry": "🍓",
+    "t-rex": "🦖", "tank": "🪖", "tiger": "🐅", "toilet": "🚽", "triceratops": "🦕",
+    "turtle": "🐢", "uranium": "☢️", "velociraptor": "🦖", "venus-fly-trap": "🪴", "warthog": "🐗",
+    "wasp": "🐝", "water": "💧", "wolf": "🐺", "zebra": "🦓", "zombie": "🧟"
 };
 
 const WEIGHTS = [
@@ -42,7 +47,9 @@ const WEIGHTS = [
 const SPECIAL_BONUS = {
     "ruby": 1, "electricity": 2, "lava": 2, "uranium": 2, "aurora": 2,
     "black-hole": 3, "clouds": 1, "glitter": 1, "jade": 1, "water": 1,
-    "psychic-power": 2, "plasma": 2, "solar-eclipse": 3
+    "psychic-power": 2, "plasma": 2, "solar-eclipse": 3,
+    "robot": 1, "mummy": 1, "blender": 2, "boba-tea": 1,
+    "lava-lamp": 2, "quadcopter": 1, "ghost": 1
 };
 
 const MUTATION_DATA = {
@@ -466,7 +473,7 @@ function renderChips() {
 function setAllAnimals(state) {
     if (state) {
         ownedAnimals = new Set(ANIMALS);
-        showToast("All 77 animals marked as Owned!");
+        showToast(`All ${ANIMALS.length} animals marked as Owned!`);
     } else {
         ownedAnimals.clear();
         showToast("Cleared owned animal roster.");
@@ -477,7 +484,7 @@ function setAllAnimals(state) {
 function selectSpecialOnly() {
     ownedAnimals = new Set(Object.keys(SPECIAL_BONUS));
     saveInventory();
-    showToast("Selected all 13 Special Bonus (+1★ to +3★) animals!");
+    showToast(`Selected all ${Object.keys(SPECIAL_BONUS).length} Special Bonus (+1★ to +3★) animals!`);
 }
 
 function invertAnimals() {
@@ -1570,14 +1577,10 @@ const BIOMES_DATA = [
         "stars": 1,
         "guard": "e1",
         "diff": "Easy",
-        "emoji": "\ud83d\ude0a",
+        "emoji": "😊",
         "color": "#4ade80",
-        "icon": "\ud83c\udf31",
-        "rewards": [
-            "owl",
-            "skeleton",
-            "turtle"
-        ]
+        "icon": "🌱",
+        "rewards": ["owl", "skeleton", "turtle"]
     },
     {
         "tier": 2,
@@ -1585,14 +1588,10 @@ const BIOMES_DATA = [
         "stars": 10,
         "guard": "e3",
         "diff": "Medium",
-        "emoji": "\ud83d\ude10",
+        "emoji": "😐",
         "color": "#f59e0b",
-        "icon": "\ud83c\udfdc\ufe0f",
-        "rewards": [
-            "car",
-            "cowboy",
-            "millipede"
-        ]
+        "icon": "🏜️",
+        "rewards": ["car", "cowboy", "millipede"]
     },
     {
         "tier": 3,
@@ -1600,14 +1599,10 @@ const BIOMES_DATA = [
         "stars": 125,
         "guard": "e5",
         "diff": "Hard",
-        "emoji": "\ud83d\ude20",
+        "emoji": "😠",
         "color": "#a855f7",
-        "icon": "\ud83c\udf44",
-        "rewards": [
-            "crocodile",
-            "orangutan",
-            "stegosaurus"
-        ]
+        "icon": "🍄",
+        "rewards": ["cotton-candy", "crocodile", "orangutan", "stegosaurus"]
     },
     {
         "tier": 4,
@@ -1615,15 +1610,10 @@ const BIOMES_DATA = [
         "stars": 350,
         "guard": "e7",
         "diff": "Brutal",
-        "emoji": "\ud83d\udcaa",
+        "emoji": "💪",
         "color": "#38bdf8",
-        "icon": "\u2744\ufe0f",
-        "rewards": [
-            "ankylosaurus",
-            "demon",
-            "tank",
-            "wasp"
-        ]
+        "icon": "❄️",
+        "rewards": ["brachiosaurus", "demon", "mosasaurus", "tank", "wasp"]
     },
     {
         "tier": 5,
@@ -1631,15 +1621,10 @@ const BIOMES_DATA = [
         "stars": 4250,
         "guard": "e9",
         "diff": "Extreme",
-        "emoji": "\u26a1",
+        "emoji": "⚡",
         "color": "#10b981",
-        "icon": "\ud83c\udfdb\ufe0f",
-        "rewards": [
-            "gorilla",
-            "stingray",
-            "toilet",
-            "velociraptor"
-        ]
+        "icon": "🏛️",
+        "rewards": ["bamboo", "gorilla", "stingray", "toilet", "velociraptor"]
     },
     {
         "tier": 6,
@@ -1647,15 +1632,10 @@ const BIOMES_DATA = [
         "stars": 17500,
         "guard": "e11",
         "diff": "Merciless",
-        "emoji": "\ud83d\ude08",
+        "emoji": "😈",
         "color": "#ea580c",
-        "icon": "\ud83e\uddd7",
-        "rewards": [
-            "cheeseburger",
-            "chicken",
-            "pterodactyl",
-            "zombie"
-        ]
+        "icon": "🧗",
+        "rewards": ["cheeseburger", "chicken", "pterodactyl", "zombie"]
     },
     {
         "tier": 7,
@@ -1663,15 +1643,10 @@ const BIOMES_DATA = [
         "stars": 100000,
         "guard": "e13",
         "diff": "Nightmare",
-        "emoji": "\ud83d\udc7b",
-        "color": "#06b6d4",
-        "icon": "\ud83d\udc8e",
-        "rewards": [
-            "coral",
-            "excavator",
-            "ferret",
-            "moose"
-        ]
+        "emoji": "👻",
+        "color": "#8b5cf6",
+        "icon": "💎",
+        "rewards": ["ankylosaurus", "coral", "excavator", "ferret"]
     },
     {
         "tier": 8,
@@ -1679,14 +1654,10 @@ const BIOMES_DATA = [
         "stars": 550000,
         "guard": "e15",
         "diff": "Infernal",
-        "emoji": "\ud83d\udd25",
-        "color": "#8b5cf6",
-        "icon": "\ud83c\udf32",
-        "rewards": [
-            "eagle",
-            "panther",
-            "tiger"
-        ]
+        "emoji": "🔥",
+        "color": "#6366f1",
+        "icon": "🌲",
+        "rewards": ["eagle", "panther", "ramen", "tiger"]
     },
     {
         "tier": 9,
@@ -1694,15 +1665,10 @@ const BIOMES_DATA = [
         "stars": 3750000,
         "guard": "e17",
         "diff": "Cataclysmic",
-        "emoji": "\ud83c\udf0a",
-        "color": "#3b82f6",
-        "icon": "\u26a1",
-        "rewards": [
-            "beetle",
-            "cobra",
-            "elephant",
-            "octopus"
-        ]
+        "emoji": "🌋",
+        "color": "#06b6d4",
+        "icon": "⚡",
+        "rewards": ["beetle", "cobra", "elephant", "octopus"]
     },
     {
         "tier": 10,
@@ -1710,15 +1676,10 @@ const BIOMES_DATA = [
         "stars": 40000000,
         "guard": "e19",
         "diff": "Apocalyptic",
-        "emoji": "\u2623\ufe0f",
+        "emoji": "☢️",
         "color": "#84cc16",
-        "icon": "\ud83e\uddea",
-        "rewards": [
-            "dragon",
-            "mermaid",
-            "pufferfish",
-            "zebra"
-        ]
+        "icon": "☣️",
+        "rewards": ["cactus", "dragon", "mermaid", "scorpion", "zebra"]
     },
     {
         "tier": 11,
@@ -1726,14 +1687,10 @@ const BIOMES_DATA = [
         "stars": 120000000,
         "guard": "e21",
         "diff": "Armageddon",
-        "emoji": "\ud83d\udca5",
+        "emoji": "💥",
         "color": "#ef4444",
-        "icon": "\ud83c\udf0b",
-        "rewards": [
-            "banana",
-            "human-man",
-            "narwhal"
-        ]
+        "icon": "🌋",
+        "rewards": ["banana", "broccoli", "carrot", "human-man", "pufferfish"]
     },
     {
         "tier": 12,
@@ -1741,14 +1698,10 @@ const BIOMES_DATA = [
         "stars": 300000000,
         "guard": "e23",
         "diff": "Oblivion",
-        "emoji": "\ud83d\udc80",
+        "emoji": "💀",
         "color": "#64748b",
-        "icon": "\ud83c\udf11",
-        "rewards": [
-            "jellyfish",
-            "praying-mantis",
-            "wolf"
-        ]
+        "icon": "🖤",
+        "rewards": ["jellyfish", "mushroom", "pizza", "praying-mantis", "wolf"]
     },
     {
         "tier": 13,
@@ -1756,14 +1709,10 @@ const BIOMES_DATA = [
         "stars": 425000000,
         "guard": "e25",
         "diff": "Godslayer",
-        "emoji": "\u2694\ufe0f",
-        "color": "#c084fc",
-        "icon": "\ud83c\udf19",
-        "rewards": [
-            "butterfly",
-            "goat",
-            "shark"
-        ]
+        "emoji": "⚔️",
+        "color": "#e2e8f0",
+        "icon": "🌙",
+        "rewards": ["butterfly", "goat", "narwhal", "shark"]
     },
     {
         "tier": 14,
@@ -1771,14 +1720,10 @@ const BIOMES_DATA = [
         "stars": 500000000,
         "guard": "e27",
         "diff": "Reality Shattering",
-        "emoji": "\ud83c\udf0c",
-        "color": "#f43f5e",
-        "icon": "\ud83c\udf00",
-        "rewards": [
-            "anglerfish",
-            "strawberry",
-            "triceratops"
-        ]
+        "emoji": "🌌",
+        "color": "#ec4899",
+        "icon": "🌌",
+        "rewards": ["anglerfish", "moose", "strawberry", "triceratops"]
     }
 ];
 

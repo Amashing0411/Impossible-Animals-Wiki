@@ -34,7 +34,7 @@
 | 🧬 **Pet Matchmaker** | Pick your current pet to instantly find its **Top 3 best partner combos** and view the complete ranked partner leaderboard. |
 | 🔬 **Dual Fusion Sandbox** | Test any two hybrid pairs with a step-by-step math inspector showing the exact hash roll, star bonus, and coin income ($/sec). |
 | 🏆 **Global Leaderboard** | Browse the all-time highest-multiplier combinations in the game to discover optimal endgame targets. |
-| 🐾 **2,926 Single Fusions** | Complete searchable encyclopedia of all Gen-1 combinations across all 77 base animals. |
+| 🐾 **4,465 Single Fusions** | Complete searchable encyclopedia of all Gen-1 combinations across all 95 base animals (including the 18 new wilderness & event species). |
 | 📌 **Breeding Planner** | Pin target fusions to a local breeding roadmap. Automatically tallies base ingredient shopping lists. |
 | 💬 **Roblox Chat Responder** | Generate formatted replies to paste into in-game chat when players ask for fusion recipes. |
 | 🗺️ **14 Wild Biomes Guide** | Complete 14-tier world map guide showing boss guards (`e1`, `e2`...), required power ratings, and guaranteed animal unlocks. |

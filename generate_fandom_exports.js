@@ -115,7 +115,7 @@ function getHybridName(a, b) {
     return `${capFirst(a)}-${capFirst(b)}`;
 }
 
-console.log("Generating combinations for all 77 animals...");
+console.log(`Generating combinations for all ${ANIMALS.length} animals...`);
 const combos = [];
 for (let i = 0; i < ANIMALS.length; i++) {
     for (let j = i + 1; j < ANIMALS.length; j++) {
@@ -168,9 +168,9 @@ console.log(`Saved fandom_fusion_top_combos_summary.txt (${highTier.length} top 
 
 
 // 2. Build Complete 2,926 Combos Master File (Grouped by Animal A-Z)
-let fullWiki = `{{DISPLAYTITLE:Fusion Database - Complete Single Hybrids (All 2,926 Combos)}}
+let fullWiki = `{{DISPLAYTITLE:Fusion Database - Complete Single Hybrids (All ${combos.length} Combos)}}
 
-'''Fusion Database''' documents all 2,926 single hybrid combinations in ''Impossible Animals''. Every combination is deterministic based on the underlying Jenkins hash algorithm and star bracket ranges.
+'''Fusion Database''' documents all ${combos.length} single hybrid combinations across all ${ANIMALS.length} base animals in ''Impossible Animals''. Every combination is deterministic based on the underlying Jenkins hash algorithm and star bracket ranges.
 
 == Community Tools & Discord ==
 * '''[https://discord.gg/mXKUsgmUD3 Impossible Animals Official Community Discord & Wiki Project]''' — Use our free interactive web calculator to simulate any 4-parent dual fusion, test breeding paths, and coordinate trades.
@@ -198,4 +198,4 @@ ANIMALS.forEach(animal => {
 fullWiki += `[[Category:Game Guides]]\n[[Category:Fusions]]\n[[Category:Database]]\n`;
 
 fs.writeFileSync('fandom_fusion_database_all_combos.txt', fullWiki, 'utf8');
-console.log(`Saved fandom_fusion_database_all_combos.txt (All 77 animal sections with 2,926 combinations)`);
+console.log(`Saved fandom_fusion_database_all_combos.txt (All ${ANIMALS.length} animal sections with ${combos.length} combinations)`);
