@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/styles.css?v=20261103_2325">
+<link rel="stylesheet" href="assets/styles.css?v=20261103_2335">
 </head>
 <body>
 
@@ -1547,10 +1547,9 @@
         <textarea id="comm-message" placeholder="Share a fusion discovery, ask for advice, or give wiki feedback..." maxlength="500" class="comm-textarea" oninput="updateCommCharCount()"></textarea>
         <div class="community-submit-bar">
             <span class="comm-char-count" id="comm-char-count">0/500</span>
-            <div style="display:flex; gap:6px; align-items:center;">
-                <button class="btn btn-sm" onclick="sendPostToDiscord()" title="Copy formatted feedback and open Discord" style="background:#5865F222; border-color:#5865F266; color:#a5b4fc;">💬 Share to Discord</button>
-                <button class="btn btn-sm btn-primary" onclick="submitCommunityPost()">🚀 Post to Feed</button>
-            </div>
+            <button class="btn btn-sm btn-primary" id="btn-submit-feedback" onclick="submitCommunityPost()" style="background:linear-gradient(135deg, #5865F2 0%, #4752c4 100%); border-color:#7983f5; font-weight:800; display:inline-flex; align-items:center; gap:6px; padding:6px 14px;">
+                <span>🚀 Send to Discord &amp; Feed</span>
+            </button>
         </div>
     </div>
 
@@ -1563,7 +1562,7 @@
     </div>
 </div>
 
-<script src="assets/app.js?v=20261103_2325"></script>
-<script src="assets/extras.js?v=20261103_2325"></script>
+<script src="assets/app.js?v=20261103_2335"></script>
+<script src="assets/extras.js?v=20261103_2335"></script>
 </body>
 </html>

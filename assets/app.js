@@ -1966,9 +1966,10 @@ async function submitCommunityPost() {
 
     localStorage.setItem("ia_roblox_username", rawUser);
 
-    const submitBtns = document.querySelectorAll(".community-submit-bar button");
-    submitBtns.forEach(b => { if (b.classList.contains("btn-primary")) { b.disabled = true; b.textContent = "Sending..."; } });
+    const submitBtn = document.getElementById("btn-submit-feedback") || document.querySelector(".community-submit-bar button");
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.innerHTML = "<span>⏳ Sending to Discord...</span>"; }
 
+    let sentToDiscord = false;
     try {
         const resp = await fetch("/api/feedback", {
             method: "POST",
@@ -1983,16 +1984,17 @@ async function submitCommunityPost() {
         const data = await resp.json().catch(() => ({}));
 
         if (resp.ok) {
-            showToast("✨ Feedback sent directly to @TatayDigs on Discord!");
+            sentToDiscord = true;
+            showToast("✅ Sent directly to Discord & added to feed!");
         } else {
             console.warn("Feedback API response:", data);
-            showToast(data.error || "Saved locally! Share to Discord for instant reply.");
+            showToast(data.error || "Added to feed!");
         }
     } catch (e) {
         console.warn("Offline or local test mode:", e);
-        showToast("Saved to feed! Click 'Share to Discord' to reach @TatayDigs.");
+        showToast("Added to feed!");
     } finally {
-        submitBtns.forEach(b => { if (b.classList.contains("btn-primary")) { b.disabled = false; b.textContent = "🚀 Post to Feed"; } });
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = "<span>🚀 Send to Discord &amp; Feed</span>"; }
     }
 
     const posts = getCommunityPosts();
@@ -2004,6 +2006,7 @@ async function submitCommunityPost() {
         time: "Just now",
         timestamp: Date.now(),
         likes: 0,
+        sentToDiscord: sentToDiscord,
         flagged: false
     };
 
@@ -2095,7 +2098,10 @@ function renderCommunityFeed() {
                         <span class="comm-avatar">${initial}</span>
                         <span class="comm-username">${safeAuthor}</span>
                     </div>
-                    <span class="comm-tag ${p.category}">${catLabel}</span>
+                    <div style="display:flex; gap:4px; align-items:center;">
+                        ${p.sentToDiscord ? '<span class="comm-tag" style="background:#5865F225; color:#a5b4fc; border:1px solid #5865F255; font-size:10px;">💬 Discord</span>' : ''}
+                        <span class="comm-tag ${p.category}">${catLabel}</span>
+                    </div>
                 </div>
                 <div class="comm-body">${safeMsg}</div>
                 <div class="comm-card-bottom">
@@ -2178,7 +2184,7 @@ window.swapLabHybrids = swapLabHybrids;
 window.renderPlanner = renderPlanner;
 window.renderBiomes = renderBiomes;
 window.toggleCommunityWidget = toggleCommunityWidget;
-window.sendPostToDiscord = sendPostToDiscord;
+window.sendPostToDiscord = submitCommunityPost;
 window.submitCommunityPost = submitCommunityPost;
 window.likeCommunityPost = likeCommunityPost;
 window.flagCommunityPost = flagCommunityPost;
