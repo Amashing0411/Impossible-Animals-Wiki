@@ -631,7 +631,8 @@ function frame(camera, controls, size, fit = 1) {
   const dir = new THREE.Vector3(0.95, 0.55, 1.15).normalize();
   const target = new THREE.Vector3(0, size.y * 0.45, 0);
   camera.position.copy(target.clone().add(dir.multiplyScalar(d)));
-  camera.near = d / 100; camera.far = d * 10; camera.updateProjectionMatrix();
+  camera.near = d / 100; camera.far = d * 30; camera.updateProjectionMatrix();
+  if (controls) { controls.minDistance = d * 0.3; controls.maxDistance = d * 3; }
   if (controls) { controls.target.copy(target); controls.update(); } else camera.lookAt(target);
 }
 

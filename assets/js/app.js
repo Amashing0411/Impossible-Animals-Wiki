@@ -936,6 +936,14 @@ function render() {
   window.scrollTo({ top: 0, behavior: "instant" });
 }
 addEventListener("hashchange", render);
+const tabsEl = $("#tabs");
+const updateTabFade = () => {
+  tabsEl.classList.toggle("fade-l", tabsEl.scrollLeft > 4);
+  tabsEl.classList.toggle("fade-r", tabsEl.scrollLeft + tabsEl.clientWidth < tabsEl.scrollWidth - 4);
+};
+tabsEl.addEventListener("scroll", updateTabFade, { passive: true });
+addEventListener("resize", updateTabFade);
+setTimeout(updateTabFade, 50);
 document.addEventListener("keydown", e => {
   if (e.key === "Escape" && !$("#modal").hidden) return closeModal();
   if (["INPUT", "TEXTAREA", "SELECT"].includes(e.target.tagName) || e.ctrlKey || e.metaKey || e.altKey) return;
