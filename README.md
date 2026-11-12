@@ -1,133 +1,77 @@
 <div align="center">
 
 # 🧬 Impossible Animals Wiki
-### Dual Fusion Studio, Matchmaker & Breeding Lab
+### 3D Fusion Lab · Double Fusion · Best Partners · The Wild
 
-*The definitive community-driven fusion calculator, breeding lab, and wiki for the Roblox game [Impossible Animals](https://www.roblox.com/games/119929094294460/Impossible-Animals).*
-
-<br>
+*Unofficial community wiki and fusion toolkit for the Roblox game [Impossible Animals](https://www.roblox.com/games/119929094294460/Impossible-Animals).*
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FAmashing0411%2FImpossible-Animals-Wiki)
-[![Live Demo](https://img.shields.io/badge/Live%20App-GitHub%20Pages-38bdf8?style=flat-square&logo=github)](https://amashing0411.github.io/Impossible-Animals-Wiki/)
-[![Vercel Deployment](https://img.shields.io/badge/Vercel-Ready-000000?style=flat-square&logo=vercel)](https://vercel.com)
 [![Roblox](https://img.shields.io/badge/Roblox-Impossible%20Animals-10b981?style=flat-square&logo=roblox)](https://www.roblox.com/games/119929094294460/Impossible-Animals)
 [![License: MIT](https://img.shields.io/badge/License-MIT-fbbf24?style=flat-square)](LICENSE)
-
-<br>
-
-**[🌐 Launch Web App](https://amashing0411.github.io/Impossible-Animals-Wiki/)** • **[⚡ 1-Click Vercel Deploy](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FAmashing0411%2FImpossible-Animals-Wiki)** • **[🎮 Play on Roblox](https://www.roblox.com/games/119929094294460/Impossible-Animals)**
 
 </div>
 
 ---
 
-## ⚡ What is this?
+## What's inside
 
-**Impossible Animals Wiki** is a standalone, client-side web application and reference toolkit. It reverse-engineers the game's exact procedural fusion math (Jenkins 32-bit Hash, deterministic seeds, star rating weights, and elemental modifiers) to give players the optimal strategy for every fusion.
-
----
-
-## 🚀 Feature Highlights
-
-| Feature | Description |
+| Section | What it does |
 | :--- | :--- |
-| 🧬 **Pet Matchmaker** | Pick your current pet to instantly find its **Top 3 best partner combos** and view the complete ranked partner leaderboard. |
-| 🔬 **Dual Fusion Sandbox** | Test any two hybrid pairs with a step-by-step math inspector showing the exact hash roll, star bonus, and coin income ($/sec). |
-| 🏆 **Global Leaderboard** | Browse the all-time highest-multiplier combinations in the game to discover optimal endgame targets. |
-| 🐾 **4,465 Single Fusions** | Complete searchable encyclopedia of all Gen-1 combinations across all 95 base animals (including the 18 new wilderness & event species). |
-| 📌 **Breeding Planner** | Pin target fusions to a local breeding roadmap. Automatically tallies base ingredient shopping lists. |
-| 💬 **Roblox Chat Responder** | Generate formatted replies to paste into in-game chat when players ask for fusion recipes. |
-| 🗺️ **14 Wild Biomes Guide** | Complete 14-tier world map guide showing boss guards (`e1`, `e2`...), required power ratings, and guaranteed animal unlocks. |
-| 💬 **Community Hub** | Integrated GitHub Discussions feed & private browser scratchpad for sharing discoveries, asking questions, and trading combos. |
-| 💾 **Inventory Sync** | Toggle which animals you own in your pens to get customized partner recommendations. Export/import data via JSON or CSV. |
+| 🧬 **Fusion Lab** | Pick a dad and a mom like in-game, then spin the hybrid in **3D**. Shows the exact stars, $/s, mutation odds and charm earnings. |
+| ⚡ **Double Fusion** | Pick two hybrids, press **DOUBLE FUSE**, see the 3D result, stars, income and how the bonus was capped. |
+| 💞 **Best Partners** | Every partner for your animal, ranked, with 3D thumbnails. Can filter to animals you own. |
+| 🏆 **Top Hybrids** | Best single fusions out of all 5,565 pairs, plus the best double fusions. |
+| 🐾 **Animals** | All 106 animals with official icons, 3D models, where to get them, and release countdowns. |
+| 🗺️ **The Wild** | All 14 biomes: difficulty, recommended level, reward lists, fusion-token chance and a live 5-minute reset timer. |
+| 📖 **Guide** | Star odds, income ranges, mutations, charms, pen upgrades, double-fusion and starter-special rules. |
+| 🏡 **My Pen** | Saved hybrids and owned animals (stored in your browser), with export/import. |
 
----
+Keyboard: <kbd>1</kbd>–<kbd>8</kbd> switch sections, <kbd>/</kbd> search, <kbd>?</kbd> help, <kbd>Esc</kbd> close.
 
-## ⌨️ Keyboard Shortcuts
+## How it works
 
-Navigate the entire studio without touching your mouse:
+Everything is ported from the game's own client modules:
 
-| Key | Action |
-| :---: | :--- |
-| <kbd>/</kbd> | Instantly focus the **Chat Quick-Reply** search input |
-| <kbd>1</kbd> | Switch to **Matchmaker** tab |
-| <kbd>2</kbd> | Switch to **Dual Fusion Lab** tab |
-| <kbd>3</kbd> | Switch to **Global Top Duals** tab |
-| <kbd>4</kbd> | Switch to **Single Fusions (Gen 1)** database |
-| <kbd>5</kbd> | Switch to **Breeding Planner** tab |
-| <kbd>6</kbd> | Switch to **Wilderness Biomes** guide |
-| <kbd>7</kbd> | Switch to **Community Hub** discussions |
-| <kbd>?</kbd> | Open the **Help & Shortcuts** dialog |
-| <kbd>Esc</kbd> | Close any active modal or dropdown |
+- **Stars & income** (`assets/js/engine.js`): `FusionRating`, `CreatureIncome`, `ShinyRules` and `DoubleFusionRules`. These cover the Jenkins-hash star roll, the starter-special star cap, the special bonus, mutation bonuses, the 1–5 double bonus with its 3/9/15/21/29 cap, and DJB2 double-fusion income. Checked against in-game hybrids: Owl + Spider (Golden) gives 10★ $251/s, and the Cheeseburger + Solar Eclipse double (Diamond) gives 25★ $33.45M/s.
+- **3D creatures** (`assets/js/creature.js`): every animal is a tree of coloured boxes, rebuilt from the game's `Animal_*` data. `CreatureMath.rig` lays the boxes out. `FusionGenerator.merge` combines two parents' limb trees, the same way the game builds fusions instead of storing them. `Palette` handles the six colour styles, and `ShinyAppearance` handles mutation recolours.
+- **Game data** (`assets/js/gamedata.js`): biomes, rewards, release schedule, charms, mutations and pen prices.
 
----
+Animals with special animated bodies (Black Hole, Cactus, Ninja…) show their official icon. When fused with a regular animal, the regular body is shown with a note.
 
-## 📐 Game Engine Math at a Glance
-
-### 1. Deterministic Hash Formula
-The game does not roll random numbers on fusion. It uses a **32-bit Jenkins One-At-A-Time hash** with a fixed seed (`67673`) salted against sorted parent identifiers:
+## Project structure
 
 ```
-Hash Input = "ImpossibleAnimals:stars:v1:seed:67673:" + len(p1) + ":" + p1 + len(p2) + ":" + p2
+index.html              App shell (hash-routed single page, no build step)
+assets/css/game.css     Game-styled UI
+assets/js/app.js        Pages & UI
+assets/js/engine.js     Stars / income / double fusion maths
+assets/js/creature.js   3D rig, fusion merge, palettes, Three.js viewer
+assets/js/gamedata.js   Constants from the game
+assets/data/            shapes.json (animal bodies), rules.json, catalog.json
+assets/icons/           Official animal icons
+api/feedback.js         Vercel function: feedback form → Discord
+tools/build-data.mjs    Rebuild assets/data (and icons) from a new game dump
+tools/fandom-exports.mjs  Regenerate the fandom_*.txt wiki tables
 ```
 
-### 2. Elemental Bonus Tiers
-Special elements grant guaranteed star bonuses:
-
-| Tier | Star Bonus | Elements |
-| :---: | :---: | :--- |
-| **S+ Tier** | **+3 Stars** | 🕳️ Black Hole, 🌘 Solar Eclipse |
-| **S Tier** | **+2 Stars** | ☢️ Uranium, 🌋 Lava, 🌌 Aurora, ⚡ Electricity, 🔮 Psychic Power, 🧬 Plasma |
-| **A Tier** | **+1 Star** | 💎 Ruby, 🟩 Jade, ✨ Glitter, ☁️ Clouds, 💧 Water |
-
----
-
-## 📁 Project Structure
-
-```
-Impossible-Animals-Wiki/
-├── index.html           # Core HTML app shell & semantic UI
-├── vercel.json          # Vercel caching rules & edge security headers
-├── package.json         # NPM metadata & preview scripts
-├── LICENSE              # MIT License
-├── README.md            # Project showcase & documentation
-└── assets/
-    ├── styles.css       # Dark-mode design system & animations
-    ├── app.js           # Engine math, datasets & fusion algorithms
-    ├── extras.js        # Keyboard navigation & QoL shortcuts
-    └── favicon.svg      # SVG Favicon
-```
-
----
-
-## 🛠️ Local Development
-
-Zero build step or bundling required. Pure static web standards:
+## Updating after a game update
 
 ```bash
-# 1. Clone repository
-git clone https://github.com/Amashing0411/Impossible-Animals-Wiki.git
-cd Impossible-Animals-Wiki
+node tools/build-data.mjs <path-to-ia_dump> --icons
+node tools/fandom-exports.mjs
+```
+Then update `assets/js/gamedata.js` if biomes, releases, charms or specials changed.
 
-# 2. Start local server
+## Local development
+
+```bash
 npx serve .
-# Or with Python:
-# python -m http.server 8000
 ```
 
----
+Deploy on Vercel with the **Other** preset, no build command, output directory `.`.
 
-## 🚀 Deploying to Vercel
+## Credits
 
-1. Click the **[Deploy with Vercel](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FAmashing0411%2FImpossible-Animals-Wiki)** button above.
-2. Link your GitHub account and import `Amashing0411/Impossible-Animals-Wiki`.
-3. Set Framework Preset to **Other** (no build command, output directory `.`).
-4. Click **Deploy**. Vercel will launch your site across global CDN edge nodes in seconds.
-
----
-
-## 👥 Credits & Attribution
-
-* **Original Creator:** Created by **[@TatayDigs](https://www.roblox.com)** on Roblox.
-* **Repository Maintainer:** **[@Amashing0411](https://github.com/Amashing0411)**.
-* **Disclaimer:** *This is an unofficial community fan project. Impossible Animals is a trademark of its respective creators on the Roblox platform. Not affiliated with or endorsed by Roblox or the game developers.*
+* Original creator: **@TatayDigs** on Roblox
+* Maintainer: **[@Amashing0411](https://github.com/Amashing0411)**
+* Fan project, not affiliated with or endorsed by Roblox or the developers of Impossible Animals. Animal icons and models belong to their creators.
