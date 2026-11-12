@@ -68,18 +68,18 @@ a { color: var(--blue-dark); }
 .brand { display: flex; align-items: center; gap: 8px; text-decoration: none; flex-shrink: 0; }
 .brand img { width: 40px; height: 40px; border-radius: 50%; background: var(--white); border: 3px solid var(--green-dark); }
 .brand-text { display: flex; flex-direction: column; line-height: 1; font-family: var(--font-display); font-size: 21px; }
-.brand-text small { color: #0d5a20; font-size: 12px; font-weight: 700; margin-top: 2px; font-family: var(--font-body); }
+.brand-text small { color: #063d14; font-size: 12px; font-weight: 700; margin-top: 2px; font-family: var(--font-body); }
 .tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; flex: 1; padding: 4px 2px 8px; }
 .tabs::-webkit-scrollbar { display: none; }
 .tabs a {
   display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0;
   text-decoration: none; color: var(--white); font-family: var(--font-display); font-size: 15.5px;
   padding: 7px 13px; border-radius: 12px;
-  background: rgba(0, 60, 20, .28); border: 2px solid rgba(0, 50, 15, .25);
+  background: rgba(0, 45, 12, .5); border: 2px solid rgba(0, 40, 10, .3);
   text-shadow: 0 2px 0 rgba(0,0,0,.25);
   transition: transform .12s ease, background .12s ease;
 }
-.tabs a:hover { background: rgba(0, 60, 20, .4); }
+.tabs a:hover { background: rgba(0, 45, 12, .62); }
 .tabs a.active { background: var(--white); color: var(--green-dark); border-color: var(--green-dark); box-shadow: 0 4px 0 var(--green-dark); text-shadow: none; transform: translateY(-2px); }
 .pen-count { background: var(--red); color: var(--white); border-radius: 999px; font-size: 12px; padding: 1px 7px; text-shadow: none; }
 .play { flex-shrink: 0; }
@@ -388,4 +388,26 @@ kbd { background: var(--sky); border: 2px solid var(--line); border-bottom-width
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ---------- Recent pairs, mutation hunt, donate ---------- */
+.recent { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.recent-chip { cursor: pointer; padding: 2px 8px 2px 3px; gap: 2px; font-size: 13px; }
+.recent-chip img { width: 28px; height: 28px; }
+.recent-chip:hover { border-color: var(--blue); }
+.hunt {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 10px 14px; align-items: center; text-align: left;
+  margin-top: 14px; padding: 12px 14px; border-radius: 14px; border: 3px solid var(--gold-dark);
+  background: var(--dots), linear-gradient(180deg, #ffd35a, #ffb320); color: #4a2e00;
+}
+.hunt .outline { -webkit-text-stroke-color: #6b4100; }
+.hunt .row { grid-column: 1 / -1; }
+.hunt-count { text-align: center; background: rgba(255,255,255,.55); border-radius: 12px; padding: 4px 10px; }
+.hunt-count b { display: block; font-family: var(--font-display); font-size: 24px; line-height: 1.1; }
+.hunt-count span { font-size: 11px; font-weight: 800; }
+.donate { flex-shrink: 0; }
+@media (max-width: 640px) {
+  .hunt { grid-template-columns: 1fr 1fr; }
+  .hunt > div:first-child { grid-column: 1 / -1; }
+  .donate { margin-left: auto; }
 }

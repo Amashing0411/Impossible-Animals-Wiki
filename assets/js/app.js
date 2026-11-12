@@ -271,6 +271,7 @@ function renderFuse(root) {
         <button type="button" class="card step" data-step="dad" aria-pressed="${fuse.step === "dad"}"></button>
         <button type="button" class="card purple step" data-step="mom" aria-pressed="${fuse.step === "mom"}"></button>
       </div>
+      <div id="fuse-recent"></div>
       <h2 class="bar-title ${fuse.step === "mom" ? "purple" : "blue"} outline" id="pick-title">${fuse.step === "mom" ? "Pick a mom" : "Pick a dad"}</h2>
       <div class="row"><input class="input" type="search" placeholder="Search animals… (press /)" data-search value="${esc(fuse.query)}" style="flex:1;min-width:160px"></div>
       ${pickerFilters(fuse.filter)}
@@ -297,9 +298,30 @@ function renderFuse(root) {
     if (fuse.dad === fuse.mom) { out.innerHTML = `<div class="panel empty"><div class="big">🙅</div><p>The game needs two different animals.</p></div>`; return; }
     out.innerHTML = fuseResultHTML(single(fuse.dad, fuse.mom, fuse.shiny));
   };
-  drawSteps(); drawGrid(); drawResult();
+  const drawRecent = () => {
+    const list = (store.recent || []).filter(k => k.split("|").every(id => BY_ID[id]));
+    $("#fuse-recent", root).innerHTML = list.length ? `<div class="recent"><span class="small muted">Recent:</span>${list.map(k => {
+      const [a, b] = k.split("|");
+      return `<button type="button" class="chip recent-chip" data-recent="${esc(k)}" title="${esc(name(a))} + ${esc(name(b))}"><img src="${icon(a)}" alt="">+<img src="${icon(b)}" alt=""></button>`;
+    }).join("")}</div>` : "";
+  };
+  const remember = () => {
+    if (!(fuse.dad && fuse.mom) || fuse.dad === fuse.mom) return;
+    const k = `${fuse.dad}|${fuse.mom}`;
+    store.recent = [k, ...(store.recent || []).filter(x => x !== k)].slice(0, 8); save(); drawRecent();
+  };
+  drawSteps(); drawGrid(); drawResult(); drawRecent();
 
   root.addEventListener("click", e => {
+    const rc = e.target.closest("[data-recent]");
+    if (rc) { [fuse.dad, fuse.mom] = rc.dataset.recent.split("|"); fuse.step = "mom"; drawSteps(); drawGrid(); drawResult(true); remember(); return; }
+    const hunt = e.target.closest("[data-hunt]");
+    if (hunt) {
+      const k = `${fuse.dad}|${fuse.mom}`; store.hunt = store.hunt || {};
+      store.hunt[k] = hunt.dataset.hunt === "reset" ? 0 : (store.hunt[k] || 0) + 1;
+      if (hunt.dataset.hunt === "reset") toast("Congrats on the mutation! 🎉");
+      save(); drawResult(); return;
+    }
     const st = e.target.closest("[data-step]");
     if (st) { fuse.step = st.dataset.step; drawSteps(); drawGrid(); return; }
     const f = e.target.closest("[data-filter]");
@@ -308,7 +330,7 @@ function renderFuse(root) {
     if (p) {
       fuse[fuse.step] = p.dataset.pick;
       if (fuse.step === "dad" && !fuse.mom) fuse.step = "mom";
-      drawSteps(); drawGrid(); drawResult(!!(fuse.dad && fuse.mom));
+      drawSteps(); drawGrid(); drawResult(!!(fuse.dad && fuse.mom)); remember();
       return;
     }
     const sh = e.target.closest("[data-shiny]");
@@ -326,6 +348,19 @@ function renderFuse(root) {
   });
   root.addEventListener("input", e => { if (e.target.matches("[data-search]")) { fuse.query = e.target.value; drawGrid(); } });
   root.addEventListener("change", e => { if (e.target.matches("[data-charm]")) { store.charm = +e.target.value; save(); drawResult(); } });
+}
+
+function huntHTML(r) {
+  const tries = (store.hunt || {})[`${r.dad}|${r.mom}`] || 0;
+  const p = E.mutationChance(r.stars - r.mutation);
+  const byNow = 1 - (1 - p) ** tries;
+  return `<div class="hunt">
+    <div><b class="outline" style="font-size:18px">🎯 Mutation hunt</b>
+      <div class="small">Tap <b>+1 fuse</b> each time you fuse this pair in-game. Any mutation is about <b>1 in ${Math.round(1 / p).toLocaleString()}</b> per fuse.</div></div>
+    <div class="hunt-count"><b>${tries}</b><span>fuses</span></div>
+    <div class="hunt-count"><b>${Math.round(byNow * 100)}%</b><span>would have one by now</span></div>
+    <div class="row"><button class="btn btn-gold btn-sm" data-hunt="add">+1 fuse</button><button class="btn btn-white btn-sm" data-hunt="reset">Got one! Reset</button></div>
+  </div>`;
 }
 
 function fuseResultHTML(r) {
@@ -347,6 +382,7 @@ function fuseResultHTML(r) {
       <div class="stat"><b>${Math.round((r.income - G.INCOME_RANGES[r.stars][0]) / Math.max(1, G.INCOME_RANGES[r.stars][1] - G.INCOME_RANGES[r.stars][0]) * 100)}%</b><span>of the ${r.stars}★ income range</span></div>
     </div>
     <p class="small muted" style="margin:12px 0 0">Mutation chance at ${r.stars - r.mutation}★: ${odds}</p>
+    ${huntHTML(r)}
     <div class="row" style="justify-content:center;margin-top:14px">
       <button class="btn btn-green btn-sm" data-act="save">🏡 Save to My Pen</button>
       <button class="btn btn-sm" data-act="to-double" data-slot="0">⚡ Double Fuse (slot 1)</button>
@@ -410,7 +446,7 @@ function renderDouble(root) {
         <div class="stat"><b>+${r.special}</b><span>special bonus (counted once)</span></div>
         <div class="stat"><b>${shinyName(r.shiny)}</b><span>inherits the best mutation</span></div>
       </div>
-      <p class="small muted" style="margin:10px 0 0">The cap rises when the weaker hybrid reaches 3, 9, 15, 21 and 29 stars. Level isn't changed by income: it carries over as the higher of the two.</p>
+      <p class="small muted" style="margin:10px 0 0">The cap rises when the weaker hybrid reaches 3, 9, 15, 21 and 29 stars. Treadmill level doesn't affect income (singles or doubles); the new hybrid just keeps the higher level, which matters for The Wild.</p>
       <div class="row" style="justify-content:center;margin-top:14px"><button class="btn btn-green btn-sm" data-act="save-double">🏡 Save to My Pen</button>
       <button class="btn btn-white btn-sm" data-act="chat-double">💬 Copy for chat</button></div>
     </div>`;
@@ -705,6 +741,20 @@ function renderGuide(root) {
           <li>The result inherits the best mutation and the higher level. Income uses all four parents in dad/mom order.</li>
         </ol></div>
       <div class="panel"><h2>🧩 Starter specials</h2><p class="small" style="margin:0">${G.STARTER_SPECIALS.map(name).join(", ")} are free starters, but their fusions are capped. Fused with each other they top out at 10★. With any other animal, the roll is squeezed under that animal's best result with the 26 classic starters.</p></div>
+      <div class="panel" id="levels"><h2>🏃 Levels &amp; the Treadmill</h2>
+        <p class="small" style="margin-top:-4px">A hybrid's <b>Lv.</b> is its training level, counted 1 to 1: <b>Lv. 2.22M</b> means 2,220,000 levels, up to a cap of 500M. Put a hybrid on the treadmill and it earns EXP; every <b>100 EXP = 1 level</b>.</p>
+        <p class="small"><b>Level does not change $/s.</b> The game's income code only uses the two parents and the mutation, for singles and doubles alike. Level is your hybrid's <b>power in The Wild</b>, compared against each biome's recommended level. When you double fuse, the new hybrid keeps the higher of the two levels.</p>
+        <p class="small muted">EXP per second = treadmill rate × (speed boost + charm multiplier − 1). Each speed boost tier doubles it (×2, ×4 … ×4096 at tier 12), and the hybrid's charm stacks on top.</p>
+        <div class="row">
+          <label class="small">Treadmill level <select class="input" data-tm="level" style="width:110px">${E.TREADMILL_RATES.map((r, i) => `<option value="${i + 1}">${i + 1} (${r}/s)</option>`).join("")}</select></label>
+          <label class="small">Speed boost <select class="input" data-tm="tier" style="width:110px">${Array.from({ length: 13 }, (_, i) => `<option value="${i}">${i ? `Tier ${i} (×${2 ** i})` : "None"}</option>`).join("")}</select></label>
+          <label class="small">Charm <select class="input" data-tm="charm" style="width:150px"><option value="0">None</option>${G.CHARMS.map(c => `<option value="${c.tier}">${c.name} (×${c.multiplier})</option>`).join("")}</select></label>
+          <label class="small">Goal level <input class="input" type="number" min="1" value="100000" data-tm="goal" style="width:120px"></label>
+        </div>
+        <div id="tm-out" class="breakdown"></div>
+        <div class="table-wrap" style="margin-top:12px"><table class="tbl"><thead><tr><th>Treadmill</th><th>EXP/s</th><th>Upgrade price</th></tr></thead><tbody>
+          ${E.TREADMILL_RATES.map((r, i) => `<tr><td>Level ${i + 1}</td><td>${r}</td><td>${i ? E.money(E.TREADMILL_PRICES[i], false) : "Free"}</td></tr>`).join("")}</tbody></table></div>
+      </div>
       <div class="panel"><h2>🏡 Pen upgrades</h2><div class="table-wrap"><table class="tbl"><thead><tr><th>Pen level</th><th>Slots</th><th>Price</th></tr></thead><tbody>
         ${Object.entries(G.PEN_PRICES).map(([lv, p]) => `<tr><td>${lv}</td><td>${4 + +lv - 1}</td><td>${E.money(p, false)}</td></tr>`).join("")}</tbody></table></div></div>
     </div>
@@ -713,6 +763,20 @@ function renderGuide(root) {
     $("#odds-out", root).innerHTML = G.SHINY_ORDER.map(s => `<div class="stat"><b>1 in ${Math.round(E.shinyOdds(s, calcStars, friends)).toLocaleString()}</b><span>${shinyName(s)}</span></div>`).join("");
   };
   drawOdds();
+  const tm = { level: 1, tier: 0, charm: 0, goal: 100000 };
+  const dur = s => !isFinite(s) ? "—" : s < 60 ? `${Math.ceil(s)}s` : s < 3600 ? `${Math.round(s / 60)}m` : s < 86400 ? `${(s / 3600).toFixed(1)}h` : `${(s / 86400).toFixed(1)} days`;
+  const drawTm = () => {
+    const lps = E.trainingLevelsPerSecond(tm.level, tm.tier, tm.charm);
+    $("#tm-out", root).innerHTML = `
+      <div class="stat"><b>${E.shortNum(lps * 100)}</b><span>EXP per second</span></div>
+      <div class="stat"><b>${E.shortNum(lps * 3600)}</b><span>levels per hour</span></div>
+      <div class="stat"><b>${dur(Math.max(0, tm.goal - 1) / lps)}</b><span>from Lv. 1 to Lv. ${E.shortNum(tm.goal)}</span></div>`;
+  };
+  drawTm();
+  root.addEventListener("input", e => {
+    const t = e.target.closest("[data-tm]");
+    if (t) { tm[t.dataset.tm] = Math.max(t.dataset.tm === "goal" ? 1 : 0, Math.min(G.MAX_LEVEL, +t.value || 0)); drawTm(); }
+  });
   root.addEventListener("input", e => {
     if (e.target.matches("[data-calc-stars]")) { calcStars = Math.max(3, Math.min(20, +e.target.value || 3)); drawOdds(); }
     if (e.target.matches("[data-calc-friends]")) { friends = +e.target.value; drawOdds(); }
@@ -794,7 +858,7 @@ function openFeedback() {
     <label class="small">Roblox username (optional)<input class="input" name="username" maxlength="30" autocomplete="off"></label>
     <label class="small">Type<select class="input" name="category"><option value="feedback">💡 Suggestion</option><option value="bug">🐛 Bug / wrong number</option><option value="discovery">✨ Discovery</option><option value="trade">🤝 Trade / breeding</option><option value="general">💬 Question</option></select></label>
     <label class="small">Message<textarea class="input" name="message" rows="4" maxlength="500" required></textarea></label>
-    <div class="row"><button class="btn btn-green" type="submit">Send</button><a class="small" href="https://github.com/Amashing0411/Impossible-Animals-Wiki/discussions" target="_blank" rel="noopener">or post on GitHub Discussions ↗</a></div>
+    <div class="row"><button class="btn btn-green" type="submit">Send</button></div>
   </form>`, body => {
     $("[data-feedback]", body).addEventListener("submit", async e => {
       e.preventDefault();
@@ -816,10 +880,21 @@ function openHelp() {
     <tr><td><kbd>?</kbd></td><td>This help</td></tr>
     <tr><td><kbd>Esc</kbd></td><td>Close pop-ups</td></tr></tbody></table></div>`);
 }
+const DONATE_URL = "https://www.roblox.com/search/users?keyword=TatayDigs";
+function openDonate() {
+  openModal("Support the wiki 💛", `<div class="stack" style="text-align:center">
+    <div style="font-size:54px">💛</div>
+    <p style="margin:0">This wiki is free and kept up to date by <b>@TatayDigs</b> every time Impossible Animals updates.</p>
+    <p class="muted small" style="margin:0">If it saved you some Robux or a lot of fusing, you can say thanks with a Robux donation to <b>@TatayDigs</b> on Roblox, e.g. through a donation game like PLS DONATE.</p>
+    <div class="row" style="justify-content:center"><a class="btn btn-gold" href="${DONATE_URL}" target="_blank" rel="noopener">Find @TatayDigs on Roblox</a>
+    <button class="btn btn-white" data-copy-name>Copy username</button></div>
+  </div>`, body => $("[data-copy-name]", body).addEventListener("click", () => copy("TatayDigs", "Username copied")));
+}
 document.addEventListener("click", e => {
   const o = e.target.closest("[data-open]");
   if (o && o.dataset.open === "feedback") openFeedback();
   if (o && o.dataset.open === "help") openHelp();
+  if (o && o.dataset.open === "donate") openDonate();
 });
 
 // ============================================================

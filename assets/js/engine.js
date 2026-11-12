@@ -137,6 +137,20 @@ export function shinyOdds(type, stars, friends = 1) {
   return odds(type, stars) / Math.min(mult, 1 / total);
 }
 
+/** Chance that one fusion at `stars` (before mutation) comes out with any mutation. */
+export function mutationChance(stars, friends = 1) {
+  return SHINY_ORDER.reduce((p, t) => p + 1 / shinyOdds(t, stars, friends), 0);
+}
+
+// TreadmillRules: EXP per second by treadmill level; 100 EXP = 1 creature level.
+export const TREADMILL_RATES = [4, 10, 24, 60, 120, 200, 500, 1000, 2000, 6000];
+export const TREADMILL_PRICES = [0, 15000, 75000, 350000, 5000000, 1000000000, 40000000000, 1000000000000, 30000000000000, 1500000000000000];
+/** Levels gained per second: rate × (2^speedTier + charm multiplier − 1) / 100 */
+export function trainingLevelsPerSecond(treadmillLevel, speedTier = 0, charmTier = 0) {
+  const rate = TREADMILL_RATES[Math.min(10, Math.max(1, treadmillLevel)) - 1];
+  return rate * (2 ** Math.min(12, Math.max(0, speedTier)) + charmMultiplier(charmTier) - 1) / 100;
+}
+
 export const charmMultiplier = tier => (CHARMS[tier - 1] ? CHARMS[tier - 1].multiplier : 1);
 
 // ---------- Number formatting (matches the in-game style: $1.23M/s) ----------
@@ -149,7 +163,7 @@ export function money(v, perSec = true) {
 }
 export function shortNum(v) {
   const units = [[1e12, "T"], [1e9, "B"], [1e6, "M"], [1e3, "k"]];
-  for (const [n, u] of units) if (v >= n) { const x = v / n; return (x < 10 ? x.toFixed(2) : x < 100 ? x.toFixed(1) : x.toFixed(0)).replace(/\.?0+$/, "") + u; }
+  for (const [n, u] of units) if (v >= n) { const x = v / n; return (x < 10 ? x.toFixed(2) : x < 100 ? x.toFixed(1) : x.toFixed(0)).replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "") + u; }
   return String(Math.round(v));
 }
 

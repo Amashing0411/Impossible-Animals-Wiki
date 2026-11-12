@@ -5,7 +5,6 @@
 
 *Unofficial community wiki and fusion toolkit for the Roblox game [Impossible Animals](https://www.roblox.com/games/119929094294460/Impossible-Animals).*
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FAmashing0411%2FImpossible-Animals-Wiki)
 [![Roblox](https://img.shields.io/badge/Roblox-Impossible%20Animals-10b981?style=flat-square&logo=roblox)](https://www.roblox.com/games/119929094294460/Impossible-Animals)
 [![License: MIT](https://img.shields.io/badge/License-MIT-fbbf24?style=flat-square)](LICENSE)
 
@@ -72,6 +71,5 @@ Deploy on Vercel with the **Other** preset, no build command, output directory `
 
 ## Credits
 
-* Original creator: **@TatayDigs** on Roblox
-* Maintainer: **[@Amashing0411](https://github.com/Amashing0411)**
+* Made by **@TatayDigs** on Roblox. Enjoying the wiki? Support updates with a Robux donation to **@TatayDigs**.
 * Fan project, not affiliated with or endorsed by Roblox or the developers of Impossible Animals. Animal icons and models belong to their creators.
