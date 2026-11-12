@@ -61,7 +61,10 @@ function toast(msg) {
 }
 function openModal(title, html, onMount) {
   $("#modal-title").textContent = title;
-  $("#modal-body").innerHTML = html;
+  // Swap in a fresh body element so listeners from the previous pop-up don't fire again
+  const oldBody = $("#modal-body"), body = oldBody.cloneNode(false);
+  oldBody.replaceWith(body);
+  body.innerHTML = html;
   $("#modal").hidden = false;
   onMount && onMount($("#modal-body"));
   setTimeout(() => ($("#modal-body input, #modal-body button") || $("#modal [data-close]")).focus(), 30);
@@ -271,7 +274,7 @@ function renderFuse(root) {
         <button type="button" class="card step" data-step="dad" aria-pressed="${fuse.step === "dad"}"></button>
         <button type="button" class="card purple step" data-step="mom" aria-pressed="${fuse.step === "mom"}"></button>
       </div>
-      <div id="fuse-recent"></div>
+      <div class="row"><div id="fuse-recent" style="flex:1;min-width:0"></div><button type="button" class="btn btn-red btn-sm" data-act="reset" title="Clear dad, mom and mutation">↺ Reset</button></div>
       <h2 class="bar-title ${fuse.step === "mom" ? "purple" : "blue"} outline" id="pick-title">${fuse.step === "mom" ? "Pick a mom" : "Pick a dad"}</h2>
       <div class="row"><input class="input" type="search" placeholder="Search animals… (press /)" data-search value="${esc(fuse.query)}" style="flex:1;min-width:160px"></div>
       ${pickerFilters(fuse.filter)}
@@ -339,6 +342,12 @@ function renderFuse(root) {
     if (al) { store.algo = al.dataset.algo; save(); drawResult(); return; }
     const act = e.target.closest("[data-act]");
     if (!act) return;
+    if (act.dataset.act === "reset") {
+      Object.assign(fuse, { dad: null, mom: null, shiny: null, step: "dad", query: "" });
+      const s = $("[data-search]", root); if (s) s.value = "";
+      drawSteps(); drawGrid(); drawResult(); toast("Cleared, pick a new dad");
+      return;
+    }
     const r = single(fuse.dad, fuse.mom, fuse.shiny);
     if (act.dataset.act === "save") addToPen({ kind: "single", dad: fuse.dad, mom: fuse.mom, shiny: fuse.shiny });
     if (act.dataset.act === "swap") { [fuse.dad, fuse.mom] = [fuse.mom, fuse.dad]; drawSteps(); drawGrid(); drawResult(); }
@@ -369,7 +378,8 @@ function fuseResultHTML(r) {
   return `<div class="panel result">
     <h2 class="result-name outline">${esc(E.hybridName(r.dad, r.mom) || `${name(r.dad)} + ${name(r.mom)}`)}${mutLabel(r.shiny)}</h2>
     ${E.hybridName(r.dad, r.mom) ? `<div class="result-recipe"><img src="${icon(r.dad)}" alt="">${esc(name(r.dad))} <span>+</span> <img src="${icon(r.mom)}" alt="">${esc(name(r.mom))}</div>` : ""}
-    <div class="row" style="justify-content:center;margin-top:10px">${shinySeg(r.shiny)}</div>
+    <p class="small muted" style="margin:10px 0 4px">Mutation of the <b>new hybrid</b> (rolled when you fuse; base animals have none)</p>
+    <div class="row" style="justify-content:center">${shinySeg(r.shiny)}</div>
     <div class="stars-label">${r.stars} STARS</div>
     ${starRow([[r.base, ""], [r.special, "bonus"], [r.mutation, "mutation"]])}
     <div class="legend"><span><i style="background:var(--star)"></i>Roll ${r.base}</span>${r.special ? `<span><i style="background:#ff9a3d"></i>Special +${r.special}</span>` : ""}${r.mutation ? `<span><i style="background:#7fd8ff"></i>${shinyName(r.shiny)} +${r.mutation}</span>` : ""}</div>
@@ -388,6 +398,7 @@ function fuseResultHTML(r) {
       <button class="btn btn-sm" data-act="to-double" data-slot="0">⚡ Double Fuse (slot 1)</button>
       <button class="btn btn-sm btn-purple" data-act="to-double" data-slot="1">⚡ Slot 2</button>
       <button class="btn btn-white btn-sm" data-act="swap">⇄ Swap</button>
+      <button class="btn btn-red btn-sm" data-act="reset">↺ New fusion</button>
       <button class="btn btn-white btn-sm" data-act="partners">💞 ${esc(name(r.dad))}'s best partners</button>
       <button class="btn btn-white btn-sm" data-act="chat">💬 Copy for chat</button>
     </div>
@@ -422,7 +433,9 @@ function renderDouble(root) {
         <button type="button" class="parent-btn" data-slot="${i}" data-role="mom"><span class="portrait">${h.mom ? img(h.mom) : ""}</span><span class="outline">${h.mom ? esc(name(h.mom)) : "Pick mom"}</span></button>
       </div>
       <div class="slot-stats">${r ? `<span class="star-n">${r.stars}</span><span class="cash">${E.money(r.income)}</span>` : `<span class="small">${h.dad && h.dad === h.mom ? "Pick two different animals" : "Pick both parents"}</span>`}</div>
-      <div style="margin-top:10px;display:flex;justify-content:center">${shinySeg(h.shiny, `data-slot-shiny="${i}" data-shiny`)}</div>`;
+      <p class="small" style="margin:10px 0 4px;text-align:center">Hybrid ${i + 1}'s mutation</p>
+      <div style="display:flex;justify-content:center">${shinySeg(h.shiny, `data-slot-shiny="${i}" data-shiny`)}</div>
+      <div style="display:flex;justify-content:center;margin-top:10px"><button type="button" class="btn btn-white btn-sm" data-clear-slot="${i}">↺ Clear</button></div>`;
   };
   const ready = () => dbl.h.every(h => h.dad && h.mom && h.dad !== h.mom);
   const drawResult = flash => {
@@ -468,6 +481,8 @@ function renderDouble(root) {
     }
     const sh = e.target.closest("[data-slot-shiny]");
     if (sh) { const i = +sh.dataset.slotShiny; dbl.h[i].shiny = sh.dataset.shiny || null; drawSlot(i); drawResult(); return; }
+    const cl = e.target.closest("[data-clear-slot]");
+    if (cl) { const i = +cl.dataset.clearSlot; dbl.h[i] = { dad: null, mom: null, shiny: null }; dbl.fused = false; drawSlot(i); drawResult(); return; }
     if (e.target.closest("#fuse-btn")) { dbl.fused = true; drawResult(true); return; }
     const ld = e.target.closest("[data-load]");
     if (ld) {
@@ -912,7 +927,11 @@ function render() {
   PAGES[key](fresh, arg && decodeURIComponent(arg));
   const tab = key === "animal" ? "animals" : key;
   $$("#tabs a").forEach(a => a.classList.toggle("active", a.dataset.tab === tab));
-  $("#tabs a.active")?.scrollIntoView({ block: "nearest", inline: "nearest" });
+  const activeTab = $("#tabs a.active"), tabs = $("#tabs");
+  if (activeTab) {
+    const off = activeTab.getBoundingClientRect().left - tabs.getBoundingClientRect().left;
+    tabs.scrollTo({ left: tabs.scrollLeft + off - (tabs.clientWidth - activeTab.offsetWidth) / 2, behavior: "smooth" });
+  }
   document.title = `${key === "animal" && BY_ID[arg] ? name(arg) : TITLES[key]} · Impossible Animals Wiki`;
   window.scrollTo({ top: 0, behavior: "instant" });
 }
