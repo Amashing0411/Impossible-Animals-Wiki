@@ -297,7 +297,7 @@ function renderFuse(root) {
     if (fuse.dad && fuse.mom) showOnStage($("#stage", root), { type: "single", dad: fuse.dad, mom: fuse.mom, shiny: fuse.shiny, flash });
     else if (fuse.dad || fuse.mom) showOnStage($("#stage", root), { type: "animal", id: fuse.dad || fuse.mom });
     else showOnStage($("#stage", root), null);
-    if (!(fuse.dad && fuse.mom)) { out.innerHTML = `<div class="panel empty"><div class="big">🧬</div><p>${fuse.dad ? "Now pick a mom." : "Start by picking a dad."}</p></div>`; return; }
+    if (!(fuse.dad && fuse.mom)) { out.innerHTML = fuse.dad ? `<div class="panel">${suggestHTML(fuse.dad, null, `Best moms for ${name(fuse.dad)}`)}<p class="small muted" style="margin:10px 0 0;text-align:center">…or pick any mom from the list.</p></div>` : `<div class="panel empty"><div class="big">🧬</div><p>Start by picking a dad.</p></div>`; return; }
     if (fuse.dad === fuse.mom) { out.innerHTML = `<div class="panel empty"><div class="big">🙅</div><p>The game needs two different animals.</p></div>`; return; }
     out.innerHTML = fuseResultHTML(single(fuse.dad, fuse.mom, fuse.shiny));
   };
@@ -316,6 +316,8 @@ function renderFuse(root) {
   drawSteps(); drawGrid(); drawResult(); drawRecent();
 
   root.addEventListener("click", e => {
+    const sg = e.target.closest("[data-suggest]");
+    if (sg) { fuse.mom = sg.dataset.suggest; fuse.step = "mom"; drawSteps(); drawGrid(); drawResult(true); remember(); return; }
     const rc = e.target.closest("[data-recent]");
     if (rc) { [fuse.dad, fuse.mom] = rc.dataset.recent.split("|"); fuse.step = "mom"; drawSteps(); drawGrid(); drawResult(true); remember(); return; }
     const hunt = e.target.closest("[data-hunt]");
@@ -353,10 +355,29 @@ function renderFuse(root) {
     if (act.dataset.act === "swap") { [fuse.dad, fuse.mom] = [fuse.mom, fuse.dad]; drawSteps(); drawGrid(); drawResult(); }
     if (act.dataset.act === "to-double") { const slot = +act.dataset.slot; dbl.h[slot] = { dad: fuse.dad, mom: fuse.mom, shiny: fuse.shiny }; dbl.fused = false; location.hash = "#/double"; }
     if (act.dataset.act === "partners") location.hash = `#/partners/${fuse.dad}`;
+    if (act.dataset.act === "double-partners") { Object.assign(partners, { mode: "double", limit: 30, hyb: { dad: fuse.dad, mom: fuse.mom, shiny: fuse.shiny } }); location.hash = "#/partners"; }
     if (act.dataset.act === "chat") copy(`${name(fuse.dad)} + ${name(fuse.mom)}${fuse.shiny ? ` (${shinyName(fuse.shiny)})` : ""} = ${r.stars}★ ${E.money(r.income)}`, "Copied for Roblox chat");
   });
   root.addEventListener("input", e => { if (e.target.matches("[data-search]")) { fuse.query = e.target.value; drawGrid(); } });
   root.addEventListener("change", e => { if (e.target.matches("[data-charm]")) { store.charm = +e.target.value; save(); drawResult(); } });
+}
+
+function suggestHTML(dad, current, title, cur) {
+  const list = bestSinglePartners(dad, fuse.shiny, false, "stars").filter(x => (x.dad === dad ? x.mom : x.dad) !== current).slice(0, 6);
+  if (cur && list[0] && list[0].stars <= cur.stars && list[0].income <= cur.income) return `<p class="small" style="margin:14px 0 0">🏆 This is already ${esc(name(dad))}'s best partner.</p>`;
+  return `<div class="suggest"><b class="small">💡 ${esc(title)}</b><div class="suggest-row">${list.map(x => {
+    const m = x.dad === dad ? x.mom : x.dad;
+    return `<button type="button" class="chip suggest-chip" data-suggest="${m}"><img src="${icon(m)}" alt="">${esc(name(m))} <span class="star-n" style="font-size:14px">${x.stars}</span></button>`;
+  }).join("")}</div></div>`;
+}
+function doubleHintHTML(r) {
+  const best = bestDoublePartners({ dad: r.dad, mom: r.mom, shiny: r.shiny })[0];
+  if (!best) return "";
+  const p = best.partner;
+  return `<div class="suggest"><b class="small">⚡ Best double fusion partner</b>
+    <div class="row" style="justify-content:center;margin-top:6px"><span class="chip"><img src="${icon(p.dad)}" alt=""><img src="${icon(p.mom)}" alt="">${esc(E.hybridName(p.dad, p.mom) || `${name(p.dad)} + ${name(p.mom)}`)}</span>
+    <b>→ ${best.stars}★ ${E.money(best.income)}</b>
+    <button class="btn btn-sm" data-act="double-partners">See all double partners</button></div></div>`;
 }
 
 function huntHTML(r) {
@@ -393,6 +414,8 @@ function fuseResultHTML(r) {
     </div>
     <p class="small muted" style="margin:12px 0 0">Mutation chance at ${r.stars - r.mutation}★: ${odds}</p>
     ${huntHTML(r)}
+    ${suggestHTML(r.dad, r.mom, `Better moms for ${name(r.dad)}`, r)}
+    ${doubleHintHTML(r)}
     <div class="row" style="justify-content:center;margin-top:14px">
       <button class="btn btn-green btn-sm" data-act="save">🏡 Save to My Pen</button>
       <button class="btn btn-sm" data-act="to-double" data-slot="0">⚡ Double Fuse (slot 1)</button>
@@ -435,7 +458,7 @@ function renderDouble(root) {
       <div class="slot-stats">${r ? `<span class="star-n">${r.stars}</span><span class="cash">${E.money(r.income)}</span>` : `<span class="small">${h.dad && h.dad === h.mom ? "Pick two different animals" : "Pick both parents"}</span>`}</div>
       <p class="small" style="margin:10px 0 4px;text-align:center">Hybrid ${i + 1}'s mutation</p>
       <div style="display:flex;justify-content:center">${shinySeg(h.shiny, `data-slot-shiny="${i}" data-shiny`)}</div>
-      <div style="display:flex;justify-content:center;margin-top:10px"><button type="button" class="btn btn-white btn-sm" data-clear-slot="${i}">↺ Clear</button></div>`;
+      <div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:10px">${r ? `<button type="button" class="btn btn-gold btn-sm" data-best-for="${i}">💡 Best partner for this</button>` : ""}<button type="button" class="btn btn-white btn-sm" data-clear-slot="${i}">↺ Clear</button></div>`;
   };
   const ready = () => dbl.h.every(h => h.dad && h.mom && h.dad !== h.mom);
   const drawResult = flash => {
@@ -481,6 +504,13 @@ function renderDouble(root) {
     }
     const sh = e.target.closest("[data-slot-shiny]");
     if (sh) { const i = +sh.dataset.slotShiny; dbl.h[i].shiny = sh.dataset.shiny || null; drawSlot(i); drawResult(); return; }
+    const bf = e.target.closest("[data-best-for]");
+    if (bf) {
+      const i = +bf.dataset.bestFor, other = 1 - i;
+      const best = bestDoublePartners(dbl.h[i], dbl.h[other].shiny)[0];
+      if (best) { dbl.h[other] = { ...best.partner }; dbl.fused = true; drawSlot(other); drawResult(true); toast(`Hybrid ${other + 1} set to the best partner`); }
+      return;
+    }
     const cl = e.target.closest("[data-clear-slot]");
     if (cl) { const i = +cl.dataset.clearSlot; dbl.h[i] = { dad: null, mom: null, shiny: null }; dbl.fused = false; drawSlot(i); drawResult(); return; }
     if (e.target.closest("#fuse-btn")) { dbl.fused = true; drawResult(true); return; }
@@ -503,64 +533,132 @@ function renderDouble(root) {
 }
 
 // ---------------- Best partners ----------------
-const partners = { pet: null, shiny: null, ownedOnly: false, sort: "stars", limit: 30 };
+const partners = { mode: "single", pet: null, shiny: null, ownedOnly: false, sort: "stars", limit: 30, hyb: { dad: null, mom: null, shiny: null }, pshiny: null };
+const byRank = sort => (a, b) => sort === "income" ? b.income - a.income : b.stars - a.stars || b.income - a.income;
+function bestSinglePartners(pet, shiny = null, ownedOnly = false, sort = "stars") {
+  return IDS.filter(id => id !== pet && (!ownedOnly || owns(id))).map(id => single(pet, id, shiny)).sort(byRank(sort));
+}
+/** Every gen-1 hybrid you could double fuse with `h`, best first. Both dad/mom orders are tried (it changes income). */
+function bestDoublePartners(h, partnerShiny = null, ownedOnly = false, sort = "stars") {
+  const rows = [];
+  for (const [a, b] of allPairs()) {
+    if (ownedOnly && !(owns(a) && owns(b))) continue;
+    const r1 = E.double(h, { dad: a, mom: b, shiny: partnerShiny }), r2 = E.double(h, { dad: b, mom: a, shiny: partnerShiny });
+    const r = r2.income > r1.income ? r2 : r1;
+    r.partner = r === r1 ? { dad: a, mom: b, shiny: partnerShiny } : { dad: b, mom: a, shiny: partnerShiny };
+    r.mine = { ...h };
+    rows.push(r);
+  }
+  return rows.sort(byRank(sort));
+}
+function doublePartnerCard(r, opts = {}) {
+  const p = r.partner;
+  const pName = E.hybridName(p.dad, p.mom) || `${name(p.dad)} + ${name(p.mom)}`;
+  const mine = E.hybridName(r.mine.dad, r.mine.mom) || `${name(r.mine.dad)} + ${name(r.mine.mom)}`;
+  return hybridCard(r, {
+    ...opts, title: `⨯ ${pName}`, sub: `${mine} ⨯ ${name(p.dad)} + ${name(p.mom)}${p.shiny ? ` (${shinyName(p.shiny)})` : ""}`,
+    attrs: `data-open-double="${r.mine.dad}|${r.mine.mom}|${r.mine.shiny || ""}|${p.dad}|${p.mom}|${p.shiny || ""}"`
+  });
+}
 function renderPartners(root, arg) {
-  if (arg && BY_ID[arg]) partners.pet = arg;
+  if (arg && BY_ID[arg]) { partners.pet = arg; partners.mode = "single"; }
   root.innerHTML = `
   <div class="page-head"><div><h1 class="outline">Best Partners</h1>
-    <p>Pick the animal you have and see every partner ranked by stars and income.</p></div></div>
-  <div class="panel" style="margin-bottom:16px">
-    <div class="row">
-      <button type="button" class="card step" data-act="pick" aria-pressed="true" style="min-width:min(230px,100%)"></button>
-      <div class="stack" style="flex:1;min-width:260px;gap:10px">
-        ${shinySeg(partners.shiny)}
-        <div class="row">
-          <label class="row small"><input type="checkbox" data-owned ${partners.ownedOnly ? "checked" : ""}> Only partners I own</label>
-          <div class="seg" role="group" aria-label="Sort"><button type="button" data-sort="stars" aria-pressed="${partners.sort === "stars"}">By stars</button><button type="button" data-sort="income" aria-pressed="${partners.sort === "income"}">By $/s</button></div>
-          <span class="spacer"></span>
-          <button class="btn btn-white btn-sm" data-act="chat">💬 Copy top 3 for chat</button>
-        </div>
-      </div>
-    </div>
+    <p>Find the best partner for an animal you have, or the best hybrid to double fuse with one you already made.</p></div></div>
+  <div class="seg" role="group" aria-label="Mode" style="margin-bottom:12px">
+    <button type="button" data-mode="single" aria-pressed="${partners.mode === "single"}">🧬 Single fusion</button>
+    <button type="button" data-mode="double" aria-pressed="${partners.mode === "double"}">⚡ Double fusion</button>
   </div>
+  <div class="panel" style="margin-bottom:16px" id="partner-controls"></div>
   <div id="partner-list"></div>`;
+
+  const drawControls = () => {
+    const c = $("#partner-controls", root);
+    const common = `<div class="row">
+        <label class="row small"><input type="checkbox" data-owned ${partners.ownedOnly ? "checked" : ""}> Only animals I own</label>
+        <div class="seg" role="group" aria-label="Sort"><button type="button" data-sort="stars" aria-pressed="${partners.sort === "stars"}">By stars</button><button type="button" data-sort="income" aria-pressed="${partners.sort === "income"}">By $/s</button></div>
+        <span class="spacer"></span>
+        <button class="btn btn-white btn-sm" data-act="chat">💬 Copy top 3 for chat</button>
+      </div>`;
+    if (partners.mode === "single") {
+      c.innerHTML = `<div class="row">
+        <button type="button" class="card step" data-act="pick" aria-pressed="true" style="min-width:min(230px,100%)">${partners.pet
+          ? `<span class="portrait">${img(partners.pet)}</span><span class="outline">${esc(name(partners.pet))}<small>Tap to change</small></span>`
+          : `<span class="portrait"></span><span class="outline">Pick your animal<small>Tap to choose</small></span>`}</button>
+        <div class="stack" style="flex:1;min-width:min(260px,100%);gap:10px">
+          <div><p class="small muted" style="margin:0 0 4px">Mutation of the new hybrid</p>${shinySeg(partners.shiny)}</div>
+          ${common}
+        </div></div>`;
+    } else {
+      const h = partners.hyb;
+      c.innerHTML = `<div class="row" style="align-items:flex-start">
+        <div class="card hybrid-slot" style="min-width:min(260px,100%)">
+          <h3 class="outline">Your hybrid</h3>
+          <div class="parent-pick">
+            <button type="button" class="parent-btn" data-role="dad"><span class="portrait">${h.dad ? img(h.dad) : ""}</span><span class="outline">${h.dad ? esc(name(h.dad)) : "Pick dad"}</span></button>
+            <span class="plus-sign outline">+</span>
+            <button type="button" class="parent-btn" data-role="mom"><span class="portrait">${h.mom ? img(h.mom) : ""}</span><span class="outline">${h.mom ? esc(name(h.mom)) : "Pick mom"}</span></button>
+          </div>
+        </div>
+        <div class="stack" style="flex:1;min-width:min(260px,100%);gap:10px">
+          <div><p class="small muted" style="margin:0 0 4px">Your hybrid's mutation</p>${shinySeg(h.shiny, "data-my-shiny")}</div>
+          <div><p class="small muted" style="margin:0 0 4px">Partner hybrid's mutation</p>${shinySeg(partners.pshiny, "data-p-shiny")}</div>
+          ${common}
+        </div></div>`;
+    }
+  };
+  const ranked = () => partners.mode === "single"
+    ? bestSinglePartners(partners.pet, partners.shiny, partners.ownedOnly, partners.sort)
+    : bestDoublePartners(partners.hyb, partners.pshiny, partners.ownedOnly, partners.sort);
   const draw = () => {
-    const pick = $("[data-act=pick]", root);
-    pick.innerHTML = partners.pet ? `<span class="portrait">${img(partners.pet)}</span><span class="outline">${esc(name(partners.pet))}<small>Tap to change</small></span>`
-      : `<span class="portrait"></span><span class="outline">Pick your animal<small>Tap to choose</small></span>`;
+    drawControls();
     const out = $("#partner-list", root);
-    if (!partners.pet) { out.innerHTML = `<div class="panel empty"><div class="big">💞</div><p>Choose an animal to rank its partners.</p></div>`; return; }
-    const list = rankPartners();
-    const top = list.slice(0, 3), rest = list.slice(3, partners.limit);
+    if (partners.mode === "single" && !partners.pet) { out.innerHTML = `<div class="panel empty"><div class="big">💞</div><p>Choose an animal to rank its partners.</p></div>`; return; }
+    const h = partners.hyb;
+    if (partners.mode === "double" && !(h.dad && h.mom && h.dad !== h.mom)) { out.innerHTML = `<div class="panel empty"><div class="big">⚡</div><p>Pick your hybrid's dad and mom to find the best hybrid to double fuse it with.</p></div>`; return; }
+    const list = ranked();
+    const label = partners.mode === "single" ? name(partners.pet) : (E.hybridName(h.dad, h.mom) || `${name(h.dad)} + ${name(h.mom)}`);
+    const card = (r, o) => partners.mode === "single"
+      ? hybridCard(r, { ...o, attrs: `data-open-fuse="${r.dad}|${r.mom}"` })
+      : doublePartnerCard(r, o);
     out.innerHTML = `
-      <h2 class="bar-title gold outline">🏆 Top 3 for ${esc(name(partners.pet))}</h2>
-      <div class="hy-list" style="margin-bottom:18px">${top.map((r, i) => hybridCard(r, { rank: i + 1, color: ["gold", "green", ""][i], attrs: `data-open-fuse="${r.dad}|${r.mom}"`, sub: `${source(r.mom === partners.pet ? r.dad : r.mom).long}` })).join("")}</div>
-      <div class="hy-list">${rest.map((r, i) => hybridCard(r, { rank: i + 4, attrs: `data-open-fuse="${r.dad}|${r.mom}"` })).join("")}</div>
-      ${list.length > partners.limit ? `<div class="row" style="justify-content:center;margin-top:16px"><button class="btn" data-act="more">Show all ${list.length}</button></div>` : ""}
-      ${!list.length ? `<div class="panel empty"><p>No partners match. Try turning off “Only partners I own”.</p></div>` : ""}`;
+      <h2 class="bar-title gold outline">🏆 Top 3 for ${esc(label)}</h2>
+      <div class="hy-list" style="margin-bottom:18px">${list.slice(0, 3).map((r, i) => card(r, { rank: i + 1, color: ["gold", "green", ""][i] })).join("")}</div>
+      <div class="hy-list">${list.slice(3, partners.limit).map((r, i) => card(r, { rank: i + 4 })).join("")}</div>
+      ${list.length > partners.limit ? `<div class="row" style="justify-content:center;margin-top:16px"><button class="btn" data-act="more">Show more</button></div>` : ""}
+      ${!list.length ? `<div class="panel empty"><p>No partners match. Try turning off “Only animals I own”.</p></div>` : ""}`;
     observeThumbs(out);
   };
-  function rankPartners() {
-    const pet = partners.pet;
-    const rows = IDS.filter(id => id !== pet && (!partners.ownedOnly || owns(id))).map(id => single(pet, id, partners.shiny));
-    rows.sort((a, b) => partners.sort === "income" ? b.income - a.income : b.stars - a.stars || b.income - a.income);
-    return rows;
-  }
   draw();
   root.addEventListener("click", e => {
+    const m = e.target.closest("[data-mode]");
+    if (m) { partners.mode = m.dataset.mode; partners.limit = 30; $$("[data-mode]", root).forEach(b => b.setAttribute("aria-pressed", b === m)); draw(); return; }
     const act = e.target.closest("[data-act]");
     if (act?.dataset.act === "pick") return pickAnimalModal("Pick your animal", false, id => { partners.pet = id; partners.limit = 30; history.replaceState(null, "", `#/partners/${id}`); draw(); });
-    if (act?.dataset.act === "more") { partners.limit = 999; draw(); return; }
-    if (act?.dataset.act === "chat" && partners.pet) {
-      const t = rankPartners().slice(0, 3).map((r, i) => `${i + 1}) ${name(r.dad === partners.pet ? r.mom : r.dad)} ${r.stars}★ ${E.money(r.income)}`).join("  ");
-      return copy(`${name(partners.pet)} best: ${t}`, "Copied for Roblox chat");
+    if (act?.dataset.act === "more") { partners.limit += partners.mode === "single" ? 999 : 60; draw(); return; }
+    if (act?.dataset.act === "chat") {
+      const list = (partners.mode === "single" ? partners.pet : partners.hyb.dad && partners.hyb.mom) ? ranked().slice(0, 3) : [];
+      if (!list.length) return;
+      const t = partners.mode === "single"
+        ? list.map((r, i) => `${i + 1}) ${name(r.dad === partners.pet ? r.mom : r.dad)} ${r.stars}★ ${E.money(r.income)}`).join("  ")
+        : list.map((r, i) => `${i + 1}) ${name(r.partner.dad)}+${name(r.partner.mom)} ${r.stars}★ ${E.money(r.income)}`).join("  ");
+      const who = partners.mode === "single" ? name(partners.pet) : `${name(partners.hyb.dad)}+${name(partners.hyb.mom)} double`;
+      return copy(`${who} best: ${t}`, "Copied for Roblox chat");
     }
+    const pb = e.target.closest(".parent-btn");
+    if (pb) { const role = pb.dataset.role; return pickAnimalModal(`Pick your hybrid's ${role}`, role === "mom", id => { partners.hyb[role] = id; partners.limit = 30; draw(); }); }
+    const my = e.target.closest("[data-my-shiny]");
+    if (my) { partners.hyb.shiny = my.dataset.myShiny || null; draw(); return; }
+    const ps = e.target.closest("[data-p-shiny]");
+    if (ps) { partners.pshiny = ps.dataset.pShiny || null; draw(); return; }
     const sh = e.target.closest("[data-shiny]");
-    if (sh) { partners.shiny = sh.dataset.shiny || null; $$("[data-shiny]", root).forEach(b => b.setAttribute("aria-pressed", b === sh)); draw(); return; }
+    if (sh) { partners.shiny = sh.dataset.shiny || null; draw(); return; }
     const so = e.target.closest("[data-sort]");
-    if (so) { partners.sort = so.dataset.sort; $$("[data-sort]", root).forEach(b => b.setAttribute("aria-pressed", b === so)); draw(); return; }
+    if (so) { partners.sort = so.dataset.sort; draw(); return; }
     const of = e.target.closest("[data-open-fuse]");
-    if (of) { const [a, b] = of.dataset.openFuse.split("|"); Object.assign(fuse, { dad: a, mom: b, shiny: partners.shiny, step: "mom" }); location.hash = "#/fuse"; }
+    if (of) { const [a, b] = of.dataset.openFuse.split("|"); Object.assign(fuse, { dad: a, mom: b, shiny: partners.shiny, step: "mom" }); location.hash = "#/fuse"; return; }
+    const od = e.target.closest("[data-open-double]");
+    if (od) { const p = od.dataset.openDouble.split("|"); dbl.h = [{ dad: p[0], mom: p[1], shiny: p[2] || null }, { dad: p[3], mom: p[4], shiny: p[5] || null }]; dbl.fused = true; location.hash = "#/double"; }
   });
   root.addEventListener("change", e => { if (e.target.matches("[data-owned]")) { partners.ownedOnly = e.target.checked; draw(); } });
 }
