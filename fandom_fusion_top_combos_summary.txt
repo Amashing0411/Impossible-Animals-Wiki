@@ -3,7 +3,7 @@
 The '''Top Single Hybrids''' table lists the highest-yielding single fusion combinations in ''Impossible Animals'' (10★ to 21★), sorted by cash-per-second income (no mutation). Income shown is the in-game $/s; charms and levels do not change it. A dash in the Hybrid column means the in-game name isn't known yet.
 
 == Community Tools ==
-* '''[https://fan.impossibleanimals-wiki.workers.dev/ Impossible Animals Wiki]''' — 3D fusion previews, stars and income from the game's formulas, double fusions and best partners.
+* '''[https://fan.alcantara.workers.dev/ Impossible Animals Wiki]''' — 3D fusion previews, stars and income from the game's formulas, double fusions and best partners.
 * '''[https://discord.gg/mXKUsgmUD3 Impossible Animals Community Discord]''' — Share discoveries and coordinate trades.
 
 == Top Tier Single Fusions (10★ to 21★) ==

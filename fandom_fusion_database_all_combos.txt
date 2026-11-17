@@ -3,7 +3,7 @@
 '''Fusion Database''' documents all 5565 single hybrid combinations across all 106 base animals in ''Impossible Animals''. Every combination is deterministic: the game hashes the two animal names to pick the star roll and income. Charms and levels do not change income. A dash in the Hybrid column means the in-game name isn't known yet.
 
 == Community Tools ==
-* '''[https://fan.impossibleanimals-wiki.workers.dev/ Impossible Animals Wiki]''' — 3D fusion previews, stars and income from the game's formulas, double fusions and best partners.
+* '''[https://fan.alcantara.workers.dev/ Impossible Animals Wiki]''' — 3D fusion previews, stars and income from the game's formulas, double fusions and best partners.
 * '''[https://discord.gg/mXKUsgmUD3 Impossible Animals Community Discord]''' — Share discoveries and coordinate trades.
 
 == Mechanics Quick Reference ==

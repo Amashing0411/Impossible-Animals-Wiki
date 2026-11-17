@@ -28,7 +28,7 @@ let topWiki = `{{DISPLAYTITLE:Fusion Database - Top Single Hybrids}}
 The '''Top Single Hybrids''' table lists the highest-yielding single fusion combinations in ''Impossible Animals'' (10★ to ${maxStars}★), sorted by cash-per-second income (no mutation). Income shown is the in-game $/s; charms and levels do not change it. A dash in the Hybrid column means the in-game name isn't known yet.
 
 == Community Tools ==
-* '''[https://fan.impossibleanimals-wiki.workers.dev/ Impossible Animals Wiki]''' — 3D fusion previews, stars and income from the game's formulas, double fusions and best partners.
+* '''[https://fan.alcantara.workers.dev/ Impossible Animals Wiki]''' — 3D fusion previews, stars and income from the game's formulas, double fusions and best partners.
 * '''[https://discord.gg/mXKUsgmUD3 Impossible Animals Community Discord]''' — Share discoveries and coordinate trades.
 
 == Top Tier Single Fusions (10★ to ${maxStars}★) ==
@@ -45,7 +45,7 @@ let fullWiki = `{{DISPLAYTITLE:Fusion Database - Complete Single Hybrids (All ${
 '''Fusion Database''' documents all ${combos.length} single hybrid combinations across all ${ids.length} base animals in ''Impossible Animals''. Every combination is deterministic: the game hashes the two animal names to pick the star roll and income. Charms and levels do not change income. A dash in the Hybrid column means the in-game name isn't known yet.
 
 == Community Tools ==
-* '''[https://fan.impossibleanimals-wiki.workers.dev/ Impossible Animals Wiki]''' — 3D fusion previews, stars and income from the game's formulas, double fusions and best partners.
+* '''[https://fan.alcantara.workers.dev/ Impossible Animals Wiki]''' — 3D fusion previews, stars and income from the game's formulas, double fusions and best partners.
 * '''[https://discord.gg/mXKUsgmUD3 Impossible Animals Community Discord]''' — Share discoveries and coordinate trades.
 
 == Mechanics Quick Reference ==
