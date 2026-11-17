@@ -32,9 +32,11 @@ function countdown(d) {
 }
 function source(id) {
   if (STARTER_SET.has(id)) return { short: "Starter", long: "Free from the start" };
-  if (BIOME_OF[id]) { const b = BIOME_OF[id]; return { short: `Wild T${b.tier}`, long: `The Wild · Tier ${b.tier} ${b.name} (${b.difficulty})`, biome: b }; }
-  if (BY_ID[id].element) return { short: "Special", long: "Special animal · featured in shop packs" };
-  return { short: "Shop", long: "Shop packs" };
+  // AnimalShopOffers builds the Shop's animal packs from the Wild reward lists, so Wild animals can
+  // also come from packs. For special animals the client code doesn't say how they're obtained.
+  if (BIOME_OF[id]) { const b = BIOME_OF[id]; return { short: `Wild T${b.tier}`, long: `The Wild · Tier ${b.tier} ${b.name} (${b.difficulty}) · also in Shop animal packs`, biome: b }; }
+  if (BY_ID[id].element) return { short: "Special", long: "Special animal · how to get it isn't in the game files we have" };
+  return { short: "Other", long: "Source not confirmed" };
 }
 const SHINY_KEYS = [null, ...G.SHINY_ORDER];
 const shinyName = s => (s ? G.SHINIES[s].name : "Normal");
@@ -45,6 +47,7 @@ const STORE_KEY = "iaw.v2";
 const store = (() => {
   let s = {};
   try { s = JSON.parse(localStorage.getItem(STORE_KEY) || "{}"); } catch { s = {}; }
+  // `charm` is no longer used (charms don't change income) but is kept so old saved data stays intact.
   return Object.assign({ pen: [], owned: null, charm: 0, algo: "light-dark" }, s);
 })();
 function save() {
@@ -79,17 +82,14 @@ function copy(text, msg = "Copied!") {
 }
 
 // ---------- fusion helpers ----------
-const singleCache = new Map();
-function single(a, b, shiny = null) {
-  const k = `${a}|${b}|${shiny}`;
-  if (!singleCache.has(k)) singleCache.set(k, E.single(a, b, shiny));
-  return singleCache.get(k);
-}
+// All maths lives in engine.js (memoised there), so every page shows the same numbers.
+const single = (a, b, shiny = null) => E.single(a, b, shiny);
 const allPairs = (() => {
   let cache = null;
   return () => cache || (cache = IDS.flatMap((a, i) => IDS.slice(i + 1).map(b => [a, b])));
 })();
-const withCharm = income => income * E.charmMultiplier(store.charm);
+// Shown on every income result: the game's income code (CreatureIncome) never reads charms or levels.
+const INCOME_NOTE = `<p class="small muted" style="margin:8px 0 0">Charms and treadmill levels don't change $/s. A charm makes the hybrid <b>level up faster while training</b> (<a href="#/guide">see Guide</a>).</p>`;
 
 // ---------- shared UI pieces ----------
 function starRow(parts) {
@@ -101,12 +101,6 @@ function starRow(parts) {
 function shinySeg(current, attr = "data-shiny") {
   return `<div class="seg" role="group" aria-label="Mutation">${SHINY_KEYS.map(s =>
     `<button type="button" class="${s ? "m-" + s : ""}" ${attr}="${s || ""}" aria-pressed="${(current || null) === s}">${shinyName(s)}${s ? ` <small>+${G.SHINIES[s].bonus}★</small>` : ""}</button>`).join("")}</div>`;
-}
-function charmSelect() {
-  return `<select class="input" data-charm aria-label="Charm" style="max-width:240px">
-    <option value="0">No charm (×1)</option>
-    ${G.CHARMS.map(c => `<option value="${c.tier}" ${store.charm === c.tier ? "selected" : ""}>${c.name} Charm (×${c.multiplier})</option>`).join("")}
-  </select>`;
 }
 function mutLabel(s) { return s ? ` <span class="mut mut-${s}">(${shinyName(s)})</span>` : ""; }
 function pairPortrait(a, b, thumbKey) {
@@ -263,7 +257,7 @@ const dbl = { h: [{ dad: null, mom: null, shiny: null }, { dad: null, mom: null,
 function renderFuse(root) {
   root.innerHTML = `
   <div class="page-head"><div><h1 class="outline">Fusion Lab</h1>
-    <p>Pick a dad and a mom to see the hybrid in 3D, with the exact stars and income the game gives it.</p></div></div>
+    <p>Pick a dad and a mom to see the hybrid in 3D, with its stars and $/s worked out by the game's own formulas.</p></div></div>
   <div class="grid-2">
     <div class="stack">
       ${stageHTML()}
@@ -359,7 +353,6 @@ function renderFuse(root) {
     if (act.dataset.act === "chat") copy(`${name(fuse.dad)} + ${name(fuse.mom)}${fuse.shiny ? ` (${shinyName(fuse.shiny)})` : ""} = ${r.stars}★ ${E.money(r.income)}`, "Copied for Roblox chat");
   });
   root.addEventListener("input", e => { if (e.target.matches("[data-search]")) { fuse.query = e.target.value; drawGrid(); } });
-  root.addEventListener("change", e => { if (e.target.matches("[data-charm]")) { store.charm = +e.target.value; save(); drawResult(); } });
 }
 
 function suggestHTML(dad, current, title, cur) {
@@ -386,7 +379,7 @@ function huntHTML(r) {
   const byNow = 1 - (1 - p) ** tries;
   return `<div class="hunt">
     <div><b class="outline" style="font-size:18px">🎯 Mutation hunt</b>
-      <div class="small">Tap <b>+1 fuse</b> each time you fuse this pair in-game. Any mutation is about <b>1 in ${Math.round(1 / p).toLocaleString()}</b> per fuse.</div></div>
+      <div class="small">Tap <b>+1 fuse</b> each time you fuse this pair in-game. Estimated chance of any mutation: about <b>1 in ${Math.round(1 / p).toLocaleString()}</b> per fuse, without a friend boost.</div></div>
     <div class="hunt-count"><b>${tries}</b><span>fuses</span></div>
     <div class="hunt-count"><b>${Math.round(byNow * 100)}%</b><span>would have one by now</span></div>
     <div class="row"><button class="btn btn-gold btn-sm" data-hunt="add">+1 fuse</button><button class="btn btn-white btn-sm" data-hunt="reset">Got one! Reset</button></div>
@@ -405,14 +398,15 @@ function fuseResultHTML(r) {
     ${starRow([[r.base, ""], [r.special, "bonus"], [r.mutation, "mutation"]])}
     <div class="legend"><span><i style="background:var(--star)"></i>Roll ${r.base}</span>${r.special ? `<span><i style="background:#ff9a3d"></i>Special +${r.special}</span>` : ""}${r.mutation ? `<span><i style="background:#7fd8ff"></i>${shinyName(r.shiny)} +${r.mutation}</span>` : ""}</div>
     <div class="income-big">${E.money(r.income)}</div>
-    <div class="row" style="justify-content:center;margin-top:8px">${charmSelect()}${store.charm ? `<b class="muted">→ ${E.money(withCharm(r.income))} with charm</b>` : ""}</div>
+    ${INCOME_NOTE}
     ${capNote}
     <div class="breakdown">
-      <div class="stat"><b>${E.money(r.income * 3600, false)}</b><span>per hour (no charm)</span></div>
-      <div class="stat"><b>${E.money(withCharm(r.income) * 86400, false)}</b><span>per day ${store.charm ? "with charm" : ""}</span></div>
+      <div class="stat"><b>${E.money(r.income * 3600, false)}</b><span>per hour</span></div>
+      <div class="stat"><b>${E.money(r.income * 86400, false)}</b><span>per day</span></div>
+      <div class="stat"><b>${E.money(E.sellValue(r.income), false)}</b><span>sell value (10× $/s)</span></div>
       <div class="stat"><b>${Math.round((r.income - G.INCOME_RANGES[r.stars][0]) / Math.max(1, G.INCOME_RANGES[r.stars][1] - G.INCOME_RANGES[r.stars][0]) * 100)}%</b><span>of the ${r.stars}★ income range</span></div>
     </div>
-    <p class="small muted" style="margin:12px 0 0">Mutation chance at ${r.stars - r.mutation}★: ${odds}</p>
+    <p class="small muted" style="margin:12px 0 0">Estimated mutation odds at ${r.stars - r.mutation}★: ${odds}</p>
     ${huntHTML(r)}
     ${suggestHTML(r.dad, r.mom, `Better moms for ${name(r.dad)}`, r)}
     ${doubleHintHTML(r)}
@@ -475,14 +469,14 @@ function renderDouble(root) {
       ${starRow([[Math.max(...r.parentStars), ""], [r.bonus, "dbl"], [r.special, "bonus"]])}
       <div class="legend"><span><i style="background:var(--star)"></i>Best hybrid ${Math.max(...r.parentStars)}</span><span><i style="background:#b98bff"></i>Double bonus +${r.bonus}</span>${r.special ? `<span><i style="background:#ff9a3d"></i>Special +${r.special}</span>` : ""}</div>
       <div class="income-big">${E.money(r.income)}</div>
-      <div class="row" style="justify-content:center;margin-top:8px">${charmSelect()}${store.charm ? `<b class="muted">→ ${E.money(withCharm(r.income))} with charm</b>` : ""}</div>
+      ${INCOME_NOTE}
       <div class="breakdown">
         <div class="stat"><b>${r.parentStars[0]}★ / ${r.parentStars[1]}★</b><span>hybrid stars (roll + mutation, no special)</span></div>
         <div class="stat"><b>${r.roll} → +${r.bonus}</b><span>bonus roll (1–5), capped at ${r.steps} by the weaker hybrid</span></div>
         <div class="stat"><b>+${r.special}</b><span>special bonus (counted once)</span></div>
         <div class="stat"><b>${shinyName(r.shiny)}</b><span>inherits the best mutation</span></div>
       </div>
-      <p class="small muted" style="margin:10px 0 0">The cap rises when the weaker hybrid reaches 3, 9, 15, 21 and 29 stars. Treadmill level doesn't affect income (singles or doubles); the new hybrid just keeps the higher level, which matters for The Wild.</p>
+      <p class="small muted" style="margin:10px 0 0">The cap rises when the weaker hybrid reaches 3, 9, 15, 21 and 29 stars. The new hybrid keeps the <b>better charm</b> and the <b>higher level</b> of the two. Neither one changes $/s: the charm speeds up training, and level is the hybrid's strength in The Wild.</p>
       <div class="row" style="justify-content:center;margin-top:14px"><button class="btn btn-green btn-sm" data-act="save-double">🏡 Save to My Pen</button>
       <button class="btn btn-white btn-sm" data-act="chat-double">💬 Copy for chat</button></div>
     </div>`;
@@ -529,27 +523,16 @@ function renderDouble(root) {
       copy(`(${name(r.parents[0])}+${name(r.parents[1])}) x (${name(r.parents[2])}+${name(r.parents[3])})${r.shiny ? ` ${shinyName(r.shiny)}` : ""} = ${r.stars}★ ${E.money(r.income)}`, "Copied for Roblox chat");
     }
   });
-  root.addEventListener("change", e => { if (e.target.matches("[data-charm]")) { store.charm = +e.target.value; save(); drawResult(); } });
 }
 
 // ---------------- Best partners ----------------
 const partners = { mode: "single", pet: null, shiny: null, ownedOnly: false, sort: "stars", limit: 30, hyb: { dad: null, mom: null, shiny: null }, pshiny: null };
-const byRank = sort => (a, b) => sort === "income" ? b.income - a.income : b.stars - a.stars || b.income - a.income;
 function bestSinglePartners(pet, shiny = null, ownedOnly = false, sort = "stars") {
-  return IDS.filter(id => id !== pet && (!ownedOnly || owns(id))).map(id => single(pet, id, shiny)).sort(byRank(sort));
+  return E.rankSinglePartners(pet, IDS.filter(id => !ownedOnly || owns(id)), { shiny, sort });
 }
 /** Every gen-1 hybrid you could double fuse with `h`, best first. Both dad/mom orders are tried (it changes income). */
 function bestDoublePartners(h, partnerShiny = null, ownedOnly = false, sort = "stars") {
-  const rows = [];
-  for (const [a, b] of allPairs()) {
-    if (ownedOnly && !(owns(a) && owns(b))) continue;
-    const r1 = E.double(h, { dad: a, mom: b, shiny: partnerShiny }), r2 = E.double(h, { dad: b, mom: a, shiny: partnerShiny });
-    const r = r2.income > r1.income ? r2 : r1;
-    r.partner = r === r1 ? { dad: a, mom: b, shiny: partnerShiny } : { dad: b, mom: a, shiny: partnerShiny };
-    r.mine = { ...h };
-    rows.push(r);
-  }
-  return rows.sort(byRank(sort));
+  return E.rankDoublePartners(h, allPairs().filter(([a, b]) => !ownedOnly || (owns(a) && owns(b))), { partnerShiny, sort });
 }
 function doublePartnerCard(r, opts = {}) {
   const p = r.partner;
@@ -668,7 +651,7 @@ const top = { mode: "single", shiny: null, ownedOnly: false, limit: 50 };
 function renderTop(root) {
   root.innerHTML = `
   <div class="page-head"><div><h1 class="outline">Top Hybrids</h1>
-    <p>The highest-star fusions in the game. Every one of the ${allPairs().length.toLocaleString()} gen-1 pairs is checked.</p></div></div>
+    <p>The highest-star fusions in the game. Every one of the ${allPairs().length.toLocaleString()} gen-1 pairs is checked, and every pairing of them for double fusions. Both hybrids get the mutation you pick.</p></div></div>
   <div class="panel row" style="margin-bottom:16px">
     <div class="seg" role="group" aria-label="Type"><button type="button" data-mode="single" aria-pressed="${top.mode === "single"}">Single fusions</button><button type="button" data-mode="double" aria-pressed="${top.mode === "double"}">Double fusions</button></div>
     ${shinySeg(top.shiny)}
@@ -677,26 +660,22 @@ function renderTop(root) {
   <div id="top-list"></div>`;
   const draw = () => {
     const ok = id => !top.ownedOnly || owns(id);
-    let rows;
+    let rows, more;
+    const pairs = allPairs().filter(([a, b]) => ok(a) && ok(b));
     if (top.mode === "single") {
-      rows = allPairs().filter(([a, b]) => ok(a) && ok(b)).map(([a, b]) => single(a, b, top.shiny));
-      rows.sort((a, b) => b.stars - a.stars || b.income - a.income);
+      rows = pairs.map(([a, b]) => single(a, b, top.shiny)).sort(E.rankComparator("stars"));
+      more = rows.length > top.limit;
     } else {
-      const base = allPairs().filter(([a, b]) => ok(a) && ok(b)).map(([a, b]) => single(a, b, top.shiny))
-        .sort((a, b) => (b.base + b.mutation) - (a.base + a.mutation) || b.special - a.special).slice(0, 140);
-      rows = [];
-      for (let i = 0; i < base.length; i++) for (let j = i; j < base.length; j++) {
-        const A = base[i], B = base[j];
-        rows.push(E.double({ dad: A.dad, mom: A.mom, shiny: top.shiny }, { dad: B.dad, mom: B.mom, shiny: top.shiny }));
-      }
-      rows.sort((a, b) => b.stars - a.stars || b.income - a.income);
+      // Exact search (engine.topDoubles), using each hybrid's best-earning dad/mom order.
+      rows = E.topDoubles(pairs, top.limit + 1, top.shiny);
+      more = rows.length > top.limit;
     }
     const shown = rows.slice(0, top.limit);
     $("#top-list", root).innerHTML = `<div class="hy-list">${shown.map((r, i) => hybridCard(r, {
       rank: i + 1, color: i === 0 ? "gold" : i < 3 ? "green" : "",
       attrs: r.kind === "double" ? `data-open-double="${r.hybrids.map(h => h.dad + "|" + h.mom).join("|")}"` : `data-open-fuse="${r.dad}|${r.mom}"`
     })).join("")}</div>
-    ${rows.length > top.limit ? `<div class="row" style="justify-content:center;margin-top:16px"><button class="btn" data-act="more">Show more</button></div>` : ""}`;
+    ${more ? `<div class="row" style="justify-content:center;margin-top:16px"><button class="btn" data-act="more">Show more</button></div>` : ""}`;
     observeThumbs(root);
   };
   draw();
@@ -792,27 +771,22 @@ function renderAnimal(root, id) {
 
 // ---------------- The Wild ----------------
 function renderWild(root) {
-  const cycle = Math.floor(Date.now() / 1000 / G.WILD_RESET_SECONDS);
+  // WildRules.rotate: each cycle lasts RESET_SECONDS from when it was rolled, per player, so there is
+  // no shared clock the site could count down to.
   root.innerHTML = `
   <div class="page-head"><div><h1 class="outline">The Wild</h1>
-    <p>14 biomes, each guarding new animals. Every 5 minutes the game picks one animal from each biome's list as that biome's reward (animals you don't own yet are picked first).</p></div>
-    <div class="panel small" style="padding:10px 14px">Next reward reset in <b class="countdown" id="wild-reset">…</b></div></div>
+    <p>14 biomes, each guarding new animals. Each biome offers one animal from its list as the reward. The game re-rolls the rewards ${G.WILD_RESET_SECONDS / 60} minutes after your current set was rolled, and picks animals you don't own yet first (once they're released).</p></div>
+    <div class="panel small" style="padding:10px 14px;max-width:300px">Your reset timer is personal (it starts when your rewards were rolled), so check it in-game.</div></div>
   <div class="biomes">${G.BIOMES.map(b => `
     <div class="card biome" style="--bc:${b.color}">
       <div class="biome-top"><span class="biome-icon" aria-hidden="true">${b.icon}</span><h3 class="outline">${esc(b.name)}</h3><span class="tier">T${b.tier}</span></div>
       <div class="biome-body">
         <div class="row"><span><b>${b.emoji} ${b.difficulty}</b></span><span class="muted small">Recommended Lv. <b>${E.shortNum(b.recommended)}</b></span></div>
-        <div class="row small muted" style="margin-top:4px"><span>Fusion token drop: <b>${Math.round(b.tokenChance * 1000) / 10}%</b></span></div>
+        <div class="row small muted" style="margin-top:4px"><span title="DoubleFusionRules.tokenChance: rolled once per biome for each reward cycle">Fusion token chance: <b>${Math.round(b.tokenChance * 1000) / 10}%</b> per reward cycle</span></div>
         <div class="rewards">${b.rewards.map(id => `<a href="#/animal/${encodeURIComponent(id)}" title="${esc(name(id))}"><span class="portrait">${img(id)}</span>${esc(name(id))}${!isOut(id) ? `<br><span class="badge soon" style="color:var(--red-dark)">${countdown(releaseAt(id))}</span>` : ""}</a>`).join("")}</div>
       </div>
-    </div>`).join("")}</div>`;
-  const tick = () => {
-    const el = $("#wild-reset", root); if (!el) return clearInterval(timer);
-    const left = G.WILD_RESET_SECONDS - Math.floor(Date.now() / 1000) % G.WILD_RESET_SECONDS;
-    el.textContent = `${Math.floor(left / 60)}:${String(left % 60).padStart(2, "0")}`;
-  };
-  const timer = setInterval(tick, 1000); tick();
-  void cycle;
+    </div>`).join("")}</div>
+  <p class="small muted" style="margin-top:14px">Recommended level is the level the game rates each biome for. Your hybrid's strength there comes from both its <b>level</b> and its <b>stars</b> (see <a href="#/guide">Guide → Levels</a>).</p>`;
 }
 
 // ---------------- Guide ----------------
@@ -820,12 +794,12 @@ function renderGuide(root) {
   const totalW = G.WEIGHTS.reduce((a, b) => a + b, 0);
   let calcStars = 10, friends = 1;
   root.innerHTML = `
-  <div class="page-head"><div><h1 class="outline">Guide</h1><p>How stars, income, mutations and charms work, taken straight from the game's code.</p></div></div>
+  <div class="page-head"><div><h1 class="outline">Guide</h1><p>How stars, income, mutations and charms work, read from the game's own scripts. Where the game decides something on its servers, we say so.</p></div></div>
   <div class="grid-2">
     <div class="stack">
       <div class="panel"><h2>⭐ Star rolls &amp; income</h2>
-        <p class="small muted" style="margin-top:-4px">Every pair always rolls the same stars: the game hashes the two animal names. Then it adds the best special bonus and the mutation bonus. Income is a fixed number inside the star tier's range.</p>
-        <div class="table-wrap"><table class="tbl"><thead><tr><th>Stars</th><th>Roll chance</th><th>Income range</th></tr></thead><tbody>
+        <p class="small muted" style="margin-top:-4px">Nothing here is random: every pair always rolls the same stars, because the game hashes the two animal names. Then it adds the best special bonus and the mutation bonus. Income is also fixed: a hash of the pair and mutation picks one number inside the star tier's range. "Share of rolls" is how the hash spreads across all pairs.</p>
+        <div class="table-wrap"><table class="tbl"><thead><tr><th>Stars</th><th>Share of rolls</th><th>Income range</th></tr></thead><tbody>
         ${Object.entries(G.INCOME_RANGES).map(([s, [lo, hi]]) => `<tr><td><span class="star-n" style="color:var(--ink);font-size:16px">${s}</span></td><td>${+s <= 20 ? (G.WEIGHTS[s - 3] / totalW * 100).toFixed(s >= 17 ? 3 : 2) + "%" : "<span class='muted'>bonus only</span>"}</td><td>${E.money(lo)} – ${E.money(hi)}</td></tr>`).join("")}
         </tbody></table></div>
       </div>
@@ -835,15 +809,17 @@ function renderGuide(root) {
         <div class="table-wrap"><table class="tbl"><thead><tr><th>Mutation</th><th>Bonus</th><th>Odds at 3★</th><th>at 20★</th><th>Colours</th></tr></thead><tbody>
         ${G.SHINY_ORDER.map(s => `<tr><td class="mut mut-${s}" style="${s === "golden" ? "color:#b57600" : s === "diamond" ? "color:#1580c4" : s === "chaos" ? "color:#c4122f" : ""}">${shinyName(s)}</td><td>+${G.SHINIES[s].bonus}★</td><td>1 in ${Math.round(E.shinyOdds(s, 3))}</td><td>1 in ${Math.round(E.shinyOdds(s, 20)).toLocaleString()}</td><td><span class="swatch">${G.SHINIES[s].colors.map(c => `<i style="background:${c}"></i>`).join("")}</span></td></tr>`).join("")}
         </tbody></table></div>
-        <p class="small muted">Your <b>${G.FIRST_GOLD_FUSION}rd fusion is always Golden</b>. Higher-star fusions are rarer to mutate. Fusing with friends nearby boosts the odds, up to ${G.FRIEND_MULTIPLIER}×.</p>
+        <p class="small muted">Higher-star fusions are rarer to mutate. A friend boost divides the odds, up to ${G.FRIEND_MULTIPLIER}× (the game's servers set it; how it's earned isn't in the client code). Early on, the game skips the mutation roll and then forces one <b>Golden</b> when your fusion counter reaches ${G.FIRST_GOLD_FUSION} (whether that is your 3rd or 4th fusion isn't visible in the game files).</p>
+        <p class="small muted">The mutation roll runs on the game's servers. These odds use the hybrid's stars before its mutation, which is our best reading of the code, so treat them as <b>estimates</b>.</p>
         <div class="row"><label class="small">Fusion stars <input class="input" type="number" min="3" max="20" value="${calcStars}" data-calc-stars style="width:90px"></label>
           <label class="small">Friend boost <select class="input" data-calc-friends style="width:110px">${Array.from({ length: 10 }, (_, i) => `<option value="${i + 1}">×${i + 1}</option>`).join("")}</select></label></div>
         <div id="odds-out" class="breakdown"></div>
       </div>
-      <div class="panel"><h2>🔮 Charms</h2><p class="small muted" style="margin-top:-4px">A charm multiplies a hybrid's income. It isn't shown in the $/s on the hybrid card. Double fusions keep the better charm.</p>
-        <div class="table-wrap"><table class="tbl"><thead><tr><th>Charm</th><th>Income</th><th>Cash</th><th>Robux</th></tr></thead><tbody>
-        ${G.CHARMS.map(c => `<tr><td><span class="pill" style="background:${c.color};color:#1d2530">${c.name}</span></td><td><b>×${c.multiplier}</b></td><td>${E.money(c.cash, false)}</td><td>${c.robux ? c.robux + " R$" : "—"}</td></tr>`).join("")}
+      <div class="panel" id="charms"><h2>🔮 Charms</h2><p class="small muted" style="margin-top:-4px">A charm makes a hybrid <b>level up faster while training</b> on the treadmill (the Charm Shop calls it "x1.5 levels while training"). <b>It does not change $/s:</b> the game's income code never reads the charm. Double fusions keep the better charm of the two.</p>
+        <div class="table-wrap"><table class="tbl"><thead><tr><th>Charm</th><th>Training</th><th>Cash</th><th>Robux</th></tr></thead><tbody>
+        ${G.CHARMS.map(c => `<tr><td><span class="pill" style="background:${c.color};color:#1d2530">${c.name}</span></td><td><b>x${c.multiplier}</b> levels</td><td>${E.money(c.cash, false)}</td><td>${c.robux ? c.robux + " R$" : "—"}</td></tr>`).join("")}
         </tbody></table></div>
+        <p class="small muted">With a speed boost, the charm <b>adds</b> to it instead of multiplying: speed ×2 plus an Ember charm (x1.5) trains at ×2.5, not ×3. Try it in the treadmill calculator below.</p>
       </div>
       <div class="panel"><h2>⚡ Double fusion rules</h2>
         <ol class="small" style="padding-left:18px;margin:0;line-height:1.6">
@@ -851,13 +827,14 @@ function renderGuide(root) {
           <li>Start from the stronger hybrid's stars.</li>
           <li>Add a bonus roll of 1–5, capped by the weaker hybrid: +1 cap at 3★, then 9★, 15★, 21★ and 29★.</li>
           <li>Add the best special bonus among all four animals, once.</li>
-          <li>The result inherits the best mutation and the higher level. Income uses all four parents in dad/mom order.</li>
+          <li>The result inherits the best mutation, the better charm and the higher level. Only the mutation affects stars or income.</li>
+          <li>Income is a fixed number in the final star tier's range, picked by a hash of all four parents in dad/mom order plus the mutation. So swapping a hybrid's dad and mom can change a double's income, but never its stars.</li>
         </ol></div>
       <div class="panel"><h2>🧩 Starter specials</h2><p class="small" style="margin:0">${G.STARTER_SPECIALS.map(name).join(", ")} are free starters, but their fusions are capped. Fused with each other they top out at 10★. With any other animal, the roll is squeezed under that animal's best result with the 26 classic starters.</p></div>
       <div class="panel" id="levels"><h2>🏃 Levels &amp; the Treadmill</h2>
         <p class="small" style="margin-top:-4px">A hybrid's <b>Lv.</b> is its training level, counted 1 to 1: <b>Lv. 2.22M</b> means 2,220,000 levels, up to a cap of 500M. Put a hybrid on the treadmill and it earns EXP; every <b>100 EXP = 1 level</b>.</p>
-        <p class="small"><b>Level does not change $/s.</b> The game's income code only uses the two parents and the mutation, for singles and doubles alike. Level is your hybrid's <b>power in The Wild</b>, compared against each biome's recommended level. When you double fuse, the new hybrid keeps the higher of the two levels.</p>
-        <p class="small muted">EXP per second = treadmill rate × (speed boost + charm multiplier − 1). Each speed boost tier doubles it (×2, ×4 … ×4096 at tier 12), and the hybrid's charm stacks on top.</p>
+        <p class="small"><b>Level does not change $/s.</b> The game's income code only uses the parents and the mutation, for singles and doubles alike. Level, together with stars, sets your hybrid's <b>power in The Wild</b>: power doubles each time you climb one biome's worth of recommended level, and more stars add a multiplier on top (about ×1 at 3–5★, ×1.4 at 20★, ×2.2 at 30★). When you double fuse, the new hybrid keeps the higher of the two levels.</p>
+        <p class="small muted">EXP per second = treadmill rate × (speed boost + charm multiplier − 1). Each speed boost tier doubles the speed boost (×2, ×4 … ×4096 at tier 12); the charm adds to it. Training stops at the level cap.</p>
         <div class="row">
           <label class="small">Treadmill level <select class="input" data-tm="level" style="width:110px">${E.TREADMILL_RATES.map((r, i) => `<option value="${i + 1}">${i + 1} (${r}/s)</option>`).join("")}</select></label>
           <label class="small">Speed boost <select class="input" data-tm="tier" style="width:110px">${Array.from({ length: 13 }, (_, i) => `<option value="${i}">${i ? `Tier ${i} (×${2 ** i})` : "None"}</option>`).join("")}</select></label>
@@ -918,7 +895,7 @@ function renderPen(root) {
     <div class="tile-grid" id="own-grid"></div></div>`;
   const drawPen = () => {
     const total = store.pen.reduce((s, p) => s + penResult(p).income, 0);
-    $("#pen-list", root).innerHTML = store.pen.length ? `<p class="muted">${store.pen.length} hybrids · ${E.money(total)} combined (before charms)</p><div class="hy-list">${store.pen.map(p => {
+    $("#pen-list", root).innerHTML = store.pen.length ? `<p class="muted">${store.pen.length} hybrids · ${E.money(total)} combined</p><div class="hy-list">${store.pen.map(p => {
       const r = penResult(p);
       return `<div style="position:relative">${hybridCard(r, { color: p.kind === "double" ? "green" : "", attrs: `data-open="${p.id}"`, sub: p.kind === "double" ? "Double hybrid" : "Single hybrid" })}
         <button class="x-btn" data-remove="${p.id}" aria-label="Remove" style="position:absolute;top:-8px;right:-8px;width:32px;height:32px;font-size:15px">✕</button></div>`;

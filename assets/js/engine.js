@@ -1,14 +1,30 @@
-// Fusion maths — a direct port of the game's FusionRating, CreatureIncome, ShinyRules and DoubleFusionRules modules.
+// Fusion maths: a port of the game's client modules. This file is the ONLY place the site
+// computes stars, income, mutation odds, training speed and rankings. Every page imports it.
+//
+// Source of truth (decompiled game modules in ReplicatedStorage.ImpossibleAnimals):
+//   FusionRating       -> baseStars, starterCap, specialBonus
+//   ShinyRules         -> shinyBonus, shinyOdds, bestShiny
+//   CreatureIncome     -> single (calculate), double (forEntry), formatMoney (Money.format)
+//   DoubleFusionRules  -> double (stars / bonus / parents / make)
+//   Generation.Palette -> orderHybrids (Palette.key ordering used by DoubleFusionRules.make)
+//   TreadmillRules, TreadmillMultipliers, CharmRules -> trainingExpPerSecond
+//   SellRules          -> sellValue
+//   CreatureLevelFormat-> formatLevel
+// See docs/MECHANICS.md for each formula's inputs, verification status and known limits.
+// Do not add a mechanic here unless it is backed by game code or a reproducible in-game test.
 import {
   WEIGHTS, SPECIAL_BONUS, STARTER_SPECIALS, CLASSIC_STARTERS, INCOME_RANGES, SHINIES, SHINY_ORDER,
-  FRIEND_MULTIPLIER, CHARMS, MAX_STARS
+  FRIEND_MULTIPLIER, CHARMS, TREADMILL_RATES, TREADMILL_PRICES, TREADMILL_MAX_SPEED_TIER, EXP_PER_LEVEL, MAX_LEVEL, SELL_MULTIPLIER
 } from "./gamedata.js";
+
+export { TREADMILL_RATES, TREADMILL_PRICES };
 
 const SEED_PREFIX = "ImpossibleAnimals:stars:v1:seed:67673:";
 const STARTER_SPECIAL_SET = new Set(STARTER_SPECIALS);
 const CLASSIC_SET = new Set(CLASSIC_STARTERS);
+const DOUBLE_STEPS = [3, 9, 15, 21, 29]; // DoubleFusionRules.computed thresholds
 
-// 32-bit Jenkins one-at-a-time, exactly as the Luau source does it
+// 32-bit Jenkins one-at-a-time, as the Luau source does it with bit32 and % 2^32.
 export function jenkins(str) {
   let h = 0;
   for (let i = 0; i < str.length; i++) {
@@ -21,13 +37,14 @@ export function jenkins(str) {
   return (h + ((h << 15) >>> 0)) >>> 0;
 }
 
-function djb2(str) {
+// DJB2 variant used by CreatureIncome.forEntry (mod 2^31 - 1, not 2^32).
+export function djb2(str) {
   let h = 5381;
   for (let i = 0; i < str.length; i++) h = (h * 33 + str.charCodeAt(i)) % 2147483647;
   return h;
 }
 
-// Lua string comparison is byte-wise; JS < on ASCII strings matches it
+// Lua compares strings byte-wise; every animal id is ASCII, so JS < matches.
 const sortPair = (a, b) => (b >= a ? [b, a] : [a, b]); // => [larger, smaller]
 
 function roll(a, b) {
@@ -54,8 +71,13 @@ function capFor(id) {
   return cap;
 }
 
-/** Base star roll for a pair (before mutation / special bonus). */
+function assertPair(a, b) {
+  if (typeof a !== "string" || typeof b !== "string" || !a || !b) throw new Error("Expected permanent parent IDs");
+}
+
+/** Base star roll for a pair (before mutation / special bonus). FusionRating.calculate */
 export function baseStars(a, b) {
+  assertPair(a, b);
   const r = roll(a, b) * 1e6;
   const sa = STARTER_SPECIAL_SET.has(a), sb = STARTER_SPECIAL_SET.has(b);
   if (!sa && !sb) return bucket(r);
@@ -77,20 +99,32 @@ export const shinyBonus = s => (SHINIES[s] ? SHINIES[s].bonus : 0);
 const normShiny = s => (SHINIES[s] ? s : null);
 
 function incomeIn(stars, unit) {
-  const range = INCOME_RANGES[Math.min(MAX_STARS, Math.max(3, stars))];
+  const range = INCOME_RANGES[stars];
+  // CreatureIncome asserts here ("Add an explicit income range for this new star tier").
+  if (!range) throw new Error(`No income range for ${stars} stars`);
   return range[0] + Math.floor(unit * (range[1] - range[0] + 1));
 }
 
-/** Single (gen-1) hybrid. dad/mom order does not matter for singles. */
+/**
+ * Single (gen-1) hybrid. CreatureIncome.calculate(dad, mom, shiny).
+ * Inputs are ONLY the two parent ids and the mutation. Charms and levels are not inputs.
+ * dad/mom order does not matter for singles (both hashes sort the pair).
+ */
+const singleMemo = new Map();
 export function single(dad, mom, shiny = null) {
   shiny = normShiny(shiny);
+  const key = `${dad}|${mom}|${shiny}`;
+  const hit = singleMemo.get(key);
+  if (hit) return hit;
   const base = baseStars(dad, mom);
   const bonus = specialBonus([dad, mom]);
   const stars = base + shinyBonus(shiny) + bonus;
   const [hi, lo] = sortPair(dad, mom);
   const s = shiny || "none";
   const h = jenkins(`ImpossibleAnimals:income:v1:seed:67673:${lo.length}:${lo}${hi.length}:${hi}${s.length}:${s}`);
-  return { kind: "single", dad, mom, shiny, base, special: bonus, mutation: shinyBonus(shiny), stars, income: incomeIn(stars, h / 4294967296), cap: starterCap(dad, mom) };
+  const r = Object.freeze({ kind: "single", dad, mom, shiny, base, special: bonus, mutation: shinyBonus(shiny), stars, income: incomeIn(stars, h / 4294967296), cap: starterCap(dad, mom) });
+  singleMemo.set(key, r);
+  return r;
 }
 
 function doubleBonusRoll(h1, h2) {
@@ -108,16 +142,31 @@ export function bestShiny(a, b) {
 }
 
 /**
- * Double fusion of two single hybrids {dad, mom, shiny}. The game orders the two hybrids
- * by "dad|mom|palette"; we approximate the palette tiebreak with dad|mom.
+ * DoubleFusionRules.make sorts the two hybrids by Palette.key = "dad|mom|color1|...|eyecolor".
+ * We don't know the palette, but it always follows a "|", so comparing "dad|mom|" gives the
+ * same answer whenever the recipes differ (e.g. "x|car|" vs "x|carrot|"). When both hybrids
+ * have the same dad and mom, the palette decides, and the order no longer changes any result.
+ */
+export function orderHybrids(a, b) {
+  return `${b.dad}|${b.mom}|` < `${a.dad}|${a.mom}|` ? [b, a] : [a, b];
+}
+
+/**
+ * Double fusion of two single hybrids {dad, mom, shiny}.
+ * Stars: DoubleFusionRules.stars. Income: CreatureIncome.forEntry (DJB2 over the 4 parents in
+ * stored dad/mom order + best mutation). Charm and level are inherited (max of the two) but are
+ * not inputs to stars or income.
  */
 export function double(hA, hB) {
-  let [p1, p2] = [hA, hB].map(h => ({ dad: h.dad, mom: h.mom, shiny: normShiny(h.shiny) }));
-  if (`${p2.dad}|${p2.mom}` < `${p1.dad}|${p1.mom}`) [p1, p2] = [p2, p1];
+  let [p1, p2] = orderHybrids(...[hA, hB].map(h => {
+    assertPair(h.dad, h.mom);
+    if (h.dad === h.mom) throw new Error("A hybrid needs two different parents");
+    return { dad: h.dad, mom: h.mom, shiny: normShiny(h.shiny) };
+  }));
   const c1 = baseStars(p1.dad, p1.mom) + shinyBonus(p1.shiny);
   const c2 = baseStars(p2.dad, p2.mom) + shinyBonus(p2.shiny);
   const lo = Math.min(c1, c2);
-  const steps = [3, 9, 15, 21, 29].filter(t => t <= lo).length;
+  const steps = DOUBLE_STEPS.filter(t => t <= lo).length;
   const roll = doubleBonusRoll(p1, p2);
   const parents = [p1.dad, p1.mom, p2.dad, p2.mom];
   const special = specialBonus(parents);
@@ -128,7 +177,13 @@ export function double(hA, hB) {
   return { kind: "double", parents, hybrids: [p1, p2], parentStars: [c1, c2], roll, steps, bonus: Math.min(roll, steps), special, stars, shiny, income };
 }
 
-// ShinyRules.odds — "1 in N" chance of each mutation at a given star count
+/** SellRules.value: a hybrid sells for 10 x its $/s. */
+export const sellValue = income => Math.floor(income * SELL_MULTIPLIER);
+
+// ---------- Mutation odds (ShinyRules.odds / effectiveOdds) ----------
+// "1 in N" chance of each mutation for a fusion rolled at `stars`. The roll itself happens on the
+// server, so WHICH star count the server passes in is not visible in the client code. The site
+// uses the hybrid's stars before its mutation bonus (roll + special); treat these as estimates.
 export function shinyOdds(type, stars, friends = 1) {
   const odds = (t, s) => SHINIES[t].denominator * ((Math.min(20, Math.max(3, s)) - 3) * 19 / 17 + 1);
   const mult = typeof friends === "number" && friends > 1 && friends <= FRIEND_MULTIPLIER ? friends : 1;
@@ -142,29 +197,141 @@ export function mutationChance(stars, friends = 1) {
   return SHINY_ORDER.reduce((p, t) => p + 1 / shinyOdds(t, stars, friends), 0);
 }
 
-// TreadmillRules: EXP per second by treadmill level; 100 EXP = 1 creature level.
-export const TREADMILL_RATES = [4, 10, 24, 60, 120, 200, 500, 1000, 2000, 6000];
-export const TREADMILL_PRICES = [0, 15000, 75000, 350000, 5000000, 1000000000, 40000000000, 1000000000000, 30000000000000, 1500000000000000];
-/** Levels gained per second: rate × (2^speedTier + charm multiplier − 1) / 100 */
-export function trainingLevelsPerSecond(treadmillLevel, speedTier = 0, charmTier = 0) {
-  const rate = TREADMILL_RATES[Math.min(10, Math.max(1, treadmillLevel)) - 1];
-  return rate * (2 ** Math.min(12, Math.max(0, speedTier)) + charmMultiplier(charmTier) - 1) / 100;
+// ---------- Training (TreadmillRules.rate) ----------
+/** CharmRules.multiplier: the charm's TRAINING multiplier ("x1.5 levels while training"). Not an income multiplier. */
+export const charmTrainingMultiplier = tier => (CHARMS[tier - 1] ? CHARMS[tier - 1].multiplier : 1);
+/** TreadmillMultipliers.multiplier: 2^tier, tier 0..12. */
+export const speedBoostMultiplier = tier => 2 ** Math.min(TREADMILL_MAX_SPEED_TIER, Math.max(0, Math.floor(tier) || 0));
+/**
+ * EXP per second = rates[treadmillLevel] x (speedBoost + charm - 1).
+ * The charm ADDS to the speed boost; it doesn't multiply it. 0 once the hybrid is at the level cap.
+ */
+export function trainingExpPerSecond(treadmillLevel, speedTier = 0, charmTier = 0, creatureLevel = 1) {
+  if (creatureLevel >= MAX_LEVEL) return 0;
+  const rate = TREADMILL_RATES[Math.min(10, Math.max(1, Math.floor(treadmillLevel) || 1)) - 1];
+  return rate * (speedBoostMultiplier(speedTier) + charmTrainingMultiplier(charmTier) - 1);
+}
+/** Levels gained per second (EXP_PER_LEVEL EXP = 1 level). */
+export const trainingLevelsPerSecond = (treadmillLevel, speedTier = 0, charmTier = 0) =>
+  trainingExpPerSecond(treadmillLevel, speedTier, charmTier) / EXP_PER_LEVEL;
+
+// ---------- Rankings (Best Partners, Top Hybrids, suggestions) ----------
+const byStarsThenIncome = (a, b) => b.stars - a.stars || b.income - a.income;
+export const rankComparator = sort => sort === "income" ? (a, b) => b.income - a.income || b.stars - a.stars : byStarsThenIncome;
+
+/** Every single fusion of `pet` with each id in `ids`, best first. */
+export function rankSinglePartners(pet, ids, { shiny = null, sort = "stars" } = {}) {
+  return ids.filter(id => id !== pet).map(id => single(pet, id, shiny)).sort(rankComparator(sort));
 }
 
-export const charmMultiplier = tier => (CHARMS[tier - 1] ? CHARMS[tier - 1].multiplier : 1);
+/** Every gen-1 hybrid from `pairs` double fused with `h`. Both partner dad/mom orders are tried (it changes income). */
+export function rankDoublePartners(h, pairs, { partnerShiny = null, sort = "stars" } = {}) {
+  const rows = [];
+  for (const [a, b] of pairs) {
+    const r1 = double(h, { dad: a, mom: b, shiny: partnerShiny }), r2 = double(h, { dad: b, mom: a, shiny: partnerShiny });
+    const r = r2.income > r1.income ? r2 : r1;
+    r.partner = r === r1 ? { dad: a, mom: b, shiny: partnerShiny } : { dad: b, mom: a, shiny: partnerShiny };
+    r.mine = { dad: h.dad, mom: h.mom, shiny: normShiny(h.shiny) };
+    rows.push(r);
+  }
+  return rows.sort(rankComparator(sort));
+}
 
-// ---------- Number formatting (matches the in-game style: $1.23M/s) ----------
+/**
+ * Exact top-k double fusions among all hybrids made from `pairs` (both hybrids carry `shiny`).
+ * Branch and bound: a double's stars can't exceed max(c) + min(5, steps(min c)) + max(special),
+ * so hybrid groups whose bound is below the k-th best are skipped. Each result uses the
+ * dad/mom order (of both hybrids) with the highest income.
+ */
+export function topDoubles(pairs, k, shiny = null) {
+  shiny = normShiny(shiny);
+  const groups = new Map();
+  for (const [a, b] of pairs) {
+    const s = single(a, b, shiny);
+    const c = s.base + s.mutation, key = `${c}|${s.special}`;
+    if (!groups.has(key)) groups.set(key, { c, sp: s.special, list: [] });
+    groups.get(key).list.push({ dad: a, mom: b, shiny, c });
+  }
+  const gs = [...groups.values()];
+  const stepsFor = lo => DOUBLE_STEPS.filter(t => t <= lo).length;
+  const gp = [];
+  for (let i = 0; i < gs.length; i++) for (let j = i; j < gs.length; j++) {
+    const A = gs[i], B = gs[j];
+    gp.push({ A, B, ub: Math.max(A.c, B.c) + Math.min(5, stepsFor(Math.min(A.c, B.c))) + Math.max(A.sp, B.sp) });
+  }
+  gp.sort((x, y) => y.ub - x.ub);
+  const hist = new Map(); // stars -> count of candidates found
+  const cands = [];
+  let thr = -Infinity, found = 0;
+  const updateThr = () => {
+    if (found < k) return;
+    let acc = 0;
+    for (const s of [...hist.keys()].sort((x, y) => y - x)) { acc += hist.get(s); if (acc >= k) { thr = s; return; } }
+  };
+  for (const { A, B, ub } of gp) {
+    if (ub < thr) break;
+    const sp = Math.max(A.sp, B.sp);
+    for (let i = 0; i < A.list.length; i++) {
+      const x = A.list[i];
+      for (let j = A === B ? i : 0; j < B.list.length; j++) {
+        const y = B.list[j];
+        const steps = stepsFor(Math.min(x.c, y.c));
+        const stars = Math.max(x.c, y.c) + Math.min(doubleBonusRoll(x, y), steps) + sp;
+        if (stars < thr) continue;
+        cands.push({ x, y, stars });
+        hist.set(stars, (hist.get(stars) || 0) + 1); found++;
+      }
+    }
+    updateThr();
+  }
+  const flip = h => ({ dad: h.mom, mom: h.dad, shiny: h.shiny });
+  return cands.filter(c => c.stars >= thr).map(({ x, y }) => {
+    let best = null;
+    for (const p of [x, flip(x)]) for (const q of [y, flip(y)]) {
+      const r = double(p, q);
+      if (!best || r.income > best.income) best = r;
+    }
+    return best;
+  }).sort(byStarsThenIncome).slice(0, k);
+}
+
+// ---------- Number formatting ----------
+const MONEY_SUFFIXES = ["K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc", "Ud", "Dd", "Td", "Qad", "Qid", "Sxd", "Spd", "Ocd", "Nod", "Vg"];
+/** CreatureIncome.Money.format: truncates (never rounds up) to 2 decimals and drops trailing zeros. */
+export function formatMoney(v) {
+  const n = Math.max(0, Math.floor(Number(v) || 0));
+  const s = BigInt(n).toString();
+  if (s.length <= 3) return s;
+  const k = Math.floor((s.length - 1) / 3);
+  const trim = t => t.replace(/0+$/, "").replace(/\.$/, "");
+  if (MONEY_SUFFIXES[k - 1]) {
+    const head = s.length - k * 3;
+    return trim(`${s.slice(0, head)}.${s.slice(head, head + 2)}`) + MONEY_SUFFIXES[k - 1];
+  }
+  return `${trim(`${s[0]}.${s.slice(1, 3)}`)}e+${s.length - 1}`;
+}
+/** "$38.34K/s", the same text the game shows on a hybrid. */
 export function money(v, perSec = true) {
-  const units = [[1e15, "Qa"], [1e12, "T"], [1e9, "B"], [1e6, "M"], [1e3, "K"]];
-  let s = null;
-  for (const [n, u] of units) if (v >= n) { s = (v / n).toFixed(2) + u; break; }
-  if (!s) s = String(Math.round(v));
-  return "$" + s + (perSec ? "/s" : "");
+  return "$" + formatMoney(v) + (perSec ? "/s" : "");
 }
+
+const COMPACT = [[1e12, "T"], [1e9, "B"], [1e6, "M"], [1e3, "k"]];
+/** CreatureLevelFormat's compact style (truncating, lowercase k), for any non-negative number. */
 export function shortNum(v) {
-  const units = [[1e12, "T"], [1e9, "B"], [1e6, "M"], [1e3, "k"]];
-  for (const [n, u] of units) if (v >= n) { const x = v / n; return (x < 10 ? x.toFixed(2) : x < 100 ? x.toFixed(1) : x.toFixed(0)).replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "") + u; }
-  return String(Math.round(v));
+  const n = Math.max(0, Math.floor(Number(v) || 0));
+  for (const [div, u] of COMPACT) {
+    if (div > n) continue;
+    const x = n / div, d = x < 10 ? 2 : x < 100 ? 1 : 0, p = 10 ** d;
+    let t = (Math.floor(x * p) / p).toFixed(d);
+    if (d > 0) t = t.replace(/0+$/, "").replace(/\.$/, "");
+    return t + u;
+  }
+  return String(n);
+}
+/** CreatureLevelFormat.format: how the game writes "Lv. 2.22M" (min 1, shows the cap as MAX). */
+export function formatLevel(v) {
+  const n = Math.max(1, Math.floor(Number(v) || 1));
+  return n >= MAX_LEVEL ? "500,000,000 (MAX)" : shortNum(n);
 }
 
 // ---------- Hybrid names ----------
@@ -275,6 +442,7 @@ const KNOWN_NAMES = {
   "warthog+wasp": "Warthowasp",
   "wasp+zombie": "Waspombie"
 };
+export const KNOWN_NAME_KEYS = Object.keys(KNOWN_NAMES);
 /** In-game name for a single hybrid, or null when we don't know it. */
 export function hybridName(a, b) {
   return KNOWN_NAMES[[a, b].sort().join("+")] || null;

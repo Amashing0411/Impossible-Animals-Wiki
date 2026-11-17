@@ -1,5 +1,7 @@
 // Game constants, transcribed from the game's own modules
-// (FusionRating, CreatureIncome, ShinyRules, CharmRules, AnimalUnlocks, WildRules, AnimalReleases, PenEconomy).
+// (FusionRating, CreatureIncome, ShinyRules, CharmRules, TreadmillRules, TreadmillMultipliers, SellRules,
+//  AnimalUnlocks, WildRules, AnimalReleases, PenEconomy, DoubleFusionRules).
+// tests/game-data.test.mjs compares these against the Lua dump when it is available.
 
 export const GAME_URL = "https://www.roblox.com/games/119929094294460/Impossible-Animals";
 
@@ -48,7 +50,9 @@ export const SHINY_ORDER = ["golden", "diamond", "iridescent", "chaos"];
 export const FRIEND_MULTIPLIER = 10;
 export const FIRST_GOLD_FUSION = 3;
 
-// CharmRules tiers: [name, income multiplier, cash price, robux, colour]
+// CharmRules tiers: [name, TRAINING multiplier, cash price, robux, colour]
+// The multiplier only feeds TreadmillRules.rate (EXP while training); the Charm Shop labels it
+// "x1.5 levels while training". CreatureIncome never reads charmTier, so charms do NOT change $/s.
 export const CHARMS = [
   ["Ember", 1.5, 100, 0, "#FF7135"],
   ["Jade", 2, 5000, 19, "#45ECA0"],
@@ -91,4 +95,14 @@ export const RELEASES = {
 // PenEconomy — pen upgrades (capacity = 4 + level - 1)
 export const PEN_PRICES = { 2: 1000, 3: 100000, 4: 2500000, 5: 60000000, 6: 1500000000, 7: 40000000000, 8: 1000000000000, 9: 25000000000000, 10: 500000000000000, 11: 6000000000000000 };
 export const OFFLINE_MULTIPLIER_PASS = 3;
-export const MAX_LEVEL = 500000000;
+
+// TreadmillRules: EXP per second by treadmill level (1-10) and upgrade prices; 100 EXP = 1 level.
+export const TREADMILL_RATES = [4, 10, 24, 60, 120, 200, 500, 1000, 2000, 6000];
+export const TREADMILL_PRICES = [0, 15000, 75000, 350000, 5000000, 1000000000, 40000000000, 1000000000000, 30000000000000, 1500000000000000];
+export const EXP_PER_LEVEL = 100;
+export const MAX_LEVEL = 500000000; // TreadmillRules.CREATURE_LEVEL_CAP
+// TreadmillMultipliers: speed boost tiers 0..12, multiplier 2^tier
+export const TREADMILL_MAX_SPEED_TIER = 12;
+
+// SellRules.value = floor(income * 10)
+export const SELL_MULTIPLIER = 10;
